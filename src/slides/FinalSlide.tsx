@@ -1,6 +1,6 @@
 import { SlideDefinition } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
-import linkedinQr from '/linkedin-qr.jpeg?url';
+import linkedinQr from '../assets/linkedin-qr.jpeg?url';
 
 export const FinalSlide: SlideDefinition = {
   id: 'final',

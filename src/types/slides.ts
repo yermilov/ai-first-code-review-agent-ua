@@ -14,6 +14,12 @@ export interface SlideDefinition {
   tooltip?: ReactNode;
   maxRevealStages?: number;
   initialRevealStage?: number;
+  /**
+   * Opt out of the export-mode auto-settle in Slide.tsx. Set true on slides
+   * that do their own async work (fetches, etc.) and call
+   * `exportRegistry.markSlideSettled(id)` from the async path themselves.
+   */
+  asyncSettle?: boolean;
 }
 
 export interface CodeBlockProps {
@@ -43,6 +49,9 @@ export interface SlideProps {
   isActive: boolean;
   notes?: string;
   background?: string;
+  /** Threaded so non-async slides can auto-settle via exportRegistry. */
+  slideId?: string;
+  asyncSettle?: boolean;
 }
 
 export interface SlideProgressProps {

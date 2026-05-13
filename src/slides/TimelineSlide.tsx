@@ -1,10 +1,10 @@
 import { SlideDefinition } from '../types/slides';
 
 // Import images with ?url suffix for GitHub Pages
-import cursorFrontend from '/timeline-cursor-frontend.png?url';
-import mentoringLlm from '/timeline-mentoring-llm.png?url';
-import aiTechDebt from '/timeline-ai-tech-debt.png?url';
-import claudeCodeEmail from '/timeline-claude-code-email.png?url';
+import cursorFrontend from '../assets/timeline-cursor-frontend.png?url';
+import mentoringLlm from '../assets/timeline-mentoring-llm.png?url';
+import aiTechDebt from '../assets/timeline-ai-tech-debt.png?url';
+import claudeCodeEmail from '../assets/timeline-claude-code-email.png?url';
 
 interface TimelineItem {
   anchorDate: Date | null;

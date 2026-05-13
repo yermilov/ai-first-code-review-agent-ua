@@ -1,8 +1,8 @@
 import { SlideDefinition } from '../types/slides';
 import { SlideItem, Emphasis, SlideLink } from '../components/SlideElements';
-import spaceBg from '/skill-space-bg.png?url';
-import leftAstronaut from '/skill-was-it-md.png?url';
-import rightAstronaut from '/skill-always-been.png?url';
+import spaceBg from '../assets/skill-space-bg.png?url';
+import leftAstronaut from '../assets/skill-was-it-md.png?url';
+import rightAstronaut from '../assets/skill-always-been.png?url';
 
 export const WhatIsSkillSlide: SlideDefinition = {
   id: 'what-is-skill',

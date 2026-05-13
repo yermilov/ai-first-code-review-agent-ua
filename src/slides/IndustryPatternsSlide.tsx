@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
+import { exportRegistry } from '../components/exportRegistry';
 
 const bullets = [
   <>recent progress from the companies behind AI coding agents tools shows a clear leap forward in software engineering processes</>,
@@ -151,11 +152,13 @@ function StatusHistoryPanel({
   componentsUrl,
   incidentsUrl,
   maxComponents = 5,
+  onReady,
 }: {
   label: string;
   componentsUrl: string;
   incidentsUrl: string;
   maxComponents?: number;
+  onReady?: () => void;
 }) {
   const [rows, setRows] = useState<ComponentRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -172,7 +175,6 @@ function StatusHistoryPanel({
       const components: ApiComponent[] = compData.components ?? [];
       const incidents: ApiIncident[] = incData.incidents ?? [];
 
-      // Top-level non-group components only (no group containers)
       const leaves = components
         .filter(c => !c.group && c.name !== 'Visit our website')
         .slice(0, maxComponents);
@@ -184,12 +186,16 @@ function StatusHistoryPanel({
 
       setRows(built);
       setLoading(false);
+      onReady?.();
     }).catch(() => {
-      if (!cancelled) setLoading(false);
+      if (!cancelled) {
+        setLoading(false);
+        onReady?.();
+      }
     });
 
     return () => { cancelled = true; };
-  }, [componentsUrl, incidentsUrl, maxComponents]);
+  }, [componentsUrl, incidentsUrl, maxComponents, onReady]);
 
   return (
     <div style={{
@@ -257,9 +263,22 @@ function StatusHistoryPanel({
 
 // --- slide ---
 
+const SLIDE_ID = 'industry-patterns';
+
 function IndustryPatternsContent({ revealStage }: SlideContentProps) {
   const visibleCount = Math.min(revealStage + 1, bullets.length);
   const showStatus = revealStage >= 5;
+  const [readyCount, setReadyCount] = useState(0);
+  const bumpReady = () => setReadyCount(c => c + 1);
+
+  // Mark slide settled for PDF export once both status panels finish their fetches.
+  // When status panels aren't visible (earlier reveal stages), we don't fetch
+  // and don't need to signal — the exporter always captures at max reveal anyway.
+  useEffect(() => {
+    if (showStatus && readyCount >= 2) {
+      exportRegistry.markSlideSettled(SLIDE_ID);
+    }
+  }, [showStatus, readyCount]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
@@ -307,11 +326,13 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
               label="status.claude.com"
               componentsUrl="https://status.claude.com/api/v2/components.json"
               incidentsUrl="https://status.claude.com/api/v2/incidents.json?page_size=100"
+              onReady={bumpReady}
             />
             <StatusHistoryPanel
               label="status.openai.com"
               componentsUrl="https://status.openai.com/api/v2/components.json"
               incidentsUrl="https://status.openai.com/api/v2/incidents.json?page_size=100"
+              onReady={bumpReady}
             />
           </div>
         )}
@@ -321,9 +342,10 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
 }
 
 export const IndustryPatternsSlide: SlideDefinition = {
-  id: 'industry-patterns',
+  id: SLIDE_ID,
   content: (props: SlideContentProps) => <IndustryPatternsContent {...props} />,
   maxRevealStages: 5,
+  asyncSettle: true,
   notes:
     'The meta-lesson: these companies eat their own dog food. That creates a feedback loop no external user study can replicate.',
 };

@@ -1,7 +1,7 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
-import superhumanAidevImage from '/superhuman-aidev.png?url';
-import diagramImage from '/skill-distribution-diagram.png?url';
+import superhumanAidevImage from '../assets/superhuman-aidev.png?url';
+import diagramImage from '../assets/skill-distribution-diagram.png?url';
 
 export const SkillMarketplaceSlide: SlideDefinition = {
   id: 'skill-marketplace',

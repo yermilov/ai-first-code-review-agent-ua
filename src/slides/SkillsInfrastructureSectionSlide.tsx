@@ -1,4 +1,4 @@
-import skillsInfrastructureImage from '/skills-infrastructure.png?url';
+import skillsInfrastructureImage from '../assets/skills-infrastructure.png?url';
 import { SlideDefinition } from '../types/slides';
 
 function SkillsInfrastructureSectionSlideContent() {

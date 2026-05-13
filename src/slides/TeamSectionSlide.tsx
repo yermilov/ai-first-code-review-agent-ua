@@ -1,4 +1,4 @@
-import agendaTeamImage from '/agenda-team.png?url';
+import agendaTeamImage from '../assets/agenda-team.png?url';
 import { SlideDefinition } from '../types/slides';
 import { SectionTitleSlide } from '../components/SectionTitleSlide';
 

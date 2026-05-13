@@ -4,6 +4,7 @@ import { SlideDefinition } from '../types/slides';
 interface UseSlideNavigationReturn {
   currentSlide: number;
   goToSlide: (index: number) => void;
+  goToSlideWithReveal: (slideIndex: number, revealStage: number) => void;
   nextSlide: () => void;
   prevSlide: () => void;
   revealNext: () => void;
@@ -73,6 +74,21 @@ export function useSlideNavigation(
     [clampIndex, updateHash]
   );
 
+  // Drive both slide and reveal stage from outside (used by PDF exporter).
+  // Clamps both indices into valid range. Avoids the keyboard handlers,
+  // which reset reveal on slide change and don't clamp `r` past the max.
+  const goToSlideWithReveal = useCallback(
+    (slideIndex: number, targetReveal: number) => {
+      const clampedIndex = clampIndex(slideIndex);
+      const max = slides[clampedIndex]?.maxRevealStages ?? 0;
+      const clampedReveal = Math.max(0, Math.min(targetReveal, max));
+      setCurrentSlide(clampedIndex);
+      setRevealStage(clampedReveal);
+      updateHash(clampedIndex);
+    },
+    [clampIndex, slides, updateHash]
+  );
+
   // Navigate to next slide
   const nextSlide = useCallback(() => {
     goToSlide(currentSlide + 1);
@@ -83,15 +99,18 @@ export function useSlideNavigation(
     goToSlide(currentSlide - 1);
   }, [currentSlide, goToSlide]);
 
-  // Reveal next stage if available, otherwise advance to next slide
+  // Reveal next stage if available, otherwise advance to next slide.
+  // On the very last slide at max reveal, stay put — falling through to
+  // nextSlide() there clamps the index back to the same slide and resets
+  // revealStage to 0, which loops the reveals.
   const revealNext = useCallback(() => {
     const maxReveal = slides[currentSlideRef.current]?.maxRevealStages ?? 0;
     if (revealStageRef.current < maxReveal) {
       setRevealStage(prev => prev + 1);
-    } else {
+    } else if (currentSlideRef.current < totalSlides - 1) {
       nextSlide();
     }
-  }, [slides, nextSlide]);
+  }, [slides, nextSlide, totalSlides]);
 
   // Roll back reveal stage if any revealed, otherwise go to previous slide
   const revealPrev = useCallback(() => {
@@ -117,6 +136,12 @@ export function useSlideNavigation(
         return;
       }
 
+      // Negative number — N-th slide before the last (e.g. -1 = second to last)
+      if (!isNaN(slideNumber) && slideNumber < 0) {
+        goToSlide(totalSlides - 1 + slideNumber);
+        return;
+      }
+
       // Navigation commands
       switch (trimmed) {
         case 'prev':
@@ -139,7 +164,7 @@ export function useSlideNavigation(
         case 'r':
         case 'move':
         case 'm':
-          setRevealStage(prev => prev + 1);
+          revealNext();
           return;
         case 'next':
         case 'n':
@@ -148,7 +173,7 @@ export function useSlideNavigation(
         // No default - unrecognized commands do nothing
       }
     },
-    [goToSlide, nextSlide, prevSlide, totalSlides]
+    [goToSlide, nextSlide, prevSlide, revealNext, totalSlides]
   );
 
   // Keyboard navigation (when not focused on input)
@@ -214,6 +239,7 @@ export function useSlideNavigation(
   return {
     currentSlide,
     goToSlide,
+    goToSlideWithReveal,
     nextSlide,
     prevSlide,
     revealNext,

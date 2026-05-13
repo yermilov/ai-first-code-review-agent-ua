@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, SlideLink } from '../components/SlideElements';
+import { exportRegistry } from '../components/exportRegistry';
 
+const SLIDE_ID = 'meta-skills';
 const SKILL_MD_URL =
   'https://raw.githubusercontent.com/anthropics/claude-plugins-official/main/plugins/skill-creator/skills/skill-creator/SKILL.md';
 
@@ -39,8 +41,14 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
         if (!r.ok) throw new Error('fetch failed');
         return r.text();
       })
-      .then(setContent)
-      .catch(() => setError(true));
+      .then(text => {
+        setContent(text);
+        exportRegistry.markSlideSettled(SLIDE_ID);
+      })
+      .catch(() => {
+        setError(true);
+        exportRegistry.markSlideSettled(SLIDE_ID);
+      });
   }, []);
 
   const colHeight = 'calc(var(--vh-full) - 260px)';
@@ -208,8 +216,9 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
 }
 
 export const MetaSkillsSlide: SlideDefinition = {
-  id: 'meta-skills',
+  id: SLIDE_ID,
   maxRevealStages: 1,
+  asyncSettle: true,
   content: ({ revealStage }: SlideContentProps) => <MetaSkillsContent revealStage={revealStage} />,
   notes: 'Meta-skills are the highest leverage investment. One good skill-creation skill multiplies the quality of everything else. Stage 1: reveal 4th bullet + scrolling SKILL.md panel.',
 };

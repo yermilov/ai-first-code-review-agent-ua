@@ -1,6 +1,6 @@
 import { SlideDefinition } from '../types/slides';
 import { Code, Quote, SlideItem, SlideLink } from '../components/SlideElements';
-import contextToolsGathering from '/context-tools-gathering.png?url';
+import contextToolsGathering from '../assets/context-tools-gathering.png?url';
 
 export const ContextToolsSlide: SlideDefinition = {
   id: 'context-tools',

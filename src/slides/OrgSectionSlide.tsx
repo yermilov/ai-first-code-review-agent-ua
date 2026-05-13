@@ -1,4 +1,4 @@
-import agendaOrgImage from '/agenda-org.png?url';
+import agendaOrgImage from '../assets/agenda-org.png?url';
 import { SlideDefinition } from '../types/slides';
 import { SectionTitleSlide } from '../components/SectionTitleSlide';
 

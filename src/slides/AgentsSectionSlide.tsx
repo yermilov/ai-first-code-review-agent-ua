@@ -1,4 +1,4 @@
-import agentsSmithImage from '/agents-smith.png?url';
+import agentsSmithImage from '../assets/agents-smith.png?url';
 import { SlideDefinition } from '../types/slides';
 
 const MATRIX_STYLES = `

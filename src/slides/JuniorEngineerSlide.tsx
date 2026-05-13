@@ -1,6 +1,6 @@
 import { SlideDefinition } from '../types/slides';
-import slackImage from '/junior-engineer-slack.png?url';
-import terminalImage from '/junior-engineer-terminal.png?url';
+import slackImage from '../assets/junior-engineer-slack.png?url';
+import terminalImage from '../assets/junior-engineer-terminal.png?url';
 
 type Level = 'high' | 'medium' | 'low';
 
