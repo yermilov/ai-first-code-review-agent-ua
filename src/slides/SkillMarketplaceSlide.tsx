@@ -6,15 +6,15 @@ import diagramImage from '../assets/skill-distribution-diagram.png?url';
 export const SkillMarketplaceSlide: SlideDefinition = {
   id: 'skill-marketplace',
   maxRevealStages: 1,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--marketplace</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-
-      <h2>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--marketplace</span>
-      </h2>
-
       <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
 
         {/* Left column — bullets swap on reveal */}

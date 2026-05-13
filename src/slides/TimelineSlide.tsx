@@ -47,16 +47,17 @@ const timelineItems: TimelineItem[] = [
 export const TimelineSlide: SlideDefinition = {
   id: 'timeline',
   maxRevealStages: 5,
+  title: (
+    <>
+      <span className="text-dim">$</span> my ai coding timeline
+    </>
+  ),
   content: ({ revealStage }) => {
     const currentStage = Math.min(revealStage, timelineItems.length - 1);
     const currentItem = timelineItems[currentStage];
 
     return (
       <div className="timeline-slide-v2">
-        <h2 className="timeline-title-v2">
-          <span className="text-dim">$</span> my ai coding timeline
-        </h2>
-
         <div className="timeline-layout">
           {/* LEFT: Git log - time markers only */}
           <div className="timeline-log">

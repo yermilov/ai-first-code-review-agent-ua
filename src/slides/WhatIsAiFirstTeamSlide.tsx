@@ -192,16 +192,15 @@ function TeamDiagram({ revealStage }: { revealStage: number }) {
 export const WhatIsAiFirstTeamSlide: SlideDefinition = {
   id: 'what-is-ai-first-team',
   maxRevealStages: 3,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">team</span>{' '}
+      <span className="text-orange">--define</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-
-      {/* Full-width heading */}
-      <h2>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">team</span>{' '}
-        <span className="text-orange">--define</span>
-      </h2>
-
       {/* Two-column body */}
       <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
 

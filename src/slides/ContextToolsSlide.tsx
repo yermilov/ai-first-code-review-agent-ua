@@ -4,6 +4,12 @@ import contextToolsGathering from '../assets/context-tools-gathering.png?url';
 
 export const ContextToolsSlide: SlideDefinition = {
   id: 'context-tools',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-orange">form the context</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <div className="bg-image-slide">
       <img
@@ -14,11 +20,6 @@ export const ContextToolsSlide: SlideDefinition = {
       />
 
       <div className="bg-image-slide__content" style={{ maxWidth: '1100px' }}>
-        <h2 style={{ marginBottom: '1.5rem' }}>
-          <span className="text-dim">$</span>{' '}
-          <span className="text-orange">form the context</span>
-        </h2>
-
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 3rem' }}>
           <SlideItem delay={0.05}>
             describe your task in as much detail as possible (use{' '}

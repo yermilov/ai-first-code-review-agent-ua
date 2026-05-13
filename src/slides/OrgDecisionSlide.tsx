@@ -4,14 +4,15 @@ import { SlideItem, Emphasis } from '../components/SlideElements';
 export const OrgDecisionSlide: SlideDefinition = {
   id: 'org-decision',
   maxRevealStages: 4,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">org</span>{' '}
+      <span className="text-orange">--reboot</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">org</span>{' '}
-        <span className="text-orange">--reboot</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

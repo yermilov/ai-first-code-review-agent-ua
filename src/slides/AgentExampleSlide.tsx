@@ -17,12 +17,6 @@ function AgentExampleContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">agents</span>{' '}
-        <span className="text-orange">--example</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
@@ -80,6 +74,13 @@ export const AgentExampleSlide: SlideDefinition = {
   id: 'agent-example',
   maxRevealStages: 6,
   initialRevealStage: 1,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">agents</span>{' '}
+      <span className="text-orange">--example</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <AgentExampleContent revealStage={revealStage} />,
   notes:
     'Real example: our in-house code review agent. Not a SaaS product — built on Claude Code SDK with full control over skills, models, and review dimensions.',

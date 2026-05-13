@@ -164,18 +164,17 @@ function SkillFlywheelDiagram({ revealStage }: { revealStage: number }) {
 export const SkillFlywheelSlide: SlideDefinition = {
   id: 'skill-flywheel',
   maxRevealStages: 4,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--flywheel</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => {
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-
-        {/* Full-width heading */}
-        <h2>
-          <span className="text-dim">$</span>{' '}
-          <span className="text-green">skills</span>{' '}
-          <span className="text-orange">--flywheel</span>
-        </h2>
-
         {/* Two-column body */}
         <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
 

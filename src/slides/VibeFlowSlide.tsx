@@ -8,14 +8,15 @@ function Command({ children }: { children: string }) {
 
 export const VibeFlowSlide: SlideDefinition = {
   id: 'vibe-flow',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">vibe</span>{' '}
+      <span className="text-orange">--flow</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">vibe</span>{' '}
-        <span className="text-orange">--flow</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

@@ -212,19 +212,18 @@ export function EngineerAspireDiagram({
 export const PersonalAspirationSlide: SlideDefinition = {
   id: 'personal-aspiration',
   maxRevealStages: 5,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">engineer</span>{' '}
+      <span className="text-orange">--aspire</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => {
     const highlightedNode = HIGHLIGHT_BY_STAGE[revealStage] ?? 'CODING';
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-
-        {/* Full-width heading */}
-        <h2>
-          <span className="text-dim">$</span>{' '}
-          <span className="text-green">engineer</span>{' '}
-          <span className="text-orange">--aspire</span>
-        </h2>
-
         {/* Two-column body */}
         <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
 

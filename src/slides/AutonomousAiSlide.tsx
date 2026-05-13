@@ -4,14 +4,15 @@ import { SlideItem, Emphasis } from '../components/SlideElements';
 export const AutonomousAiSlide: SlideDefinition = {
   id: 'autonomous-ai',
   maxRevealStages: 3,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">./org</span>{' '}
+      <span className="text-orange">--agent-first</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">./org</span>{' '}
-        <span className="text-orange">--agent-first</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

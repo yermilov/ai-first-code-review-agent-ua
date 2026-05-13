@@ -9,9 +9,12 @@ export interface SlideContentProps {
 export interface SlideDefinition {
   id: string;
   content: ReactNode | ((props: SlideContentProps) => ReactNode);
+  /** Optional fixed top-left title rendered by Slide.tsx. Use `//` prefix
+   * convention for the dim leader (matches dou-days deck). Omit for hero
+   * / section-break slides that own their full composition. */
+  title?: ReactNode;
   notes?: string;
   background?: string;
-  tooltip?: ReactNode;
   maxRevealStages?: number;
   initialRevealStage?: number;
   /**

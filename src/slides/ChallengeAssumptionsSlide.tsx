@@ -3,14 +3,15 @@ import { SlideItem, Emphasis } from '../components/SlideElements';
 
 export const ChallengeAssumptionsSlide: SlideDefinition = {
   id: 'challenge-assumptions',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">org</span>{' '}
+      <span className="text-orange">--rethink</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <>
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">org</span>{' '}
-        <span className="text-orange">--rethink</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

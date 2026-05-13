@@ -63,19 +63,6 @@ function isQuestionMarkActive(activatedTools: Set<string>): boolean {
 
 export const IntroSlide: SlideDefinition = {
   id: 'intro',
-  tooltip: (
-    <>
-      <div className="onboarding-tooltip-header">
-        <span className="onboarding-tooltip-icon">?</span>
-        <span className="onboarding-tooltip-title">Hint</span>
-      </div>
-      <ul className="onboarding-tooltip-list">
-        <li>
-          type a tool name to highlight it
-        </li>
-      </ul>
-    </>
-  ),
   content: ({ activatedTools }: SlideContentProps) => (
     <>
       <h1 className="hero">let's get to know you</h1>

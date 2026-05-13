@@ -7,7 +7,6 @@ import { Slide } from './Slide';
 import { TerminalInput } from './TerminalInput';
 import { SlideProgress } from './SlideProgress';
 import { Timer } from './Timer';
-import { OnboardingTooltip, ContextTooltip } from './OnboardingTooltip';
 import { RotateHint } from './RotateHint';
 import { preloadSlideAssets } from '../utils/preloadAssets';
 import { exportRegistry } from './exportRegistry';
@@ -123,14 +122,6 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
   // Track activated tools (persists after Enter)
   const [activatedTools, setActivatedTools] = useState<Set<string>>(new Set());
 
-  // Track if user has interacted on current slide (for tooltips)
-  const [slideInteracted, setSlideInteracted] = useState(false);
-
-  // Reset interaction state when slide changes
-  useEffect(() => {
-    setSlideInteracted(false);
-  }, [currentSlide]);
-
   // Warm the HTTP cache for every downstream slide asset while the title
   // slide is on screen. Deferred to idle so the first paint is unblocked.
   useEffect(() => {
@@ -189,9 +180,6 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
   const handleCommand = useCallback((command: string) => {
     const trimmed = command.trim().toLowerCase();
 
-    // Mark as interacted (hides tooltips)
-    setSlideInteracted(true);
-
     // Only activate tools when on the IntroSlide
     if (slides[currentSlide]?.id === 'intro') {
       const matchingTools = getMatchingToolIds(command);
@@ -239,17 +227,11 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
           background={activeSlide.background}
           slideId={activeSlide.id}
           asyncSettle={activeSlide.asyncSettle}
+          title={activeSlide.title}
         >
           {slideContent}
         </Slide>
       </div>
-      {!isExportMode && currentSlide === 0 && !slideInteracted && <OnboardingTooltip />}
-      {!isExportMode && activeSlide.tooltip &&
-        (activeSlide.maxRevealStages
-          ? revealStage < activeSlide.maxRevealStages
-          : !slideInteracted) && (
-        <ContextTooltip>{activeSlide.tooltip}</ContextTooltip>
-      )}
       {!isExportMode && (
         <div className="input-bar">
           <Timer
@@ -264,13 +246,12 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
             onArrowRight={revealNext}
             placeholder="type anything to continue, 'prev' to go back, or slide number..."
           />
-          {(currentSlide + 1) / slides.length > 0.5 && (
-            <SlideProgress
-              current={currentSlide + 1}
-              total={slides.length}
-              isFirst={currentSlide === Math.floor(slides.length / 2)}
-            />
-          )}
+          <SlideProgress
+            current={currentSlide + 1}
+            total={slides.length}
+            isFirst={currentSlide === Math.floor(slides.length / 2)}
+            hidden={(currentSlide + 1) / slides.length <= 0.5}
+          />
         </div>
       )}
     </div>

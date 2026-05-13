@@ -143,15 +143,6 @@ function AgendaSlideContent() {
         }
       `}</style>
 
-      {/* Header */}
-      <div className="agenda-header">
-        <div className="agenda-command">
-          <span className="text-dim">$</span>{' '}
-          <span className="text-green">./session --agenda</span>
-        </div>
-        <div className="agenda-subtitle text-muted">// claude code mostly</div>
-      </div>
-
       {/* Row 1: main sections */}
       <div className="agenda-sections-row">
         {SECTIONS.map((section) => (
@@ -208,5 +199,11 @@ function AgendaSlideContent() {
 
 export const AgendaSlide: SlideDefinition = {
   id: 'agenda',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">./session --agenda</span>
+    </>
+  ),
   content: <AgendaSlideContent />,
 };

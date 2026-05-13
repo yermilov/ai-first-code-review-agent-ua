@@ -3,14 +3,15 @@ import { Code, Emphasis, SlideItem } from '../components/SlideElements';
 
 export const SkillsPyramidSlide: SlideDefinition = {
   id: 'skills-pyramid',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--pyramid</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--pyramid</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',
