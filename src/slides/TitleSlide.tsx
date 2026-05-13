@@ -4,9 +4,9 @@ export const TitleSlide: SlideDefinition = {
   id: 'title',
   content: (
     <div className="title-slide">
-      <h1 className="hero title-glow">How to Make Your Team AI First</h1>
-      <p className="title-tagline">Pragmatic Vibe Coding at Superhuman</p>
-      <p className="title-subtitle">Yaroslav Yermilov, Principal Software Engineer @ Superhuman/Grammarly</p>
+      <h1 className="hero title-glow">AI-first розробка</h1>
+      <p className="title-tagline">кейс створення code review агента</p>
+      <p className="title-subtitle">Ярослав Єрмілов, Principal Software Engineer @ Superhuman/Grammarly</p>
     </div>
   ),
 };
