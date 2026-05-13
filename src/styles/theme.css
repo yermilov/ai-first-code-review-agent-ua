@@ -47,15 +47,18 @@
   /* === TYPOGRAPHY === */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
 
-  /* Slide typography - large and impactful */
-  --font-size-hero: 6rem;
-  --font-size-h1: 5rem;
-  --font-size-h2: 3.5rem;
-  --font-size-h3: 2.5rem;
-  --font-size-body: 1.75rem;
-  --font-size-code: 1.25rem;
-  --font-size-input: 1.125rem;
-  --font-size-small: 0.875rem;
+  /* Slide typography — fluid clamp(min, preferred, max) so text scales
+   * smoothly from phone (~480px) up to desktop (~1920px) without
+   * breakpoint cliffs. Min anchors phone legibility; max preserves the
+   * impactful desktop sizing. */
+  --font-size-hero: clamp(2rem, 5vw, 6rem);
+  --font-size-h1: clamp(1.6rem, 4vw, 5rem);
+  --font-size-h2: clamp(1.25rem, 3vw, 3.5rem);
+  --font-size-h3: clamp(1.1rem, 2.2vw, 2.5rem);
+  --font-size-body: clamp(0.95rem, 1.6vw, 1.75rem);
+  --font-size-code: clamp(0.8rem, 1.1vw, 1.25rem);
+  --font-size-input: clamp(0.875rem, 0.9vw, 1.125rem);
+  --font-size-small: clamp(0.75rem, 0.7vw, 0.875rem);
 
   --line-height-tight: 1.2;
   --line-height-normal: 1.6;
@@ -65,20 +68,20 @@
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.05em;
 
-  /* Slide text size variants */
-  --slide-text-normal: 1.35rem;
-  --slide-text-compact: 1.15rem;
-  --slide-text-dense: 1.05rem;
+  /* Slide text size variants (fluid) */
+  --slide-text-normal: clamp(0.85rem, 1.25vw, 1.35rem);
+  --slide-text-compact: clamp(0.8rem, 1.05vw, 1.15rem);
+  --slide-text-dense: clamp(0.75rem, 0.95vw, 1.05rem);
 
   /* Line heights per variant */
   --slide-line-height-normal: 1.55;
   --slide-line-height-compact: 1.5;
   --slide-line-height-dense: 1.45;
 
-  /* Section headers */
-  --slide-section-header: 1.1rem;
-  --slide-section-header-compact: 0.9rem;
-  --slide-section-header-dense: 0.85rem;
+  /* Section headers (fluid) */
+  --slide-section-header: clamp(0.8rem, 1vw, 1.1rem);
+  --slide-section-header-compact: clamp(0.7rem, 0.85vw, 0.9rem);
+  --slide-section-header-dense: clamp(0.65rem, 0.8vw, 0.85rem);
 
   /* Inline code */
   --slide-code-relative: 0.95em;
@@ -115,15 +118,10 @@
   --flicker-intensity: 0.005;
 }
 
-/* Phone-size typography */
+/* Input control height shrinks on phones (not part of the clamp() font
+ * scale because it's a control, not a typography step). */
 @media (max-width: 480px) {
   :root {
-    --font-size-hero: 2rem;
-    --font-size-h1: 1.6rem;
-    --font-size-h2: 1.25rem;
-    --font-size-h3: 1.1rem;
-    --font-size-body: 0.9rem;
-    --font-size-code: 0.8rem;
     --input-height: 2.75rem;
   }
 }

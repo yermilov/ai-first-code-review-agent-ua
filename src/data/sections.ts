@@ -1,9 +1,9 @@
-import agendaEngineerImage from '/agenda-engineer.png?url';
-import agendaTeamImage from '/agenda-team.png?url';
-import agendaOrgImage from '/agenda-org.png?url';
-import skillsInfrastructureImage from '/skills-infrastructure.png?url';
-import aiInnovatorCurveImage from '/ai-innovator-curve-thumb.png?url';
-import agentsSectionThumbImage from '/agents-section-thumb.png?url';
+import agendaEngineerImage from '../assets/agenda-engineer.png?url';
+import agendaTeamImage from '../assets/agenda-team.png?url';
+import agendaOrgImage from '../assets/agenda-org.png?url';
+import skillsInfrastructureImage from '../assets/skills-infrastructure.png?url';
+import aiInnovatorCurveImage from '../assets/ai-innovator-curve-thumb.png?url';
+import agentsSectionThumbImage from '../assets/agents-section-thumb.png?url';
 
 export interface SubsectionData {
   command: string;

@@ -1,6 +1,6 @@
 import { SlideDefinition } from '../types/slides';
-import terminalFighter from '/terminal-fighter.png?url';
-import ideFighter from '/ide-fighter.png?url';
+import terminalFighter from '../assets/terminal-fighter.png?url';
+import ideFighter from '../assets/ide-fighter.png?url';
 
 type Level = 'high' | 'medium' | 'low';
 

@@ -468,34 +468,15 @@
 }
 
 /* === TIMER === */
-.timer {
+.timer-countdown {
   position: fixed;
   bottom: calc(var(--input-height) + var(--space-xl) + var(--space-md));
   left: var(--space-xl);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   z-index: 100;
-}
-
-.timer-display {
-  color: var(--terminal-white-muted);
-  font-size: var(--font-size-small);
-  font-family: var(--font-mono);
-}
-
-.timer-btn {
-  background: none;
-  border: none;
-  color: var(--terminal-white-muted);
-  font-size: var(--font-size-small);
-  font-family: var(--font-mono);
-  cursor: pointer;
-  padding: 0;
-}
-
-.timer-btn:hover {
-  color: var(--terminal-orange);
 }
 
 /* === CODE BLOCK === */
@@ -767,31 +748,17 @@
   }
 }
 
-/* === RESPONSIVE === */
+/* === RESPONSIVE LAYOUT === */
+/* Typography scaling is handled by clamp() on the font-size tokens
+ * themselves (see theme.css). Only layout / spacing adjustments live
+ * in media queries. */
 @media (max-width: 1024px) {
-  :root {
-    --font-size-hero: 3.5rem;
-    --font-size-h1: 2.75rem;
-    --font-size-h2: 2rem;
-    --font-size-h3: 1.5rem;
-    --font-size-body: 1.25rem;
-  }
-
   .slide-container {
     padding: var(--space-xl) var(--space-lg);
   }
 }
 
 @media (max-width: 640px) {
-  :root {
-    --font-size-hero: 2.5rem;
-    --font-size-h1: 2rem;
-    --font-size-h2: 1.5rem;
-    --font-size-h3: 1.25rem;
-    --font-size-body: 1rem;
-    --font-size-code: 0.875rem;
-  }
-
   .slide-container {
     padding: var(--space-lg) var(--space-md);
   }
@@ -2158,7 +2125,7 @@
 
 /* === MOBILE: FIXED ELEMENT STACKING === */
 @media (max-width: 768px) and (pointer: coarse) {
-  .timer {
+  .timer-countdown {
     transform: scale(0.85);
     transform-origin: bottom left;
     left: var(--space-md);
@@ -2302,5 +2269,40 @@
   /* Disable title slide animated scan lines */
   .title-slide::before {
     animation: none;
+  }
+}
+
+/* === ROTATE HINT (portrait phones only) === */
+.rotate-hint {
+  display: none;
+}
+@media (orientation: portrait) and (max-width: 640px) {
+  .rotate-hint {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: var(--terminal-bg);
+    color: var(--terminal-white);
+    font-family: var(--font-mono);
+    text-align: center;
+    padding: 2rem;
+    pointer-events: none;
+  }
+  .rotate-hint__icon {
+    font-size: 4rem;
+    color: var(--terminal-orange);
+    line-height: 1;
+    transform: rotate(-90deg);
+    text-shadow: var(--glow-text-orange);
+  }
+  .rotate-hint__text {
+    font-size: 1.125rem;
+    color: var(--terminal-white-dim);
+    max-width: 18rem;
   }
 }

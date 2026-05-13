@@ -8,7 +8,25 @@ import { TerminalInput } from './TerminalInput';
 import { SlideProgress } from './SlideProgress';
 import { Timer } from './Timer';
 import { OnboardingTooltip, ContextTooltip } from './OnboardingTooltip';
-import { PointerTooltip } from './PointerTooltip';
+import { RotateHint } from './RotateHint';
+import { preloadSlideAssets } from '../utils/preloadAssets';
+import { exportRegistry } from './exportRegistry';
+
+declare global {
+  interface Window {
+    __deckExport?: {
+      slideCount: number;
+      slideIdAt: (i: number) => string;
+      maxRevealStagesAt: (i: number) => number;
+      goTo: (i: number, revealStage: number) => void;
+      waitForSettled: (slideId: string, timeoutMs?: number) => Promise<void>;
+      reset: () => void;
+    };
+  }
+}
+
+const isExportMode =
+  typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('export') === '1';
 
 const TIMER_STARTED_AT_KEY = 'timerStartedAt';
 const TIMER_ACCUMULATED_KEY = 'timerAccumulated';
@@ -48,17 +66,33 @@ function getInitialTimerState(): { seconds: number; running: boolean } {
 }
 
 export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
-  const { currentSlide, goToSlide, handleCommand: handleNavCommand, revealStage, nextSlide, prevSlide, revealNext, revealPrev } = useSlideNavigation(
+  const { currentSlide, goToSlide, goToSlideWithReveal, handleCommand: handleNavCommand, revealStage, revealNext, revealPrev } = useSlideNavigation(
     slides,
     initialSlide
   );
+
+  // Expose Playwright-driven navigation API in export mode.
+  useEffect(() => {
+    if (!isExportMode) return;
+    window.__deckExport = {
+      slideCount: slides.length,
+      slideIdAt: (i: number) => slides[i]?.id ?? '',
+      maxRevealStagesAt: (i: number) => slides[i]?.maxRevealStages ?? 0,
+      goTo: (i: number, r: number) => goToSlideWithReveal(i, r),
+      waitForSettled: (id: string, timeoutMs?: number) => exportRegistry.waitForSettled(id, timeoutMs),
+      reset: () => exportRegistry.reset(),
+    };
+    return () => {
+      delete window.__deckExport;
+    };
+  }, [slides, goToSlideWithReveal]);
 
   const goToSlideById = useCallback((id: string) => {
     const index = slides.findIndex(s => s.id === id);
     if (index !== -1) goToSlide(index);
   }, [slides, goToSlide]);
 
-  const { containerRef } = useTouchNavigation({ nextSlide, prevSlide });
+  const { containerRef } = useTouchNavigation({ onNext: revealNext, onPrev: revealPrev });
 
   // Track current input text for interactive slides
   const [inputText, setInputText] = useState('');
@@ -73,6 +107,21 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
   useEffect(() => {
     setSlideInteracted(false);
   }, [currentSlide]);
+
+  // Warm the HTTP cache for every downstream slide asset while the title
+  // slide is on screen. Deferred to idle so the first paint is unblocked.
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (typeof win.requestIdleCallback === 'function') {
+      const handle = win.requestIdleCallback(preloadSlideAssets);
+      return () => win.cancelIdleCallback?.(handle);
+    }
+    const timeout = window.setTimeout(preloadSlideAssets, 200);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   // Timer state with localStorage persistence
   const [timerSeconds, setTimerSeconds] = useState(() => getInitialTimerState().seconds);
@@ -97,48 +146,23 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
     });
   }, []);
 
-  const handleTimerPause = useCallback(() => {
-    setTimerRunning(false);
-    setTimerSeconds((currentSeconds) => {
+  // Auto-start timer when leaving the title slide; reset when returning to it
+  useEffect(() => {
+    if (currentSlide === 0) {
+      setTimerRunning(false);
+      setTimerSeconds(0);
       localStorage.removeItem(TIMER_STARTED_AT_KEY);
-      localStorage.setItem(TIMER_ACCUMULATED_KEY, currentSeconds.toString());
-      return currentSeconds;
-    });
-  }, []);
-
-  const handleTimerStartPause = useCallback(() => {
-    setTimerRunning((running) => {
-      if (running) {
-        // Pausing
-        setTimerSeconds((currentSeconds) => {
-          localStorage.removeItem(TIMER_STARTED_AT_KEY);
-          localStorage.setItem(TIMER_ACCUMULATED_KEY, currentSeconds.toString());
-          return currentSeconds;
-        });
-      } else {
-        // Starting
-        setTimerSeconds((currentSeconds) => {
-          localStorage.setItem(TIMER_STARTED_AT_KEY, Date.now().toString());
-          localStorage.setItem(TIMER_ACCUMULATED_KEY, currentSeconds.toString());
-          return currentSeconds;
-        });
-      }
-      return !running;
-    });
-  }, []);
-
-  const handleTimerReset = useCallback(() => {
-    setTimerRunning(false);
-    setTimerSeconds(0);
-    localStorage.removeItem(TIMER_STARTED_AT_KEY);
-    localStorage.removeItem(TIMER_ACCUMULATED_KEY);
-  }, []);
+      localStorage.removeItem(TIMER_ACCUMULATED_KEY);
+    } else if (!timerRunning) {
+      handleTimerStart();
+    }
+  }, [currentSlide]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToolsReset = useCallback(() => {
     setActivatedTools(new Set());
   }, []);
 
-  // Command handler that intercepts timer commands and activates tools
+  // Command handler that activates tools and delegates navigation
   const handleCommand = useCallback((command: string) => {
     const trimmed = command.trim().toLowerCase();
 
@@ -157,23 +181,13 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
       }
     }
 
-    switch (trimmed) {
-      case 'start':
-      case 'go':
-        handleTimerStart();
-        return;
-      case 'pause':
-      case 'stop':
-        handleTimerPause();
-        return;
-      case 'reset':
-        handleTimerReset();
-        handleToolsReset();
-        return;
-      default:
-        handleNavCommand(command);
+    if (trimmed === 'reset') {
+      handleToolsReset();
+      return;
     }
-  }, [handleNavCommand, handleTimerStart, handleTimerPause, handleTimerReset, handleToolsReset]);
+
+    handleNavCommand(command);
+  }, [handleNavCommand, handleToolsReset, currentSlide, slides]);
 
   const activeSlide = slides[currentSlide];
 
@@ -189,54 +203,48 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
   return (
     <NavigationContext.Provider value={{ goToSlideById }}>
     <div className="presentation">
+      {!isExportMode && <RotateHint />}
       <div className="slide-container" ref={containerRef} key={activeSlide.id}>
         <Slide
           isActive
           notes={activeSlide.notes}
           background={activeSlide.background}
+          slideId={activeSlide.id}
+          asyncSettle={activeSlide.asyncSettle}
         >
           {slideContent}
         </Slide>
       </div>
-      <Timer
-        seconds={timerSeconds}
-        isRunning={timerRunning}
-        onStartPause={handleTimerStartPause}
-        onReset={handleTimerReset}
-      />
-      {/* Show context progress once less than 50% of slides remain */}
-      {(currentSlide + 1) / slides.length > 0.5 && (
+      {!isExportMode && (
+        <Timer
+          elapsedSeconds={timerSeconds}
+          currentSlide={currentSlide}
+          totalSlides={slides.length}
+        />
+      )}
+      {!isExportMode && (currentSlide + 1) / slides.length > 0.5 && (
         <SlideProgress
           current={currentSlide + 1}
           total={slides.length}
           isFirst={currentSlide === Math.floor(slides.length / 2)}
         />
       )}
-      {currentSlide === 0 && !slideInteracted && <OnboardingTooltip />}
-      {activeSlide.tooltip &&
+      {!isExportMode && currentSlide === 0 && !slideInteracted && <OnboardingTooltip />}
+      {!isExportMode && activeSlide.tooltip &&
         (activeSlide.maxRevealStages
           ? revealStage < activeSlide.maxRevealStages
           : !slideInteracted) && (
         <ContextTooltip>{activeSlide.tooltip}</ContextTooltip>
       )}
-      {currentSlide === 0 && !slideInteracted && (
-        <PointerTooltip position="left">
-          <div className="pointer-tooltip-header">
-            <span className="onboarding-tooltip-icon">?</span>
-            <span className="pointer-tooltip-title">Timer</span>
-          </div>
-          <p className="pointer-tooltip-text">
-            helps track presentation duration. press <code>[start]</code> or type <code>start</code> to begin
-          </p>
-        </PointerTooltip>
+      {!isExportMode && (
+        <TerminalInput
+          onCommand={handleCommand}
+          onInputChange={setInputText}
+          onArrowLeft={revealPrev}
+          onArrowRight={revealNext}
+          placeholder="type anything to continue, 'prev' to go back, or slide number..."
+        />
       )}
-      <TerminalInput
-        onCommand={handleCommand}
-        onInputChange={setInputText}
-        onArrowLeft={revealPrev}
-        onArrowRight={revealNext}
-        placeholder="type anything to continue, 'prev' to go back, or slide number..."
-      />
     </div>
     </NavigationContext.Provider>
   );

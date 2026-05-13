@@ -1,6 +1,6 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
-import aiCodeReviewImage from '/ai-code-review.png?url';
+import aiCodeReviewImage from '../assets/ai-code-review.png?url';
 
 const STYLES = `
   @keyframes revealPanel {

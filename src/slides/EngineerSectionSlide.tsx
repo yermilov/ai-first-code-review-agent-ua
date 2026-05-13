@@ -1,4 +1,4 @@
-import agendaEngineerImage from '/agenda-engineer.png?url';
+import agendaEngineerImage from '../assets/agenda-engineer.png?url';
 import { SlideDefinition } from '../types/slides';
 import { SectionTitleSlide } from '../components/SectionTitleSlide';
 

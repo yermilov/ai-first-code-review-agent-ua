@@ -1,7 +1,7 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
-import vibesImage from '/vibes.png?url';
+import vibesImage from '../assets/vibes.png?url';
 
 const STYLES = `
   #agent-traces-right .code-block {
