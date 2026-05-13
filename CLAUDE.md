@@ -355,30 +355,3 @@ git push origin --delete my-feature  # 7. Delete remote branch
 ```
 
 Use the `/cicd:commit-and-push` skill to automate steps 1–3.
-
-## Session Tracking (entire.io)
-
-This project uses [entire.io](https://entire.io/) for Claude Code session tracking. Session data is stored in a dedicated orphan branch:
-
-**Branch**: `entire/checkpoints/v1`
-
-The branch contains no source code — only session checkpoint metadata and transcripts:
-
-```
-<checkpoint-id>/
-├── metadata.json      # branch, files touched, token usage, CLI version
-├── <n>/
-│   ├── metadata.json  # session-level metadata
-│   ├── full.jsonl     # full session transcript
-│   ├── prompt.txt     # initial prompt
-│   └── content_hash.txt
-```
-
-Each checkpoint corresponds to a Claude Code session commit (strategy: `manual-commit`) and records which files were touched, token usage, and the full conversation transcript. Do not manually edit or delete this branch.
-
-**Current status: enabled.** `.claude/settings.local.json` is gitignored to keep local tool permissions out of the repo.
-
-To disable: `entire disable`
-To re-enable: `entire enable --agent claude-code`
-
-Documentation: `gh api repos/entireio/cli/contents/README.md --jq '.content' | base64 -d`
