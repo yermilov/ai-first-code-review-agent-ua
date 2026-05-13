@@ -47,18 +47,28 @@
   /* === TYPOGRAPHY === */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
 
-  /* Slide typography — fluid clamp(min, preferred, max) so text scales
-   * smoothly from phone (~480px) up to desktop (~1920px) without
-   * breakpoint cliffs. Min anchors phone legibility; max preserves the
-   * impactful desktop sizing. */
-  --font-size-hero: clamp(2rem, 5vw, 6rem);
-  --font-size-h1: clamp(1.6rem, 4vw, 5rem);
-  --font-size-h2: clamp(1.25rem, 3vw, 3.5rem);
-  --font-size-h3: clamp(1.1rem, 2.2vw, 2.5rem);
-  --font-size-body: clamp(0.95rem, 1.6vw, 1.75rem);
-  --font-size-code: clamp(0.8rem, 1.1vw, 1.25rem);
-  --font-size-input: clamp(0.875rem, 0.9vw, 1.125rem);
-  --font-size-small: clamp(0.75rem, 0.7vw, 0.875rem);
+  /* Three-tier type scale tuned for back-row readability in a conference hall.
+   * Fluid clamp(min, preferred, max) so text scales smoothly from phone
+   * (~480px) up to desktop (~1920px) without breakpoint cliffs. Maxima
+   * sized for a projector at ~3–5m viewing distance.
+   *
+   *   HERO    ~96px max — title slide only
+   *   HEADING ~80px max — h1 + h2 (same size; h1 is semantic, h2 is the
+   *                                content-slide section header)
+   *   BODY    ~40px max — paragraphs, list items, default text
+   *   CODE    ~24px max — inline code + code blocks
+   *
+   * The compact/dense body variants exist as legacy escape hatches for
+   * dense slides. The design system prefers splitting a too-dense slide
+   * over shrinking text. */
+  --font-size-hero: clamp(2.5rem, 6vw, 6rem);
+  --font-size-h1: clamp(2rem, 4vw, 5rem);
+  --font-size-h2: clamp(2rem, 4vw, 5rem);
+  --font-size-h3: clamp(1.5rem, 3vw, 3rem);
+  --font-size-body: clamp(1.2rem, 2vw, 2.5rem);
+  --font-size-code: clamp(0.9rem, 1.3vw, 1.5rem);
+  --font-size-input: clamp(0.95rem, 1vw, 1.25rem);
+  --font-size-small: clamp(0.8rem, 0.8vw, 1rem);
 
   --line-height-tight: 1.2;
   --line-height-normal: 1.6;
@@ -68,20 +78,20 @@
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.05em;
 
-  /* Slide text size variants (fluid) */
-  --slide-text-normal: clamp(0.85rem, 1.25vw, 1.35rem);
-  --slide-text-compact: clamp(0.8rem, 1.05vw, 1.15rem);
-  --slide-text-dense: clamp(0.75rem, 0.95vw, 1.05rem);
+  /* Body size variants. `normal` matches the hall-readable body size.
+   * Compact / dense are escape hatches for legacy slides. */
+  --slide-text-normal: var(--font-size-body);
+  --slide-text-compact: clamp(1.05rem, 1.6vw, 2rem);
+  --slide-text-dense: clamp(0.95rem, 1.4vw, 1.65rem);
 
-  /* Line heights per variant */
   --slide-line-height-normal: 1.55;
   --slide-line-height-compact: 1.5;
   --slide-line-height-dense: 1.45;
 
-  /* Section headers (fluid) */
-  --slide-section-header: clamp(0.8rem, 1vw, 1.1rem);
-  --slide-section-header-compact: clamp(0.7rem, 0.85vw, 0.9rem);
-  --slide-section-header-dense: clamp(0.65rem, 0.8vw, 0.85rem);
+  /* Section headers (uppercase orange labels above body sections) */
+  --slide-section-header: clamp(1rem, 1.4vw, 1.5rem);
+  --slide-section-header-compact: clamp(0.9rem, 1.2vw, 1.25rem);
+  --slide-section-header-dense: clamp(0.8rem, 1vw, 1.1rem);
 
   /* Inline code */
   --slide-code-relative: 0.95em;
@@ -95,16 +105,25 @@
   --space-2xl: 4rem;
   --space-3xl: 6rem;
 
+  /* === RADII === */
+  /* Single unified radius for cards, inputs, tooltips, code blocks.
+   * Use 0 for raw terminal panels (no rounded chrome). */
+  --radius-card: 0.5rem;
+  --input-border-radius: var(--radius-card); /* legacy alias */
+
   /* === INPUT STYLING === */
   --input-height: 3.5rem;
-  --input-border-radius: 0.5rem;
   --input-padding-x: 1.25rem;
+  --input-bar-height: calc(var(--input-height) + var(--space-md) * 2);
 
   /* === EFFECTS === */
   --transition-instant: 50ms ease;
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease-out;
   --transition-slow: 500ms ease-out;
+
+  /* Single deck-wide easing. */
+  --ease: cubic-bezier(0.19, 1, 0.22, 1);
 
   /* Glow effects */
   --glow-orange: 0 0 20px var(--terminal-orange-glow), 0 0 40px var(--terminal-orange-glow);

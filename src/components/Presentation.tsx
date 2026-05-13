@@ -215,20 +215,6 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
           {slideContent}
         </Slide>
       </div>
-      {!isExportMode && (
-        <Timer
-          elapsedSeconds={timerSeconds}
-          currentSlide={currentSlide}
-          totalSlides={slides.length}
-        />
-      )}
-      {!isExportMode && (currentSlide + 1) / slides.length > 0.5 && (
-        <SlideProgress
-          current={currentSlide + 1}
-          total={slides.length}
-          isFirst={currentSlide === Math.floor(slides.length / 2)}
-        />
-      )}
       {!isExportMode && currentSlide === 0 && !slideInteracted && <OnboardingTooltip />}
       {!isExportMode && activeSlide.tooltip &&
         (activeSlide.maxRevealStages
@@ -237,13 +223,27 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
         <ContextTooltip>{activeSlide.tooltip}</ContextTooltip>
       )}
       {!isExportMode && (
-        <TerminalInput
-          onCommand={handleCommand}
-          onInputChange={setInputText}
-          onArrowLeft={revealPrev}
-          onArrowRight={revealNext}
-          placeholder="type anything to continue, 'prev' to go back, or slide number..."
-        />
+        <div className="input-bar">
+          <Timer
+            elapsedSeconds={timerSeconds}
+            currentSlide={currentSlide}
+            totalSlides={slides.length}
+          />
+          <TerminalInput
+            onCommand={handleCommand}
+            onInputChange={setInputText}
+            onArrowLeft={revealPrev}
+            onArrowRight={revealNext}
+            placeholder="type anything to continue, 'prev' to go back, or slide number..."
+          />
+          {(currentSlide + 1) / slides.length > 0.5 && (
+            <SlideProgress
+              current={currentSlide + 1}
+              total={slides.length}
+              isFirst={currentSlide === Math.floor(slides.length / 2)}
+            />
+          )}
+        </div>
       )}
     </div>
     </NavigationContext.Provider>

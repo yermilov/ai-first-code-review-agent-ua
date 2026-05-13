@@ -51,10 +51,19 @@ src/
 │   ├── PointerTooltip.tsx     # Contextual pointer hints
 │   ├── SlideElements.tsx      # Reusable slide building blocks
 │   └── Timer.tsx              # Presentation timer component
+├── design-system/            # Reusable design layer (see .claude/skills/design-system)
+│   ├── tokens.css             # CSS variables (colors, type scale, spacing, motion)
+│   ├── base.css               # .presentation, .slide, headings, lists, links
+│   ├── patterns.css           # Color/glow utilities, slide-item, animations, CRT
+│   ├── components.css         # Bottom bar, tooltips, code block, rotate hint
+│   └── index.css              # @imports the above in layer order
 └── styles/
-    ├── theme.css              # CSS design tokens
-    └── terminal.css           # Component styles
+    └── slide-layouts.css      # Per-slide layouts (bio, timeline, VS battle, etc.)
 ```
+
+For the deck's design conventions (type scale, palette, bullet style, glow rules),
+read `.claude/skills/design-system/SKILL.md` or invoke it via the skill tool when
+creating or editing slides.
 
 ## Adding Slides
 
