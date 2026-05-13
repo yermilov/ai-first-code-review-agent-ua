@@ -137,6 +137,67 @@
   --flicker-intensity: 0.005;
 }
 
+/* === LIGHT THEME — "paper terminal" ===
+ * Activate via `<html data-theme="light">` (set by Presentation.tsx
+ * in response to the `light` / `dark` terminal commands).
+ *
+ * The palette shifts to a warm cream paper background with darker,
+ * desaturated accents that read against light. Scan lines and noise
+ * overlays are disabled (light mode is a paper / notebook metaphor,
+ * not a CRT). Glow text-shadow stays at low intensity so accents
+ * still have a soft halo but don't bloom.
+ *
+ * If you add a new token to :root above, mirror it here only if the
+ * value needs to differ for light. Most things (spacing, motion,
+ * type scale, radii) are theme-agnostic. */
+[data-theme="light"] {
+  /* Cream paper backgrounds */
+  --terminal-bg: #f5efe6;
+  --terminal-bg-secondary: #ecdfc8;
+  --terminal-bg-input: #fffaf2;
+  --terminal-bg-elevated: #e5d4b3;
+
+  /* Ink text */
+  --terminal-white: #1a1a1a;
+  --terminal-white-dim: #3a3a3a;
+  --terminal-white-muted: #6a6a6a;
+
+  /* Darker amber — keeps the warm Claude-orange identity but
+   * passes contrast on cream */
+  --terminal-orange: #b8551c;
+  --terminal-orange-dim: #8c3e12;
+  --terminal-orange-glow: rgba(184, 85, 28, 0.25);
+  --terminal-orange-bright: #d96828;
+
+  /* Darker phosphor — still recognisably green, no longer neon */
+  --terminal-green: #2f7a3a;
+  --terminal-green-dim: #1f5826;
+  --terminal-green-glow: rgba(47, 122, 58, 0.2);
+  --terminal-green-bright: #3a9148;
+
+  /* Darker syntax accents */
+  --terminal-blue: #1e5cb8;
+  --terminal-blue-glow: rgba(30, 92, 184, 0.2);
+  --terminal-purple: #6b34c5;
+  --terminal-purple-glow: rgba(107, 52, 197, 0.2);
+  --terminal-red: #c43838;
+  --terminal-red-glow: rgba(196, 56, 56, 0.2);
+  --terminal-cyan: #0e7490;
+  --terminal-cyan-glow: rgba(14, 116, 144, 0.2);
+  --terminal-yellow: #b58900;
+
+  /* Borders read darker against cream */
+  --terminal-border: rgba(0, 0, 0, 0.12);
+  --terminal-border-bright: rgba(0, 0, 0, 0.24);
+
+  /* Drop the CRT atmosphere — light mode is a paper / notebook metaphor.
+   * Glow text-shadow stays (defined above via --glow-text-* which use
+   * the per-theme glow rgbas), just at lower alpha so accents have a
+   * soft halo without blooming. */
+  --scanline-opacity: 0;
+  --noise-opacity: 0;
+}
+
 /* Input control height shrinks on phones (not part of the clamp() font
  * scale because it's a control, not a typography step). */
 @media (max-width: 480px) {

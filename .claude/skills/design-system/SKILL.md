@@ -39,6 +39,19 @@ Read `--font-size-*` in `tokens.css` for the canonical values. The deck uses **o
 
 All sizes use `clamp(min, preferred, max)` so they scale smoothly from phone to 1920px without breakpoint cliffs.
 
+## Dark + light themes
+
+The deck ships **two theme variants**:
+
+- **Dark (default)** — deep black CRT terminal with full phosphor glow, scan-line + noise overlays. The original identity.
+- **Light** — "paper terminal": warm cream `#f5efe6` background, darker amber / green / blue accents, glow text-shadow at reduced alpha, **scan lines and noise dropped entirely** (light mode is a paper metaphor, not a CRT).
+
+Switch at runtime with the `light` and `dark` terminal commands. The choice persists in `localStorage` under the key `theme`. The active variant lives on the root element as `<html data-theme="light">` (dark is the absence of the attribute).
+
+Light-theme overrides live in `tokens.css` under the `[data-theme="light"]` selector. Only tokens that need to differ for light are overridden — spacing, motion, type scale, radii are theme-agnostic. **If you add a new accent or background token to `:root`, mirror it under `[data-theme="light"]`.** Otherwise the light theme will inherit the dark value and the contrast will break.
+
+CRT effects are gated by the `--scanline-opacity` and `--noise-opacity` tokens, which are set to `0` in light theme. Don't hardcode CRT visuals — always go through these tokens so the theme switch works.
+
 ## Color palette — four accents + neutrals
 
 Read `--terminal-*` in `tokens.css`. The accent palette is small:
@@ -122,6 +135,8 @@ Read `tokens.css`. There's one scale of each:
 | Introduce a serif or sans-serif body font | Mono everywhere is load-bearing |
 | Remove the scan-line / noise overlays for a "cleaner" look | They are the CRT identity |
 | Add a 5th accent colour | The palette is intentionally constrained |
+| Add a new accent token to `:root` without mirroring under `[data-theme="light"]` | Light theme will inherit the dark value and lose contrast |
+| Hardcode scan-line or noise visuals directly (instead of through `--scanline-opacity` / `--noise-opacity`) | Light theme can't disable them |
 
 ## Validation
 
