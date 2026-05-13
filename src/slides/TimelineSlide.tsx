@@ -1,10 +1,9 @@
 import { SlideDefinition } from '../types/slides';
 
-// Import images with ?url suffix for GitHub Pages
+import copilotAutocomplete from '../assets/timeline-copilot-autocomplete.png?url';
 import cursorFrontend from '../assets/timeline-cursor-frontend.png?url';
 import mentoringLlm from '../assets/timeline-mentoring-llm.png?url';
 import aiTechDebt from '../assets/timeline-ai-tech-debt.png?url';
-import claudeCodeEmail from '../assets/timeline-claude-code-email.png?url';
 
 interface TimelineItem {
   anchorDate: Date | null;
@@ -15,46 +14,59 @@ interface TimelineItem {
   emphasis?: boolean;
 }
 
+function monthsUk(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'місяць';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'місяці';
+  return 'місяців';
+}
+
 function timeLabel(anchorDate: Date | null): string {
-  if (!anchorDate) return 'since then';
+  if (!anchorDate) return 'відтоді';
   const now = new Date();
   const months =
     (now.getFullYear() - anchorDate.getFullYear()) * 12 +
     (now.getMonth() - anchorDate.getMonth());
-  return `${months} month${months === 1 ? '' : 's'} ago`;
+  return `${months} ${monthsUk(months)} тому`;
 }
 
 const timelineItems: TimelineItem[] = [
-  { anchorDate: new Date(2024, 9),  text: 'copilot? cool autocomplete', image: null },
-  { anchorDate: new Date(2024, 10), text: "I can't do frontend, cursor help me", image: cursorFrontend },
-  { anchorDate: new Date(2025, 2),  text: 'what if this is not just about code generation but pair programming?', image: mentoringLlm },
-  { anchorDate: new Date(2025, 3),  text: "but it's still a toy technology, right?", image: aiTechDebt, imageClassName: 'timeline-panel__image--zoom-anim' },
-  { anchorDate: new Date(2025, 4),  text: "claude code? let's try it", image: claudeCodeEmail },
+  { anchorDate: new Date(2024, 9),  text: 'copilot? крутий автокомпліт', image: copilotAutocomplete },
+  { anchorDate: new Date(2024, 10), text: 'я не вмію у фронтенд, cursor, допоможи', image: cursorFrontend },
+  { anchorDate: new Date(2025, 2),  text: 'а що як це не просто кодогенерація, а pair programming?', image: mentoringLlm },
+  { anchorDate: new Date(2025, 3),  text: 'але ж це все ще іграшкова технологія, так?', image: aiTechDebt, imageClassName: 'timeline-panel__image--zoom-anim' },
   {
-    anchorDate: null,
-    text: "haven't written a single line of code by hand since",
+    anchorDate: new Date(2025, 4),
+    text: 'Claude Code proof of concept with Anthropic',
     bullets: [
-      "haven't written a single line of code by hand since",
-      "spent 2025 figuring out personal effective AI agentic coding workflow",
-      "evangelising Claude Code among Superhuman: workshops, tutorials, 1-1s",
-      "building internal tools: plugin system, skills, autonomous agents",
+      'побачив потенціал і свідомо більше не писав жодного рядка коду вручну',
+      'знайшов свій комфортний AI agentic coding workflow',
+      'просував Claude Code у Superhuman: воркшопи, туторіали',
+      'будував внутрішні інструменти: плагіни, скіли, автономні агенти',
     ],
     image: null,
-    emphasis: true,
   },
 ];
 
+const lastIdx = timelineItems.length - 1;
+const lastBulletsCount = timelineItems[lastIdx].bullets?.length ?? 0;
+
 export const TimelineSlide: SlideDefinition = {
   id: 'timeline',
-  maxRevealStages: 5,
+  maxRevealStages: lastIdx + lastBulletsCount,
   title: (
     <>
-      <span className="text-dim">$</span> my ai coding timeline
+      <span className="text-dim">&gt;</span> AI-first таймлайн
     </>
   ),
   content: ({ revealStage }) => {
-    const currentStage = Math.min(revealStage, timelineItems.length - 1);
+    const currentStage = Math.min(revealStage, lastIdx);
     const currentItem = timelineItems[currentStage];
+    const visibleBulletCount =
+      currentStage === lastIdx
+        ? Math.min(lastBulletsCount, Math.max(0, revealStage - lastIdx))
+        : currentItem.bullets?.length ?? 0;
 
     return (
       <div className="timeline-slide-v2">
@@ -79,19 +91,6 @@ export const TimelineSlide: SlideDefinition = {
                 );
               })}
             </div>
-
-            {/* Hint - styled like tooltip */}
-            <div className="timeline-hint-box">
-              <div className="timeline-hint-box__header">
-                <span className="timeline-hint-box__icon">{'>'}</span>
-                <span className="timeline-hint-box__title">Timeline</span>
-              </div>
-              <ul className="timeline-hint-box__list">
-                <li>
-                  <code>move</code> or <code>m</code> — Next item
-                </li>
-              </ul>
-            </div>
           </div>
 
           {/* RIGHT: Content panel - text + image */}
@@ -99,9 +98,18 @@ export const TimelineSlide: SlideDefinition = {
             <div className="timeline-panel__content" key={currentStage}>
               {/* Text */}
               {currentItem.bullets ? (
-                <ul className={`timeline-panel__list ${currentItem.emphasis ? 'timeline-panel__list--emphasis' : ''}`}>
-                  {currentItem.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                </ul>
+                <>
+                  <div className="timeline-panel__text timeline-panel__text--emphasis">
+                    {currentItem.text}
+                  </div>
+                  {visibleBulletCount > 0 && (
+                    <ul className="timeline-panel__list">
+                      {currentItem.bullets.slice(0, visibleBulletCount).map((b, i) => (
+                        <li key={i}>{b}</li>
+                      ))}
+                    </ul>
+                  )}
+                </>
               ) : (
                 <div className={`timeline-panel__text ${currentItem.emphasis ? 'timeline-panel__text--emphasis' : ''}`}>
                   {currentItem.text}

@@ -876,7 +876,7 @@
 .timeline-log {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   min-width: 200px;
 }
 
@@ -924,7 +924,7 @@
 
 .timeline-log__time {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--terminal-orange);
   transition: all 0.3s ease;
