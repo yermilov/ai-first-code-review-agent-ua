@@ -118,16 +118,15 @@ function FlywheelWithAgentsDiagram({ withAgents }: { withAgents: boolean }) {
 export const AgentsSlide: SlideDefinition = {
   id: 'agents',
   maxRevealStages: 3,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--agents</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-
-      {/* Full-width heading */}
-      <h2>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--agents</span>
-      </h2>
-
       {/* Two-column body */}
       <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
 

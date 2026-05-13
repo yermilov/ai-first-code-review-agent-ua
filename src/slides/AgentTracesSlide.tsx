@@ -44,12 +44,6 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">agents</span>{' '}
-        <span className="text-orange">--traces</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
@@ -116,6 +110,13 @@ export const AgentTracesSlide: SlideDefinition = {
   id: 'agent-traces',
   maxRevealStages: 3,
   initialRevealStage: 1,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">agents</span>{' '}
+      <span className="text-orange">--traces</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <AgentTracesContent revealStage={revealStage} />,
   notes:
     'Session traces are your audit log, your training data, and your improvement loop all in one. The UI makes it social — engineers start reading each other\'s sessions.',

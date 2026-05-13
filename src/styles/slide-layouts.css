@@ -473,6 +473,12 @@
   padding: 0 var(--space-lg);
 }
 
+/* Titled slides reserve a 130px title band — image must shrink to fit. */
+.slide--titled .image-slide {
+  height: calc(var(--vh-full) - 220px - 130px);
+  max-height: calc(var(--vh-full) - 220px - 130px);
+}
+
 .image-slide img {
   max-width: 100%;
   max-height: 100%;

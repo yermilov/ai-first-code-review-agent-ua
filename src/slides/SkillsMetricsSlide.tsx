@@ -59,12 +59,6 @@ function SkillsMetricsContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--metrics</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
 
         {/* ── Left column: bullets ── */}
@@ -106,6 +100,13 @@ function SkillsMetricsContent({ revealStage }: { revealStage: number }) {
 export const SkillsMetricsSlide: SlideDefinition = {
   id: 'skills-metrics',
   maxRevealStages: 1,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--metrics</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <SkillsMetricsContent revealStage={revealStage} />,
   notes: 'Stage 0: show the async hook config. Stage 1 (reveal): show the TypeScript script that scans JSONL logs and reports each Skill invocation individually to a centralized server.',
 };

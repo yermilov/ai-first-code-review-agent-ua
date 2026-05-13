@@ -3,12 +3,10 @@ import coworkImage from '../assets/cowork-reimbursments.png?url';
 
 export const UltimateExampleSlide: SlideDefinition = {
   id: 'ultimate-example',
+  title: <>ultimate absurd example</>,
   content: (
-    <>
-      <h2>ultimate absurd example</h2>
-      <div className="image-slide">
-        <img src={coworkImage} alt="Ultimate example" loading="lazy" />
-      </div>
-    </>
+    <div className="image-slide">
+      <img src={coworkImage} alt="Ultimate example" loading="lazy" />
+    </div>
   ),
 };

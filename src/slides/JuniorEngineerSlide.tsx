@@ -105,6 +105,14 @@ function KeyInsightArrow() {
 
 export const JuniorEngineerSlide: SlideDefinition = {
   id: 'junior-engineer',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">think</span>{' '}
+      <span className="text-orange">--model</span>{' '}
+      <span className="text-cyan">lawful-chaotic-engineer</span>
+    </>
+  ),
   content: (
     <div className="junior-engineer-slide">
       {/* Inline keyframes */}
@@ -134,17 +142,6 @@ export const JuniorEngineerSlide: SlideDefinition = {
 
       {/* Center: text */}
       <div className="junior-engineer-content">
-        <h2 style={{
-          marginBottom: '1.5rem',
-          textAlign: 'left',
-          fontSize: '2rem',
-        }}>
-          <span className="text-dim">$</span>{' '}
-          <span className="text-green">think</span>{' '}
-          <span className="text-orange">--model</span>{' '}
-          <span className="text-cyan">lawful-chaotic-engineer</span>
-        </h2>
-
         <ContentSection title="key metaphor">
           <ContentItem level="high">
             treat Claude Code as a <em className="text-emphasis text-emphasis--orange">very talented junior engineer</em> hired in your team

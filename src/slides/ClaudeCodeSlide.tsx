@@ -3,19 +3,6 @@ import { SlideDefinition } from '../types/slides';
 export const ClaudeCodeSlide: SlideDefinition = {
   id: 'claude-code',
   maxRevealStages: 2,
-  tooltip: (
-    <>
-      <div className="onboarding-tooltip-header">
-        <span className="onboarding-tooltip-icon">?</span>
-        <span className="onboarding-tooltip-title">Hint</span>
-      </div>
-      <ul className="onboarding-tooltip-list">
-        <li>
-          <code>reveal</code> or <code>r</code> — Reveal next
-        </li>
-      </ul>
-    </>
-  ),
   content: ({ revealStage }) => (
     <>
       <h2>what a great service for creating slides?</h2>

@@ -57,12 +57,6 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.4rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--meta</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
@@ -219,6 +213,13 @@ export const MetaSkillsSlide: SlideDefinition = {
   id: SLIDE_ID,
   maxRevealStages: 1,
   asyncSettle: true,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--meta</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <MetaSkillsContent revealStage={revealStage} />,
   notes: 'Meta-skills are the highest leverage investment. One good skill-creation skill multiplies the quality of everything else. Stage 1: reveal 4th bullet + scrolling SKILL.md panel.',
 };

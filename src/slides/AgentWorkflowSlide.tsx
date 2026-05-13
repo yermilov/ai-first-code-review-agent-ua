@@ -65,12 +65,6 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">agents</span>{' '}
-        <span className="text-orange">--workflow</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
@@ -139,6 +133,13 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
 export const AgentWorkflowSlide: SlideDefinition = {
   id: 'agent-workflow',
   maxRevealStages: 4,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">agents</span>{' '}
+      <span className="text-orange">--workflow</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <AgentWorkflowContent revealStage={revealStage} />,
   notes:
     'The key insight: agents should be deterministic at the boundaries. Claude handles ambiguity in the middle; traditional code handles I/O, retries, and side effects.',

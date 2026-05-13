@@ -6,6 +6,13 @@ import rightAstronaut from '../assets/skill-always-been.png?url';
 
 export const WhatIsSkillSlide: SlideDefinition = {
   id: 'what-is-skill',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skill</span>{' '}
+      <span className="text-orange">--what-is</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <div style={{ width: '100%' }}>
       <style>{`
@@ -14,13 +21,6 @@ export const WhatIsSkillSlide: SlideDefinition = {
           50%       { transform: translateY(-18px) rotate(2deg); }
         }
       `}</style>
-
-      {/* Title — on the terminal dark background, always readable */}
-      <h2 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skill</span>{' '}
-        <span className="text-orange">--what-is</span>
-      </h2>
 
       {/* Space background area — fills all remaining height */}
       <div

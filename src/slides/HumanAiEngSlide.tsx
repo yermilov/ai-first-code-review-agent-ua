@@ -4,14 +4,15 @@ import { SlideItem, Emphasis } from '../components/SlideElements';
 export const HumanAiEngSlide: SlideDefinition = {
   id: 'human-ai-eng',
   maxRevealStages: 3,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">org</span>{' '}
+      <span className="text-orange">--human-ai</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">org</span>{' '}
-        <span className="text-orange">--human-ai</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

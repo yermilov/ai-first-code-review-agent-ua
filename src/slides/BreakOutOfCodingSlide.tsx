@@ -18,14 +18,15 @@ function Prompt({ children }: { children: ReactNode }) {
 
 export const BreakOutOfCodingSlide: SlideDefinition = {
   id: 'break-out-of-coding',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">tips</span>{' '}
+      <span className="text-orange">--break-out</span>
+    </>
+  ),
   content: ({ revealStage }) => (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">tips</span>{' '}
-        <span className="text-orange">--break-out</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

@@ -57,12 +57,6 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <h2 style={{ marginBottom: '1.2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">skills</span>{' '}
-        <span className="text-orange">--activator</span>
-      </h2>
-
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
 
         {/* ── Left column: bullets ── */}
@@ -108,6 +102,13 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
 export const SkillsActivatorSlide: SlideDefinition = {
   id: 'skills-activator',
   maxRevealStages: 1,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">skills</span>{' '}
+      <span className="text-orange">--activator</span>
+    </>
+  ),
   content: ({ revealStage }: SlideContentProps) => <SkillsActivatorContent revealStage={revealStage} />,
   notes: 'Skills discovery is the last mile problem. Stage 0: show the SKILL.md config + hooks wiring. Stage 1 (reveal): show what prompt injection and tool blocking look like in practice.',
 };

@@ -19,14 +19,15 @@ function Prompt({ children }: { children: React.ReactNode }) {
 
 export const SkillsAuthoringSlide: SlideDefinition = {
   id: 'skills-authoring',
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">teach</span>{' '}
+      <span className="text-orange">--skills</span>
+    </>
+  ),
   content: (
     <>
-      <h2 style={{ marginBottom: '2rem' }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">teach</span>{' '}
-        <span className="text-orange">--skills</span>
-      </h2>
-
       <div
         style={{
           textAlign: 'left',

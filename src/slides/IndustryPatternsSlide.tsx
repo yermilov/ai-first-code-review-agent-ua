@@ -282,12 +282,6 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
-      <h2 style={{ marginBottom: '1rem', flexShrink: 0 }}>
-        <span className="text-dim">$</span>{' '}
-        <span className="text-green">org</span>{' '}
-        <span className="text-orange">--industry</span>
-      </h2>
-
       <div style={{
         display: 'flex',
         gap: '2rem',
@@ -343,6 +337,13 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
 
 export const IndustryPatternsSlide: SlideDefinition = {
   id: SLIDE_ID,
+  title: (
+    <>
+      <span className="text-dim">$</span>{' '}
+      <span className="text-green">org</span>{' '}
+      <span className="text-orange">--industry</span>
+    </>
+  ),
   content: (props: SlideContentProps) => <IndustryPatternsContent {...props} />,
   maxRevealStages: 5,
   asyncSettle: true,
