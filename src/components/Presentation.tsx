@@ -30,6 +30,22 @@ const isExportMode =
 
 const TIMER_STARTED_AT_KEY = 'timerStartedAt';
 const TIMER_ACCUMULATED_KEY = 'timerAccumulated';
+const THEME_KEY = 'theme';
+type Theme = 'dark' | 'light';
+
+function applyTheme(theme: Theme) {
+  if (typeof document === 'undefined') return;
+  if (theme === 'dark') {
+    delete document.documentElement.dataset.theme;
+  } else {
+    document.documentElement.dataset.theme = theme;
+  }
+}
+
+function getInitialTheme(): Theme {
+  if (typeof localStorage === 'undefined') return 'dark';
+  return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
+}
 
 // Tool keywords for activation persistence
 const TOOL_KEYWORDS: Record<string, string[]> = {
@@ -70,6 +86,13 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
     slides,
     initialSlide
   );
+
+  // Theme state — applies `[data-theme]` on <html>, persists to localStorage.
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  useEffect(() => {
+    applyTheme(theme);
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
 
   // Expose Playwright-driven navigation API in export mode.
   useEffect(() => {
@@ -183,6 +206,11 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
 
     if (trimmed === 'reset') {
       handleToolsReset();
+      return;
+    }
+
+    if (trimmed === 'dark' || trimmed === 'light') {
+      setTheme(trimmed);
       return;
     }
 
