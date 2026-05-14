@@ -825,6 +825,158 @@
   padding: 0.5rem;
 }
 
+/* === LIGHT-THEME OVERRIDES — VS battle slide ===
+ * Aesthetic: vintage 1950s boxing-fight poster on yellowed paper. The
+ * dark portraits stay but are sepia-tinted so they read as fight-card
+ * photos instead of punched-out holes. The VS badge becomes a stamped
+ * ink mark with a serif-y poster weight; the name plates drop their
+ * dark UI background entirely and become bold ink "fighter credits"
+ * underlined with the deck's amber accent. Cards tilt -1.5° / +1.5°
+ * to break the grid and add vintage-poster energy. */
+
+/* Fighter portrait — sepia/duotone tint + paper-bordered frame +
+ * slight rotation so the photo card feels glued to the page. */
+[data-theme="light"] .vs-fighter-image {
+  filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95);
+  border: none;
+  padding: 8px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--terminal-bg-input) 96%, transparent) 0%,
+    color-mix(in srgb, var(--terminal-bg-elevated) 86%, transparent) 100%
+  );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--terminal-orange) 24%, transparent),
+    0 18px 42px rgba(120, 70, 20, 0.22),
+    0 2px 4px rgba(120, 70, 20, 0.18);
+}
+
+[data-theme="light"] .vs-fighter--left .vs-fighter-image {
+  animation: terminalPulseLight 3.4s ease-in-out infinite;
+  transform: scaleX(-1) rotate(-1.5deg);
+}
+
+[data-theme="light"] .vs-fighter--right .vs-fighter-image {
+  animation: idePulseLight 3.4s ease-in-out infinite;
+  animation-delay: 0.4s;
+  transform: rotate(1.5deg);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--terminal-blue) 28%, transparent),
+    0 18px 42px rgba(20, 50, 120, 0.18),
+    0 2px 4px rgba(20, 50, 120, 0.16);
+}
+
+/* Softer drop-shadow pulse on light theme — neon glow doesn't read on
+ * cream, so we lean into a subtle warm/cool breathing instead. */
+@keyframes terminalPulseLight {
+  0%, 100% {
+    filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95)
+            drop-shadow(0 0 0 rgba(184, 85, 28, 0));
+  }
+  50% {
+    filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95)
+            drop-shadow(0 0 18px rgba(184, 85, 28, 0.35));
+  }
+}
+
+@keyframes idePulseLight {
+  0%, 100% {
+    filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95)
+            drop-shadow(0 0 0 rgba(30, 92, 184, 0));
+  }
+  50% {
+    filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95)
+            drop-shadow(0 0 18px rgba(30, 92, 184, 0.32));
+  }
+}
+
+/* Name plates — strip the dark UI card and replace with bold stamped
+ * ink typography. The orange/blue color still cues fighter identity. */
+[data-theme="light"] .vs-fighter-name {
+  background: none;
+  border: none;
+  clip-path: none;
+  padding: 0.4rem 0 0.25rem 0;
+  margin-top: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.32em;
+  font-size: 2rem;
+  position: relative;
+}
+
+[data-theme="light"] .vs-fighter-name::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+[data-theme="light"] .vs-fighter--left .vs-fighter-name {
+  color: var(--terminal-orange);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 2px 6px rgba(184, 85, 28, 0.22);
+}
+
+[data-theme="light"] .vs-fighter--right .vs-fighter-name {
+  color: var(--terminal-blue);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 2px 6px rgba(30, 92, 184, 0.22);
+}
+
+/* The VS badge — central stamped ink mark in fight-poster scale. */
+[data-theme="light"] .vs-badge {
+  color: var(--terminal-white);
+  font-size: 4.5rem;
+  font-weight: 900;
+  letter-spacing: 0.42em;
+  /* Subtle warm/cool stamp glow + a 1px white relief so the ink "lifts" */
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 22px color-mix(in srgb, var(--terminal-orange) 35%, transparent),
+    0 0 44px color-mix(in srgb, var(--terminal-blue) 22%, transparent);
+}
+
+[data-theme="light"] .vs-badge::before,
+[data-theme="light"] .vs-badge::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--terminal-white) 70%, transparent) 35%,
+    color-mix(in srgb, var(--terminal-white) 70%, transparent) 65%,
+    transparent
+  );
+  height: 2px;
+  width: 80px;
+}
+
+@keyframes vsPulseLight {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6),
+      0 0 22px color-mix(in srgb, var(--terminal-orange) 35%, transparent),
+      0 0 44px color-mix(in srgb, var(--terminal-blue) 22%, transparent);
+  }
+  50% {
+    transform: scale(1.04);
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7),
+      0 0 30px color-mix(in srgb, var(--terminal-orange) 55%, transparent),
+      0 0 60px color-mix(in srgb, var(--terminal-blue) 38%, transparent);
+  }
+}
+
+[data-theme="light"] .vs-badge {
+  animation-name: vsPulseLight;
+}
+
 
 /* Responsive adjustments for VS battle slide */
 @media (max-width: 1200px) {

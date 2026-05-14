@@ -6,8 +6,8 @@ export const CodeSlopSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">code</span>{' '}
-      <span className="text-orange">--no-slop</span>
+      <span className="text-green">без</span>{' '}
+      <span className="text-orange">слопу</span>
     </>
   ),
   content: ({ revealStage }) => (
@@ -21,35 +21,35 @@ export const CodeSlopSlide: SlideDefinition = {
         }}
       >
         <SlideItem delay={0.05}>
-          when making UI changes: add{' '}
+          коли робимо UI зміни — додаємо{' '}
           <Quote>use frontend-design skill to create well-crafted ui/ux</Quote>
         </SlideItem>
 
         {revealStage >= 1 && (
           <SlideItem delay={0}>
-            explore <Code>anthropics/claude-code</Code> marketplace for other helpful plugins
+            досліджуємо <Code>anthropics/claude-code</Code> маркетплейс
           </SlideItem>
         )}
 
         {revealStage >= 2 && (
           <SlideItem delay={0}>
-            ask it to{' '}
+            просимо{' '}
             <Quote>take a look how similar functionality is already implemented in the repo and follow the same patterns</Quote>
           </SlideItem>
         )}
 
         {revealStage >= 3 && (
           <SlideItem delay={0}>
-            if Claude makes a mistake, correct it like this:{' '}
-            <Quote>instead do X and remember this gotcha in CLAUDE.md</Quote>
+            якщо Claude помиляється — виправляємо так:{' '}
+            <Quote>instead do X and remember this in CLAUDE.md</Quote>
           </SlideItem>
         )}
 
         {revealStage >= 4 && (
           <SlideItem delay={0}>
-            add{' '}
+            додаємо{' '}
             <Quote>ask questions first — never assume, use AskUserQuestion tool</Quote>{' '}
-            to your CLAUDE.md to stop Claude from guessing
+            у свій CLAUDE.md
           </SlideItem>
         )}
       </div>
@@ -57,5 +57,5 @@ export const CodeSlopSlide: SlideDefinition = {
   ),
   maxRevealStages: 4,
   notes:
-    'Code slop prevention tips - use frontend-design skill, follow repo patterns, teach Claude gotchas, ask questions first instead of assuming, write tests with TDD, write stubs manually, use ultrathink (crossed out), document everything',
+    'Як уникати code slop: frontend-design skill для UI, плагіни з маркетплейсу, патерни з репозиторію, виправляти помилки через CLAUDE.md, питати замість вгадувати',
 };
