@@ -8,7 +8,6 @@ function Prompt({ children }: { children: ReactNode }) {
       style={{
         color: 'var(--terminal-orange)',
         fontStyle: 'italic',
-        fontSize: '0.85em',
       }}
     >
       '{children}'
@@ -16,57 +15,67 @@ function Prompt({ children }: { children: ReactNode }) {
   );
 }
 
+const LEFT_BULLETS: ReactNode[] = [
+  <>AI-агент, який генерує код — це дуже дорогий <Emphasis color="orange">автокомпліт</Emphasis></>,
+  <>поставте собі ціль: робити <Emphasis color="green">все</Emphasis> за допомогою Claude Code</>,
+  <>пріоритизуйте <Emphasis color="green">feedback loops</Emphasis></>,
+  <>встановіть <Emphasis color="green">CLI</Emphasis> (не MCP!) для всього, чим користуєтеся</>,
+  <>використовуйте <Emphasis color="green">Claude Chrome extension</Emphasis>, коли CLI немає</>,
+];
+
+const PROMPTS: ReactNode[] = [
+  <Prompt>hey claude, open github in chrome and generate ssh key for me</Prompt>,
+  <Prompt>hey claude, configure dev environment for me</Prompt>,
+  <Prompt>hey claude, here is a bug report I've received mycompany.slack.com/archives/p1778239</Prompt>,
+];
+
 export const BreakOutOfCodingSlide: SlideDefinition = {
   id: 'break-out-of-coding',
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">tips</span>{' '}
-      <span className="text-orange">--break-out</span>
+      <span className="text-green">не тільки</span>{' '}
+      <span className="text-orange">кодинг</span>
     </>
   ),
   content: ({ revealStage }) => (
-    <>
+    <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      {/* Left column: Ukrainian conceptual bullets */}
       <div
         style={{
+          flex: '0 0 50%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
           textAlign: 'left',
-          maxWidth: '1000px',
-          width: '100%',
-          margin: '0 auto',
         }}
       >
-        <SlideItem delay={0.05}>
-          install <Emphasis color="green">CLIs</Emphasis> (not MCPs!) for all
-          dev tools you use
-        </SlideItem>
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0}>
-            use the <Emphasis color="green">Claude Chrome extension</Emphasis> for
-            cases when CLI can't do something —{' '}
-            <Prompt>
-              hey claude, open artifactory in chrome and generate api token for my pnpm access
-            </Prompt>
-          </SlideItem>
-        )}
-
-        {revealStage >= 2 && (
-          <SlideItem delay={0}>
-            claude won't do everything perfectly the first time — invest your time
-            in <Emphasis color="orange">handholding</Emphasis>
-          </SlideItem>
-        )}
-
-        {revealStage >= 3 && (
-          <SlideItem delay={0}>
-            after you've achieved your result successfully — convert your session
-            into a <Emphasis color="green">skill</Emphasis>
-          </SlideItem>
+        {LEFT_BULLETS.map((bullet, i) =>
+          revealStage >= i ? (
+            <SlideItem key={i} delay={i === 0 ? 0.05 : 0}>{bullet}</SlideItem>
+          ) : null,
         )}
       </div>
-    </>
+
+      {/* Right column: English Claude prompts */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          textAlign: 'left',
+        }}
+      >
+        {PROMPTS.map((prompt, i) =>
+          revealStage >= LEFT_BULLETS.length + i ? (
+            <SlideItem key={i} delay={0}>{prompt}</SlideItem>
+          ) : null,
+        )}
+      </div>
+    </div>
   ),
-  maxRevealStages: 3,
+  maxRevealStages: LEFT_BULLETS.length + PROMPTS.length - 1,
   notes:
-    "CLIs first because they're scriptable, composable, and Claude already knows them. Chrome extension is the escape hatch for anything GUI-locked. And skills are how you lock in the gains.",
+    'Один пункт на reveal. Ліва колонка: кодинг — це автозаповнення; ціль — робити все з Claude Code; feedback loops; CLI замість MCP; Chrome extension як escape hatch. Права колонка: конкретні приклади промптів через стадії SDLC.',
 };
