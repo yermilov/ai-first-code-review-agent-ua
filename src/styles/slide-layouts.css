@@ -1295,6 +1295,77 @@
   text-align: left;
 }
 
+/* === CONTEXT ADVICE CARD ===
+ * Floating card on top of the chalkboard background that shows ONE
+ * advice at a time. Each reveal swaps the body via React's `key` so the
+ * fade-in animation re-runs. The step counter (`[N / 6]`) anchors the
+ * audience in the sequence; the body text is large enough to be read
+ * from the back of a conference room. */
+.bg-image-slide.context-advice-slide {
+  align-items: center;
+  padding-top: 80px; /* clear the fixed-top-left title band */
+  padding-bottom: 100px; /* clear the bottom input bar */
+}
+
+.context-advice-slide .context-advice-card {
+  position: relative;
+  z-index: 1;
+  width: min(960px, 92%);
+  padding: var(--space-2xl) var(--space-3xl);
+  background: rgba(10, 14, 20, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--input-border-radius);
+  border: 1px solid color-mix(in srgb, var(--terminal-orange) 32%, transparent);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  text-align: left;
+}
+
+.context-advice-card__body {
+  font-family: var(--font-mono);
+  font-size: 2.4rem;
+  line-height: 1.35;
+  color: var(--terminal-white);
+  animation: contextAdviceIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 4em;
+}
+
+@keyframes contextAdviceIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Light theme — paper card on chalkboard photo. Keep the warm
+ * parchment edge consistent with the rest of the light deck. */
+[data-theme="light"] .context-advice-slide .context-advice-card {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--terminal-bg-input) 94%, transparent) 0%,
+    color-mix(in srgb, var(--terminal-bg-elevated) 78%, transparent) 100%
+  );
+  border-color: color-mix(in srgb, var(--terminal-orange) 36%, transparent);
+  box-shadow:
+    0 24px 64px rgba(120, 70, 20, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .context-advice-card__body {
+  color: var(--terminal-white);
+}
+
 
 /* === MOBILE: SLIDE LAYOUT REFINEMENTS === */
 @media (max-width: 480px) {
