@@ -1,7 +1,7 @@
 import { DiagramCanvas, StageNode, HumanActor, FlowArrow, SparkTrail } from '../components/diagram';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
-import { EngineerAspireDiagram } from './PersonalAspirationSlide';
+import { EngineerAspireDiagram } from './engineerAspireDiagram';
 
 const ORANGE = '#f0883e';
 const GREEN  = '#7ee787';
