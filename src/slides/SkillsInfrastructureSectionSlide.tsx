@@ -4,15 +4,13 @@ import { SlideDefinition } from '../types/slides';
 function SkillsInfrastructureSectionSlideContent() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%' }}>
-      <div style={{ lineHeight: 1.4, textAlign: 'center' }}>
-        <div style={{ fontSize: '2rem' }}>
+      <div className="section-title-header" style={{ textAlign: 'center' }}>
+        <h2>
           <span className="text-dim">$</span>{' '}
           <span className="text-green">skills</span>{' '}
           <span className="text-orange">--infrastructure</span>
-        </div>
-        <div style={{ fontSize: '1.5rem' }} className="text-muted">
-          // distribution, marketplace, and meta-skills
-        </div>
+        </h2>
+        <p className="text-muted">// distribution, marketplace, and meta-skills</p>
       </div>
 
       <img

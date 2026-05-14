@@ -25,14 +25,12 @@ export function SectionTitleSlide({
         width: '100%',
       }}
     >
-      <div style={{ lineHeight: 1.4, textAlign: 'center' }}>
-        <div style={{ fontSize: '2rem' }}>
+      <div className="section-title-header" style={{ textAlign: 'center' }}>
+        <h2>
           <span className="text-dim">&gt;</span>{' '}
           <span style={{ color: 'var(--terminal-green)' }}>частина {PART_ORDINAL_UK[part] ?? part}</span>
-        </div>
-        <div style={{ fontSize: '1.5rem' }} className="text-muted">
-          {desc}
-        </div>
+        </h2>
+        <p className="text-muted">{desc}</p>
       </div>
 
       <img

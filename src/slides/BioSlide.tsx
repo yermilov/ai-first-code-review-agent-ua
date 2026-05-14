@@ -27,15 +27,13 @@ function BioItem({ level, children }: { level: Level; children: React.ReactNode 
 
   return (
     <div
+      className="bio-item"
       style={{
         display: 'grid',
         gridTemplateColumns: '2.5rem 1fr',
         alignItems: 'baseline',
         gap: '0.5rem',
-        fontSize: '1.5rem',
         opacity: s.opacity,
-        marginBottom: '0.5rem',
-        lineHeight: 1.3,
       }}
     >
       <span style={{ color: s.prefixColor, fontWeight: 700, letterSpacing: '-0.02em' }}>
@@ -65,14 +63,12 @@ export const BioSlide: SlideDefinition = {
     <div className="bio-slide">
       <div className="bio-slide-content">
         <p
+          className="bio-subtitle"
           style={{
             color: 'var(--terminal-orange)',
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
-            lineHeight: 1.15,
-            fontSize: '1.5rem',
-            margin: '0 0 1.75rem 0',
             textShadow: '0 0 16px rgba(240, 136, 62, 0.35)',
           }}
         >

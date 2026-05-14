@@ -1,10 +1,42 @@
+import { ReactNode } from 'react';
 import { SlideDefinition } from '../types/slides';
 import { Emphasis, SlideItem } from '../components/SlideElements';
 import { PacManCanvas } from '../components/pacman/PacManCanvas';
 
+const BULLETS: ReactNode[] = [
+  <>
+    Claude Code збільшує <Emphasis>об&apos;єм</Emphasis> роботи, не{' '}
+    <Emphasis color="orange">швидкість</Emphasis>
+  </>,
+  <>
+    самостійно ви напишете код або <Emphasis color="orange">краще</Emphasis>,
+    або <Emphasis color="orange">швидше</Emphasis>
+  </>,
+  <>
+    дивитися, як Клод працює в терміналі —{' '}
+    <Emphasis color="orange">втрата продуктивності і грошей</Emphasis>
+  </>,
+  <>
+    знайдіть 2–3 завдання, які можна довірити Клоду із мінімальним наглядом, а{' '}
+    <Emphasis color="orange">самі переключіться на те завдання, де необхідна вся ваша увага</Emphasis>
+  </>,
+  <>
+    ну або запустіть Клода і <Emphasis>відпочиньте</Emphasis>
+  </>,
+];
+
 export const ImportantSlide: SlideDefinition = {
   id: 'important',
-  content: ({ revealStage }) => (
+  title: (
+    <>
+      <span className="text-dim">&gt;</span>{' '}
+      <span className="text-green">ще одна</span>{' '}
+      <span className="text-orange">порада</span>
+    </>
+  ),
+  content: ({ revealStage }) => {
+    const idx = Math.min(revealStage, BULLETS.length - 1);
+    return (
     <div
       style={{
         display: 'flex',
@@ -13,71 +45,24 @@ export const ImportantSlide: SlideDefinition = {
         gap: 'var(--space-xl)',
         width: '100%',
         height: '100%',
+        minHeight: 0,
+        overflow: 'hidden',
       }}
     >
-      {/* Left column - bullet points */}
+      {/* Left column — one bullet at a time, swapped on reveal */}
       <div
         style={{
-          flex: '0 0 40%',
-          maxWidth: '550px',
+          flex: '1 1 60%',
+          maxWidth: '900px',
           textAlign: 'left',
         }}
       >
-        <SlideItem delay={0.05} size="compact">
-          Claude almost certainly understands your domain{' '}
-          <Emphasis color="orange">worse</Emphasis> than you
+        <SlideItem key={idx} delay={0.05}>
+          {BULLETS[idx]}
         </SlideItem>
-
-        <SlideItem delay={0.12} size="compact">
-          often you can write code{' '}
-          <Emphasis color="orange">MUCH</Emphasis> better than it
-        </SlideItem>
-
-        <SlideItem delay={0.19} size="compact">
-          often you can also write code{' '}
-          <Emphasis color="orange">faster</Emphasis> than it
-        </SlideItem>
-
-        <SlideItem delay={0.26} size="compact">
-          <Emphasis>exception</Emphasis> — unfamiliar tech saves hours to weeks
-        </SlideItem>
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0} size="compact">
-            give it a task and{' '}
-            <Emphasis>switch to something else</Emphasis>
-          </SlideItem>
-        )}
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0.1} size="compact">
-            staring at the terminal ={' '}
-            <Emphasis color="orange">losing productivity</Emphasis>
-          </SlideItem>
-        )}
-
-        {revealStage >= 2 && (
-          <SlideItem delay={0} size="compact">
-            or run <Emphasis>two tasks</Emphasis> in parallel
-          </SlideItem>
-        )}
-
-        {revealStage >= 3 && (
-          <SlideItem delay={0} size="compact">
-            or run four tasks and go eat / sleep
-          </SlideItem>
-        )}
-
-        {revealStage >= 4 && (
-          <SlideItem delay={0} size="compact">
-            Claude Code increases <Emphasis>throughput</Emphasis> of your work, not
-            your latency
-          </SlideItem>
-        )}
-
       </div>
 
-      {/* Right column - Pac-Man animation */}
+      {/* Right column — Pac-Man animation */}
       <div
         style={{
           flex: '0 0 55%',
@@ -88,8 +73,9 @@ export const ImportantSlide: SlideDefinition = {
         <PacManCanvas revealStage={revealStage} />
       </div>
     </div>
-  ),
+    );
+  },
   maxRevealStages: 4,
   notes:
-    'Important reality check with 8-bit animation. First 3 points visible immediately, press r 6 times for the rest. Value is in parallelization and delegation, watching Claude work is counterproductive, exception is unfamiliar technologies.',
+    "Перевірка реальності з 8-bit Pac-Man анімацією. 5 reveal-стадій: 0 — Claude дає об'єм, не швидкість; 1 — самостійно ефективніше; 2 — дивитися = втрата продуктивності; 3 — делегуйте 2-3, фокусуйтесь на одній; 4 — запустіть і йдіть відпочити.",
 };

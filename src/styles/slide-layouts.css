@@ -291,6 +291,7 @@
   animation-duration: 4.2s;
 }
 
+
 /* === TITLE SLIDE ANIMATIONS === */
 /* CRT-style animations for the waiting/intro screen */
 
@@ -520,8 +521,11 @@
 
 /* Titled slides reserve a 130px title band — image must shrink to fit. */
 .slide--titled .image-slide {
-  height: calc(var(--vh-full) - 220px - 130px);
-  max-height: calc(var(--vh-full) - 220px - 130px);
+  /* Fill the slide's content-box, which already excludes the 130px
+   * title-band padding-top. Lets the image use all available height
+   * instead of double-subtracting via a vh-based calc. */
+  height: 100%;
+  max-height: 100%;
 }
 
 .image-slide img {
@@ -541,79 +545,137 @@
 }
 
 
-/* === JUNIOR ENGINEER SLIDE === */
-/* Mental model slide with three-column layout */
+/* === JUNIOR ENGINEER SLIDE — "tale of the tape" equation ===
+ * Hero metaphor on top, then two large screenshot panels equated by a
+ * massive `=` glyph in the middle (the punchline: Slack chat = Claude
+ * Code session). House-rule bullets below, centered narrow column.
+ * Pure layout / positioning / decorative chrome — no font-size or
+ * margin overrides; design-system tokens govern text sizing. */
 
-.junior-engineer-slide {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: var(--space-2xl);
-  width: 100%;
-  height: 100%;
-  padding-bottom: var(--space-xl);
-}
-
-.junior-engineer-image-col {
-  flex: 0 0 auto;
+.junior-slide {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-sm);
+  justify-content: center;
+  gap: var(--space-md);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.junior-engineer-image-label {
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--terminal-white);
+.junior-slide__hero {
   text-align: center;
-  padding: 0.4rem 1.5rem;
-  border-bottom: 2px solid var(--terminal-orange);
+  max-width: 1200px;
+  margin: 0;
 }
 
-.junior-engineer-content {
+.junior-slide__board {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: var(--space-lg);
+  width: 100%;
+  min-height: 0;
+  /* Constrain panel height so hero + rule line stay visible below. */
+  height: calc(var(--vh-full) * 0.45);
+}
+
+.junior-slide__panel {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+  min-height: 0;
+}
+
+.junior-slide__panel-tag {
+  font-family: var(--font-mono);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--terminal-orange);
+  text-shadow: 0 0 12px var(--terminal-orange-glow);
+}
+
+.junior-slide__panel:nth-of-type(3) .junior-slide__panel-tag {
+  color: var(--terminal-green);
+  text-shadow: 0 0 12px var(--terminal-green-glow);
+}
+
+.junior-slide__panel-frame {
+  position: relative;
+  width: 100%;
   flex: 1;
-  max-width: 600px;
-  text-align: left;
-}
-
-.junior-engineer-content h2 {
-  text-align: left;
-}
-
-.junior-engineer-image {
-  height: calc(var(--vh-full) - 220px);
-  width: 300px;
-  object-fit: cover;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
   border-radius: var(--input-border-radius);
-  border: 1px solid var(--terminal-border);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--terminal-orange) 18%, transparent),
+      color-mix(in srgb, var(--terminal-orange) 4%, transparent)
+    );
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .junior-engineer-slide {
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
-
-  .junior-engineer-image-col {
-    flex: none;
-    width: 100%;
-  }
-
-  .junior-engineer-image {
-    height: 200px;
-    max-width: 100%;
-  }
+.junior-slide__panel:nth-of-type(3) .junior-slide__panel-frame {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--terminal-green) 22%, transparent),
+      color-mix(in srgb, var(--terminal-green) 5%, transparent)
+    );
 }
 
-@media (max-width: 640px) {
-  .junior-engineer-image {
-    height: 150px;
+.junior-slide__panel-frame img {
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: calc(var(--input-border-radius) - 4px);
+  display: block;
+}
+
+.junior-slide__equals {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  /* Size derives from the design-system h1 token so it scales with the
+   * deck's heading scale rather than being arbitrary. */
+  font-size: var(--font-size-h1);
+  line-height: 0.9;
+  color: var(--terminal-white);
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--terminal-orange) 50%, transparent),
+    0 0 36px color-mix(in srgb, var(--terminal-green) 30%, transparent);
+  position: relative;
+  animation: juniorEqualsPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes juniorEqualsPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
+.junior-slide__rule {
+  text-align: center;
+  max-width: 1100px;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .junior-slide__board {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  .junior-slide__equals {
+    transform: rotate(90deg);
   }
 }
 
