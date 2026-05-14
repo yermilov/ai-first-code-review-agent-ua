@@ -100,15 +100,13 @@ function AIInnovatorCurveContent() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem', width: '100%' }}>
       <style>{CURVE_STYLES}</style>
 
-      <div style={{ lineHeight: 1.4, textAlign: 'center' }}>
-        <div style={{ fontSize: '2rem' }}>
+      <div className="section-title-header" style={{ textAlign: 'center' }}>
+        <h2>
           <span className="text-dim">$</span>{' '}
           <span className="text-green">ainnovator</span>{' '}
           <span className="text-orange">--curve</span>
-        </div>
-        <div style={{ fontSize: '1.5rem' }} className="text-muted">
-          // rogers innovation adoption curve
-        </div>
+        </h2>
+        <p className="text-muted">// rogers innovation adoption curve</p>
       </div>
 
       <svg

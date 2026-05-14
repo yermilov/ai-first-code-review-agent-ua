@@ -150,14 +150,12 @@ function AgentsSectionSlideContent() {
       }}>
         {/* Left: title */}
         <div className="agents-section-title" style={{ flex: '0 0 auto' }}>
-          <div style={{ fontSize: '2.8rem', lineHeight: 1.3 }}>
+          <h2>
             <span className="text-dim">$</span>{' '}
             <span className="text-green">skills</span>{' '}
             <span className="text-orange">--agents</span>
-          </div>
-          <div style={{ fontSize: '1.5rem', marginTop: '0.5rem' }} className="text-muted">
-            // autonomous and semi-autonomous workflows
-          </div>
+          </h2>
+          <p className="text-muted">// autonomous and semi-autonomous workflows</p>
         </div>
 
         {/* Right: Agent Smith image */}

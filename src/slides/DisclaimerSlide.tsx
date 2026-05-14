@@ -30,18 +30,16 @@ function DisclaimerItem({ level, children }: { level: Level; children: React.Rea
 
   return (
     <div
+      className="disclaimer-item"
       style={{
         display: 'grid',
         gridTemplateColumns: '2.5rem 1fr',
         alignItems: 'start',
         gap: '0.75rem',
-        fontSize: '1.5rem',
         opacity: s.opacity,
-        marginBottom: '1.25rem',
-        lineHeight: 1.5,
       }}
     >
-      <span style={{ color: s.prefixColor, fontWeight: 'bold', marginTop: '0.1em' }}>{s.prefix}</span>
+      <span style={{ color: s.prefixColor, fontWeight: 'bold' }}>{s.prefix}</span>
       <span
         style={{
           color: 'var(--terminal-white)',
