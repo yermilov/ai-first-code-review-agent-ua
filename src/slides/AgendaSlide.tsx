@@ -2,6 +2,12 @@ import { SECTIONS } from '../data/sections';
 import { SlideDefinition } from '../types/slides';
 import { useNavigation } from '../context/NavigationContext';
 
+const PART_ORDINAL_UK: Record<number, string> = {
+  1: 'перша',
+  2: 'друга',
+  3: 'третя',
+};
+
 function AgendaSlideContent() {
   const { goToSlideById } = useNavigation();
   const subsections = SECTIONS.flatMap(s => s.subsections ?? []);
@@ -152,8 +158,8 @@ function AgendaSlideContent() {
             onClick={() => goToSlideById(section.slideId)}
           >
             <div className="agenda-card-command">
-              <span className="text-dim">$</span>{' '}
-              <span className="text-green">./session --part {section.part}</span>
+              <span className="text-dim">&gt;</span>{' '}
+              <span className="text-green">частина {PART_ORDINAL_UK[section.part] ?? section.part}</span>
             </div>
             <div className="agenda-img-wrap">
               <img src={section.image} alt={section.alt} loading="lazy" className="agenda-card-image" />
@@ -202,7 +208,7 @@ export const AgendaSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">./session --agenda</span>
+      <span className="text-green">про що сьогодні говоримо</span>
     </>
   ),
   content: <AgendaSlideContent />,

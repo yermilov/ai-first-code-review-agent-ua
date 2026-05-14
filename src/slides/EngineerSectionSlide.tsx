@@ -9,7 +9,7 @@ export const EngineerSectionSlide: SlideDefinition = {
       src={agendaEngineerImage}
       alt="AI-First Engineer"
       part={1}
-      desc="// ai-first engineer"
+      desc="декілька порад щодо персональної продуктивності"
     />
   ),
 };
