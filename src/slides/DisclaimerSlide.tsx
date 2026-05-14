@@ -81,28 +81,27 @@ export const DisclaimerSlide: SlideDefinition = {
         <div className="vs-badge">VS</div>
         <div className="vs-disclaimer-content">
           <DisclaimerItem level="high">
-            personally, I find the flow where I work with{' '}
+            особисто мені найкраще зайшов флоу, коли працюю з{' '}
             <em style={{ color: 'var(--terminal-orange)', fontStyle: 'normal', fontWeight: 600 }}>
-              Claude Code entirely in the terminal
-            </em>{' '}
-            much better for me
+              Claude Code повністю в терміналі
+            </em>
           </DisclaimerItem>
 
           <DisclaimerItem level="medium">
-            but I can use an IDE (most often{' '}
-            <span style={{ color: 'var(--terminal-cyan)' }}>VS Code</span>) for small targeted
-            changes I want to make manually
+            але можу відкрити IDE (зазвичай{' '}
+            <span style={{ color: 'var(--terminal-cyan)' }}>VS Code</span>) для невеликих
+            точкових правок, які хочеться зробити руками
           </DisclaimerItem>
 
           <DisclaimerItem level="medium">
-            terminal helps faster abandon the old mental model{' '}
-            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}>"I edit text"</em>
-            {' '}and adopt the new one{' '}
-            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}>"I give tasks to agent"</em>
+            термінал швидше відучує від старої ментальної моделі{' '}
+            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}>"я редагую текст"</em>
+            {' '}і вчить новій:{' '}
+            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}>"я ставлю задачі агенту"</em>
           </DisclaimerItem>
 
           <DisclaimerItem level="low">
-            if you're not comfortable in the terminal — use the plugins:{' '}
+            якщо в терміналі некомфортно — є плагіни:{' '}
             <a
               href="https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code"
               target="_blank"
@@ -111,7 +110,7 @@ export const DisclaimerSlide: SlideDefinition = {
             >
               VS Code
             </a>
-            {' '}or{' '}
+            {' '}або{' '}
             <a
               href="https://plugins.jetbrains.com/plugin/27310-claude-code-beta-"
               target="_blank"
@@ -137,5 +136,5 @@ export const DisclaimerSlide: SlideDefinition = {
 
     </div>
   ),
-  notes: 'Personal disclaimer about terminal vs IDE workflow preferences - Mortal Kombat style!',
+  notes: 'Особистий дисклеймер про термінал vs IDE — у стилі Mortal Kombat',
 };
