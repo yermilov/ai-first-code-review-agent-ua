@@ -5,7 +5,7 @@ export const ChallengeAssumptionsSlide: SlideDefinition = {
   id: 'challenge-assumptions',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">org</span>{' '}
       <span className="text-orange">--rethink</span>
     </>

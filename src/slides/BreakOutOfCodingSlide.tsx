@@ -20,7 +20,7 @@ export const BreakOutOfCodingSlide: SlideDefinition = {
   id: 'break-out-of-coding',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">tips</span>{' '}
       <span className="text-orange">--break-out</span>
     </>

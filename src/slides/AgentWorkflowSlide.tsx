@@ -135,7 +135,7 @@ export const AgentWorkflowSlide: SlideDefinition = {
   maxRevealStages: 4,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">agents</span>{' '}
       <span className="text-orange">--workflow</span>
     </>

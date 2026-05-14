@@ -214,7 +214,7 @@ export const PersonalAspirationSlide: SlideDefinition = {
   maxRevealStages: 5,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">engineer</span>{' '}
       <span className="text-orange">--aspire</span>
     </>

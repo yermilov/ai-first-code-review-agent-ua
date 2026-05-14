@@ -201,7 +201,7 @@ export const AgendaSlide: SlideDefinition = {
   id: 'agenda',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">./session --agenda</span>
     </>
   ),

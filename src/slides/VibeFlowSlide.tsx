@@ -10,7 +10,7 @@ export const VibeFlowSlide: SlideDefinition = {
   id: 'vibe-flow',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">vibe</span>{' '}
       <span className="text-orange">--flow</span>
     </>

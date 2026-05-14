@@ -79,171 +79,216 @@
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
 }
 
-/* === AI TOOLS LOGO GRID === */
-.tool-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-xl);
-  margin-top: var(--space-2xl);
-  padding: 0 var(--space-lg);
+/* === TOOL TAKES GRID ===
+ * 4×2 grid of tool cards. Each card holds a silhouetted logo, a hidden
+ * name (rendered as ???), and a "take" line (opinion about the tool).
+ * Stage 0: all takes visible + first card identity revealed. Subsequent
+ * stages reveal the remaining identities one-by-one as `r` is pressed. */
+.tool-takes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+  height: 100%;
 }
 
-.tool-item {
+.tool-takes-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-sm);
-  opacity: 0;
-  animation: toolFadeIn 0.4s ease-out forwards;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 18px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--terminal-bg-secondary) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--terminal-green) 18%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--terminal-white) 6%, transparent);
+  overflow: hidden;
+  transition:
+    border-color 0.55s ease,
+    background 0.55s ease,
+    box-shadow 0.7s ease;
 }
 
-@keyframes toolFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tool-takes-card--take-shown {
+  border-color: color-mix(in srgb, var(--terminal-green) 38%, transparent);
+  background: color-mix(in srgb, var(--terminal-bg-secondary) 85%, transparent);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 color-mix(in srgb, var(--terminal-white) 10%, transparent);
 }
 
-.tool-logo-wrapper {
-  position: relative;
-  width: 72px;
-  height: 72px;
+.tool-takes-icon {
+  width: 96px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  background: var(--terminal-bg-secondary);
-  border: 1px solid var(--terminal-border);
-  padding: var(--space-md);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 14px;
+  transition: filter 0.55s ease, opacity 0.55s ease, transform 0.55s ease;
+  /* Silhouette state — white tint + blur = "who's that Pokémon" effect */
+  filter: brightness(0) saturate(1) invert(1) blur(13px);
+  opacity: 0.45;
+  animation: toolTakesSilhouettePulse 3.2s ease-in-out infinite;
 }
 
-.tool-logo {
+.tool-takes-icon img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  /* Ghostly silhouette - dormant state */
-  filter: grayscale(100%) brightness(0.5) opacity(0.4);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Question mark SVG styling */
-.question-mark-icon {
-  color: var(--terminal-white-muted);
-  width: 100%;
-  height: 100%;
-}
-
-.tool-glow {
-  position: absolute;
-  inset: -4px;
-  border-radius: 20px;
-  opacity: 0;
-  transition: opacity 0.4s ease-out;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    var(--terminal-orange-glow) 0%,
-    transparent 70%
-  );
-  filter: blur(8px);
-}
-
-.tool-name {
-  font-size: var(--font-size-small);
-  color: var(--terminal-white-muted);
+.tool-takes-icon__glyph {
   font-family: var(--font-mono);
-  text-transform: lowercase;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease-out;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--terminal-white);
 }
 
-/* Hover state - subtle warmth */
-.tool-item:hover .tool-logo-wrapper {
-  border-color: var(--terminal-border-bright);
-  background: var(--terminal-bg-elevated);
-}
-
-.tool-item:hover .tool-logo {
-  filter: grayscale(100%) brightness(0.7) opacity(0.6);
-}
-
-.tool-item:hover .tool-name {
-  color: var(--terminal-white-dim);
-}
-
-/* === ACTIVE STATE - TERMINAL BOOT SEQUENCE === */
-.tool-item.active .tool-logo-wrapper {
-  border-color: var(--terminal-orange);
-  background: var(--terminal-bg-elevated);
-  box-shadow:
-    0 0 0 1px var(--terminal-orange-dim),
-    0 4px 24px rgba(240, 136, 62, 0.15);
-}
-
-.tool-item.active .tool-logo {
-  /* Power on - full color with subtle boost */
-  filter: grayscale(0%) brightness(1.1) opacity(1);
-}
-
-.tool-item.active .question-mark-icon {
-  color: var(--terminal-orange);
-}
-
-.tool-item.active .tool-glow {
+/* Identity revealed — icon de-silhouettes, name displays */
+.tool-takes-card--identity-shown .tool-takes-icon {
+  filter: none;
   opacity: 1;
-  animation: glowPulse 2s ease-in-out infinite;
+  animation: toolTakesIconReveal 0.7s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
 
-@keyframes glowPulse {
+.tool-takes-card--identity-shown .tool-takes-icon__glyph {
+  color: var(--terminal-green);
+  text-shadow: var(--glow-text-green);
+}
+
+/* Wildcard — dashed border, no name slot, larger glyph */
+.tool-takes-card--wildcard {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--terminal-green) 28%, transparent);
+}
+
+.tool-takes-card--wildcard .tool-takes-icon {
+  width: auto;
+  height: auto;
+  margin-bottom: 18px;
+}
+
+.tool-takes-card--wildcard .tool-takes-icon__glyph {
+  font-size: 108px;
+}
+
+.tool-takes-name {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--terminal-white);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.tool-takes-take {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  line-height: 1.25;
+  color: var(--terminal-white-dim);
+  opacity: 0;
+  transition: opacity 0.55s ease 0.15s;
+  min-height: 1em;
+}
+
+.tool-takes-card--take-shown .tool-takes-take {
+  opacity: 1;
+}
+
+@keyframes toolTakesSilhouettePulse {
   0%, 100% {
-    opacity: 0.6;
+    opacity: 0.38;
     transform: scale(1);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.05);
+    opacity: 0.55;
+    transform: scale(1.04);
   }
 }
 
-.tool-item.active .tool-name {
-  color: var(--terminal-orange);
-  text-shadow: var(--glow-text-orange);
+@keyframes toolTakesIconReveal {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 
-/* CRT flicker on activation */
-.tool-item.active .tool-logo-wrapper {
-  animation: crtFlicker 0.15s ease-out;
+/* === LIGHT-THEME OVERRIDES — paper/ink notebook metaphor ===
+ * Dark theme renders icons as white silhouettes against deep black; on
+ * cream paper that becomes invisible. Flip the silhouette to a dark ink
+ * blot, give the cards a tactile parchment edge, and lend the reveal a
+ * "stamped impression" feel via warmer borders and a soft inner shadow. */
+[data-theme="light"] .tool-takes-card {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--terminal-bg-input) 92%, transparent) 0%,
+    color-mix(in srgb, var(--terminal-bg-elevated) 70%, transparent) 100%
+  );
+  border-color: color-mix(in srgb, var(--terminal-orange) 22%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 1px 2px rgba(120, 70, 20, 0.08);
 }
 
-@keyframes crtFlicker {
-  0% { opacity: 0.8; }
-  25% { opacity: 1; }
-  50% { opacity: 0.9; }
-  75% { opacity: 1; }
-  100% { opacity: 1; }
+[data-theme="light"] .tool-takes-card--take-shown {
+  border-color: color-mix(in srgb, var(--terminal-orange) 38%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--terminal-bg-input) 96%, transparent) 0%,
+    color-mix(in srgb, var(--terminal-bg-elevated) 82%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 12px 32px rgba(120, 70, 20, 0.14);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .tool-grid {
-    gap: var(--space-lg);
-  }
+[data-theme="light"] .tool-takes-icon {
+  /* Ink-blot silhouette: keep alpha, force pixels black, then blur.
+   * Dropping invert(1) is the key — white logos become a dark smudge
+   * instead of pure white on cream. */
+  filter: brightness(0) saturate(1) blur(13px);
+  opacity: 0.4;
+}
 
-  .tool-logo-wrapper {
-    width: 56px;
-    height: 56px;
-    padding: var(--space-sm);
-  }
+[data-theme="light"] .tool-takes-card--identity-shown .tool-takes-icon {
+  /* Reveal — stamp the logo in ink. brightness(0) flattens any colored
+   * SVG into a crisp dark glyph that reads on paper. */
+  filter: brightness(0);
+  opacity: 0.92;
+}
 
-  .tool-name {
-    font-size: 0.75rem;
-  }
+[data-theme="light"] .tool-takes-icon__glyph {
+  /* Wildcard `?` glyph in dimmed ink while silhouetted */
+  color: color-mix(in srgb, var(--terminal-white) 35%, transparent);
+}
+
+[data-theme="light"] .tool-takes-card--identity-shown .tool-takes-icon__glyph {
+  /* Wildcard reveal — full phosphor green stamp with soft halo */
+  color: var(--terminal-green);
+  text-shadow: 0 0 12px var(--terminal-green-glow);
+}
+
+[data-theme="light"] .tool-takes-card--wildcard {
+  border-color: color-mix(in srgb, var(--terminal-green) 30%, transparent);
+}
+
+[data-theme="light"] .tool-takes-name {
+  color: var(--terminal-white);
+}
+
+[data-theme="light"] .tool-takes-take {
+  color: var(--terminal-white-dim);
+}
+
+/* Slow the silhouette pulse on light theme — on paper the wiggle reads
+ * as nervous rather than mysterious. */
+[data-theme="light"] .tool-takes-icon {
+  animation-duration: 4.2s;
 }
 
 /* === TITLE SLIDE ANIMATIONS === */
