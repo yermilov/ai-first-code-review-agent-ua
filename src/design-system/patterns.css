@@ -207,9 +207,8 @@
     animation: none;
   }
 
-  .tool-item.active .tool-glow {
+  .tool-takes-icon {
     animation: none;
-    opacity: 0.5;
   }
 
   .title-slide::before { animation: none; }

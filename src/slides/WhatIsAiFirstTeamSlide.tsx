@@ -194,7 +194,7 @@ export const WhatIsAiFirstTeamSlide: SlideDefinition = {
   maxRevealStages: 3,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">team</span>{' '}
       <span className="text-orange">--define</span>
     </>

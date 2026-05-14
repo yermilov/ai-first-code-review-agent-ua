@@ -107,7 +107,7 @@ export const JuniorEngineerSlide: SlideDefinition = {
   id: 'junior-engineer',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">think</span>{' '}
       <span className="text-orange">--model</span>{' '}
       <span className="text-cyan">lawful-chaotic-engineer</span>

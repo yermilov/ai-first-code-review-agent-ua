@@ -5,7 +5,7 @@ export const CodeSlopSlide: SlideDefinition = {
   id: 'code-slop',
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">code</span>{' '}
       <span className="text-orange">--no-slop</span>
     </>

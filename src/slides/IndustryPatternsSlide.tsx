@@ -339,7 +339,7 @@ export const IndustryPatternsSlide: SlideDefinition = {
   id: SLIDE_ID,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">org</span>{' '}
       <span className="text-orange">--industry</span>
     </>

@@ -104,7 +104,7 @@ export const SkillsActivatorSlide: SlideDefinition = {
   maxRevealStages: 1,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">skills</span>{' '}
       <span className="text-orange">--activator</span>
     </>

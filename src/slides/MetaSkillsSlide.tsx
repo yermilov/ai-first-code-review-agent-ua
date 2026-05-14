@@ -215,7 +215,7 @@ export const MetaSkillsSlide: SlideDefinition = {
   asyncSettle: true,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">skills</span>{' '}
       <span className="text-orange">--meta</span>
     </>

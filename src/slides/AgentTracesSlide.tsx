@@ -112,7 +112,7 @@ export const AgentTracesSlide: SlideDefinition = {
   initialRevealStage: 1,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">agents</span>{' '}
       <span className="text-orange">--traces</span>
     </>

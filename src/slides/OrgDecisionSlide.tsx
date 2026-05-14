@@ -6,7 +6,7 @@ export const OrgDecisionSlide: SlideDefinition = {
   maxRevealStages: 4,
   title: (
     <>
-      <span className="text-dim">$</span>{' '}
+      <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">org</span>{' '}
       <span className="text-orange">--reboot</span>
     </>
