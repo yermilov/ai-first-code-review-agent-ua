@@ -1,3 +1,9 @@
+const PART_ORDINAL_UK: Record<number, string> = {
+  1: 'перша',
+  2: 'друга',
+  3: 'третя',
+};
+
 export function SectionTitleSlide({
   src,
   alt,
@@ -21,8 +27,8 @@ export function SectionTitleSlide({
     >
       <div style={{ lineHeight: 1.4, textAlign: 'center' }}>
         <div style={{ fontSize: '2rem' }}>
-          <span className="text-dim">$</span>{' '}
-          <span style={{ color: 'var(--terminal-green)' }}>./session --part {part}</span>
+          <span className="text-dim">&gt;</span>{' '}
+          <span style={{ color: 'var(--terminal-green)' }}>частина {PART_ORDINAL_UK[part] ?? part}</span>
         </div>
         <div style={{ fontSize: '1.5rem' }} className="text-muted">
           {desc}
