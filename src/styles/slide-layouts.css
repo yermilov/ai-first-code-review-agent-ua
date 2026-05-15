@@ -1670,3 +1670,277 @@
 }
 
 
+
+/* === AI INNOVATOR CURVE — single-column framed panel for the bell curve =====
+   Ported from dou-days. Wrapper fills slide height so the framed panel
+   claims the remaining vertical space below the heading. */
+.ainnovator-curve-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  gap: var(--space-md);
+  min-height: 0;
+}
+
+.ainnovator-curve-body__media {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) 0;
+  overflow: visible;
+  animation: skillMarketplaceMediaIn 360ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes skillMarketplaceMediaIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+@keyframes metaSkillsPanelIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* === INDUSTRY PATTERNS — two-column body with framed panel + status mirror ====
+   Ported from dou-days. Bullets on left, framed image / status mirror on right. */
+.industry-patterns-body {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  gap: var(--space-xl);
+  min-height: 0;
+  text-align: left;
+}
+
+.industry-patterns-bullets {
+  flex: 0 0 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-width: 0;
+  --slide-line-height-normal: 1.2;
+}
+
+.industry-patterns-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
+  box-shadow:
+    0 18px 48px color-mix(in srgb, var(--terminal-bg) 60%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--terminal-white) 10%, transparent);
+  font-family: var(--font-mono);
+  animation: metaSkillsPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+.industry-patterns-panel__chrome {
+  padding: var(--space-sm) var(--space-md);
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--terminal-green) 60%, transparent);
+  flex-shrink: 0;
+}
+.industry-patterns-panel__chrome--top    { border-bottom: 1px solid color-mix(in srgb, var(--terminal-green) 22%, transparent); }
+.industry-patterns-panel__chrome--bottom {
+  border-top: 1px solid color-mix(in srgb, var(--terminal-green) 22%, transparent);
+  color: color-mix(in srgb, var(--terminal-green) 35%, transparent);
+  letter-spacing: 0.12em;
+}
+
+.industry-patterns-panel__viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.industry-patterns-panel__viewport--image {
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.industry-patterns-panel__viewport--image img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  animation: skillMarketplaceMediaIn 360ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+.industry-patterns-image {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: metaSkillsPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+.industry-patterns-image img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 10px;
+  animation: skillMarketplaceMediaIn 360ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes industryCalendarTour {
+  0%   { transform: scale(1);   transform-origin: 50% 50%; }
+  6%   { transform: scale(2);   transform-origin: 50% 24%; }
+  20%  { transform: scale(2);   transform-origin: 50% 36%; }
+  34%  { transform: scale(2);   transform-origin: 50% 48%; }
+  48%  { transform: scale(2);   transform-origin: 50% 62%; }
+  62%  { transform: scale(2);   transform-origin: 50% 76%; }
+  76%  { transform: scale(2);   transform-origin: 50% 92%; }
+  92%  { transform: scale(1);   transform-origin: 50% 50%; }
+  100% { transform: scale(1);   transform-origin: 50% 50%; }
+}
+
+.industry-patterns-image--zoom img {
+  animation:
+    skillMarketplaceMediaIn 360ms cubic-bezier(0.19, 1, 0.22, 1) both,
+    industryCalendarTour 32s ease-in-out 0.6s infinite;
+}
+
+.industry-patterns-status {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  font-size: var(--font-size-code);
+}
+
+.industry-patterns-status__header {
+  background: color-mix(in srgb, var(--terminal-orange) 12%, transparent);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--terminal-orange);
+  font-family: var(--font-mono);
+  border-bottom: 1px solid color-mix(in srgb, var(--terminal-orange) 35%, transparent);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.industry-patterns-status__header-meta { opacity: 0.55; }
+
+.industry-patterns-status__body {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.industry-patterns-status__loading {
+  color: var(--terminal-white);
+  opacity: 0.4;
+  font-family: var(--font-mono);
+}
+
+.industry-patterns-status__footer {
+  border-top: 1px solid color-mix(in srgb, var(--terminal-orange) 15%, transparent);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.industry-patterns-status__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--terminal-white-muted);
+  font-family: var(--font-mono);
+}
+
+.industry-patterns-status__legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+/* === FINAL SLIDE ===
+   Closing slide: takeaway bullets + LinkedIn QR. Ported from dou-days. */
+.slide h2.final-slide__heading {
+  color: var(--terminal-purple);
+}
+
+.final-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+  width: 100%;
+}
+
+.final-slide__bullets {
+  flex: 1;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.final-slide__bullets .slide-item {
+  margin-bottom: var(--space-sm);
+}
+
+.final-slide__qr {
+  flex-shrink: 0;
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--input-border-radius);
+  border: 2px solid color-mix(in srgb, var(--terminal-purple) 55%, transparent);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--terminal-bg) 70%, transparent);
+  opacity: 0;
+  animation: slideItemFadeIn 0.5s ease-out forwards;
+  animation-delay: 0.1s;
+}
+
+.final-slide__contact {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-md);
+  max-width: 600px;
+}
+
+.final-slide__contact .slide-item {
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.final-slide__contact .final-slide__qr {
+  max-width: 100%;
+}
+
+.final-slide__arrow {
+  color: var(--terminal-cyan);
+}

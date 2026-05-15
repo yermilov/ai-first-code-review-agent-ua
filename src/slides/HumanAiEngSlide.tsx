@@ -1,50 +1,42 @@
+import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 
+const BULLETS: ReactNode[] = [
+  <>попри весь AI-хайп, люди залишаються <Emphasis color="orange">найбільшою цінністю</Emphasis> — зберігайте емпатію, будьте етичними та чесними</>,
+  <>запровадити AI-кодинг наказом по організації <Emphasis color="green">"усі тепер використовують AI"</Emphasis> не вийде: інвестуйте в регулярні тренінги, взаємне менторство та діліться історіями успіхів і помилок</>,
+  <>якщо ви менеджер — покажіть на власному прикладі й <Emphasis color="orange">створіть фічу за допомогою Claude Code</Emphasis></>,
+  <>хочете, щоб люди перейшли на новий підхід — <Emphasis color="green">тимчасово знизьте очікування щодо дедлайнів</Emphasis>, щоб дати простір для навчання</>,
+  <>стежте за AI-FOMO і вигоранням: AI зміщує ботлнеки з механічних задач на <Emphasis color="orange">думання головою</Emphasis></>
+];
+
 export const HumanAiEngSlide: SlideDefinition = {
   id: 'human-ai-eng',
-  maxRevealStages: 3,
-  title: (
-    <>
-      <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">org</span>{' '}
-      <span className="text-orange">--human-ai</span>
-    </>
-  ),
+  maxRevealStages: BULLETS.length - 1,
   content: ({ revealStage }: SlideContentProps) => (
     <>
+      <h2>
+        <span className="text-dim">//</span>{' '}
+        <span className="text-green">людино</span>
+        <span className="text-orange">центричність</span>
+      </h2>
+
       <div
         style={{
           textAlign: 'left',
-          maxWidth: '1000px',
+          maxWidth: '1400px',
           width: '100%',
           margin: '0 auto',
         }}
       >
-        <SlideItem delay={0.06}>
-          the tricky part in Human+AI engineering is <Emphasis color="orange">humans</Emphasis> — mandating AI coding won't work; human inertia is real
-        </SlideItem>
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0}>
-            don't leave engineers alone: invest in <Emphasis color="green">regular training, peer mentoring, opinionated tooling, office hours, and win/lose stories</Emphasis>
-          </SlideItem>
-        )}
-
-        {revealStage >= 2 && (
-          <SlideItem delay={0}>
-            a known pain point is that engineers don't have breathing room to go through the learning curve — consider <Emphasis color="orange">relaxing delivery expectations early</Emphasis> to give space to learn, then raise them higher than before
-          </SlideItem>
-        )}
-
-        {revealStage >= 3 && (
-          <SlideItem delay={0}>
-            humans always remain your <Emphasis color="orange">most important asset</Emphasis> — preserve empathy, be ethical, watch for burnouts, and have fair conversations
-          </SlideItem>
+        {BULLETS.map((bullet, i) =>
+          revealStage >= i ? (
+            <SlideItem key={i} delay={i === 0 ? 0.06 : 0}>{bullet}</SlideItem>
+          ) : null,
         )}
       </div>
     </>
   ),
   notes:
-    'Legacy code is the organizational debt that AI exposes fastest. Greenfield is where you build the proof points.',
+    "Закриваючий патерн секції про AI-first: технологія не виграє без людей. Ставка на регулярні тренінги, peer-менторинг, опініонований тулінг і простір на навчання — інакше людська інерція з'їсть будь-яку AI-стратегію. Останній буллет — головна теза: емпатія, етика, вигорання й чесні розмови залишаються базою.",
 };

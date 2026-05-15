@@ -1,15 +1,18 @@
 import agendaOrgImage from '../assets/agenda-org.png?url';
 import { SlideDefinition } from '../types/slides';
-import { SectionTitleSlide } from '../components/SectionTitleSlide';
 
 export const OrgSectionSlide: SlideDefinition = {
   id: 'agenda-org',
+  title: (
+    <>
+      <span className="text-dim">&gt;</span>{' '}
+      <span className="text-green">частина третя</span>
+      <span className="slide-title-meta text-muted">// ai-first організація</span>
+    </>
+  ),
   content: (
-    <SectionTitleSlide
-      src={agendaOrgImage}
-      alt="AI-First Organization"
-      part={3}
-      desc="// ai-first organization"
-    />
+    <div className="image-slide">
+      <img src={agendaOrgImage} alt="AI-First Organization" loading="lazy" />
+    </div>
   ),
 };
