@@ -59,10 +59,10 @@ function SkillsMetricsContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
           <SlideItem delay={0.08}>
             hook into session lifecycle — measure what your team <Emphasis color="orange">actually uses</Emphasis>, not what they say they use
           </SlideItem>
@@ -79,8 +79,8 @@ function SkillsMetricsContent({ revealStage }: { revealStage: number }) {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.5rem',
-            '--font-size-code': '0.85rem',
+            gap: 'var(--space-sm)',
+            '--font-size-code': 'var(--font-size-small)',
           } as React.CSSProperties}
         >
           {!showScript ? (

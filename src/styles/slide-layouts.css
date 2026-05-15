@@ -21,7 +21,6 @@
 
 .bio-slide-content {
   flex: 1;
-  max-width: 600px;
 }
 
 .bio-slide-content h1 {
@@ -36,18 +35,26 @@
   margin-bottom: var(--space-lg);
 }
 
-.bio-slide-content ul {
-  margin: 0 0 var(--space-lg) 0;
+.bio-item {
+  font-size: var(--font-size-body);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: var(--space-md);
 }
 
-.bio-slide-content li {
-  font-size: 1.25rem;
-  margin-bottom: var(--space-sm);
-  padding-left: var(--space-lg);
+.bio-item__prefix {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
-.bio-slide-content p {
-  font-size: 1.25rem;
+.bio-subtitle {
+  color: var(--terminal-orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 16px rgba(240, 136, 62, 0.35);
 }
 
 .bio-slide-content a {
@@ -88,7 +95,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 24px;
+  gap: var(--space-md);
   width: 100%;
   height: 100%;
 }
@@ -100,7 +107,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 24px 18px;
+  padding: var(--space-md) var(--space-md);
   border-radius: 14px;
   background: color-mix(in srgb, var(--terminal-bg-secondary) 70%, transparent);
   border: 1px solid color-mix(in srgb, var(--terminal-green) 18%, transparent);
@@ -127,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-md);
   transition: filter 0.55s ease, opacity 0.55s ease, transform 0.55s ease;
   /* Silhouette state — white tint + blur = "who's that Pokémon" effect */
   filter: brightness(0) saturate(1) invert(1) blur(13px);
@@ -143,7 +150,7 @@
 
 .tool-takes-icon__glyph {
   font-family: var(--font-mono);
-  font-size: 72px;
+  font-size: var(--font-size-h2);
   font-weight: 700;
   line-height: 1;
   color: var(--terminal-white);
@@ -170,26 +177,26 @@
 .tool-takes-card--wildcard .tool-takes-icon {
   width: auto;
   height: auto;
-  margin-bottom: 18px;
+  margin-bottom: var(--space-md);
 }
 
 .tool-takes-card--wildcard .tool-takes-icon__glyph {
-  font-size: 108px;
+  font-size: var(--font-size-hero);
 }
 
 .tool-takes-name {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: var(--slide-text-dense);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--terminal-white);
-  margin-bottom: 10px;
+  margin-bottom: var(--space-sm);
   text-transform: uppercase;
 }
 
 .tool-takes-take {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: var(--slide-text-dense);
   line-height: 1.25;
   color: var(--terminal-white-dim);
   opacity: 0;
@@ -375,10 +382,10 @@
 
 /* Tagline — between title and author */
 .title-slide .title-tagline {
-  font-size: 2rem;
+  font-size: var(--font-size-h3);
   color: var(--terminal-green);
   text-shadow: var(--glow-text-green);
-  margin: 0.5rem 0 1.5rem;
+  margin: var(--space-sm) 0 var(--space-md);
   animation: subtitlePulse 4s ease-in-out infinite;
   will-change: opacity, text-shadow;
 }
@@ -453,7 +460,7 @@
 
 /* Intro text */
 .reveal-intro {
-  font-size: 1.5rem;
+  font-size: var(--font-size-body);
   color: var(--terminal-white-dim);
   margin-bottom: var(--space-md);
 }
@@ -468,7 +475,7 @@
 .reveal-list li {
   opacity: 0;
   animation: listItemReveal 0.35s ease-out forwards;
-  font-size: 1.35rem;
+  font-size: var(--slide-text-compact);
   margin-bottom: var(--space-sm);
   padding-left: var(--space-lg);
 }
@@ -493,16 +500,16 @@
 /* Responsive adjustments for reveal */
 @media (max-width: 768px) {
   .reveal-repo {
-    font-size: 1rem;
+    font-size: var(--font-size-small);
     padding: var(--space-xs) var(--space-md);
   }
 
   .reveal-intro {
-    font-size: 1.125rem;
+    font-size: var(--font-size-small);
   }
 
   .reveal-list li {
-    font-size: 1rem;
+    font-size: var(--font-size-small);
   }
 }
 
@@ -611,7 +618,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
+  padding: var(--space-xs);
   border-radius: var(--input-border-radius);
   background:
     linear-gradient(
@@ -686,12 +693,12 @@
 .vs-battle-slide {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   align-items: center;
   justify-items: center;
   width: 100%;
   height: calc(var(--vh-full) - 220px);
-  padding: 1rem 1rem;
+  padding: var(--space-md) var(--space-md);
   position: relative;
   overflow: hidden;
 }
@@ -792,12 +799,12 @@
 /* Fighter name plates */
 .vs-fighter-name {
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: var(--font-size-h3);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  margin-top: 1rem;
-  padding: 0.6rem 2rem;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
   background: linear-gradient(180deg, rgba(10, 14, 20, 0.9) 0%, rgba(10, 14, 20, 0.7) 100%);
   border: 2px solid;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
@@ -823,13 +830,13 @@
   justify-content: center;
   position: relative;
   z-index: 3;
-  padding: 1rem;
+  padding: var(--space-md);
 }
 
 /* VS Badge */
 .vs-badge {
   font-family: var(--font-mono);
-  font-size: 3.5rem;
+  font-size: var(--font-size-h2);
   font-weight: 900;
   color: var(--terminal-white);
   text-shadow:
@@ -837,7 +844,7 @@
     0 0 80px rgba(240, 136, 62, 0.6),
     0 0 120px rgba(121, 192, 255, 0.4);
   letter-spacing: 0.3em;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-md);
   position: relative;
   animation: vsPulse 1.5s ease-in-out infinite;
 }
@@ -854,12 +861,12 @@
 
 .vs-badge::before {
   right: 100%;
-  margin-right: 0.75rem;
+  margin-right: var(--space-sm);
 }
 
 .vs-badge::after {
   left: 100%;
-  margin-left: 0.75rem;
+  margin-left: var(--space-sm);
 }
 
 @keyframes vsPulse {
@@ -881,10 +888,10 @@
 
 /* Disclaimer content (floating, no box) */
 .vs-disclaimer-content {
-  font-size: 1.25rem;
+  font-size: var(--slide-text-compact);
   max-width: 100%;
   text-align: left;
-  padding: 0.5rem;
+  padding: var(--space-sm);
 }
 
 /* === LIGHT-THEME OVERRIDES — VS battle slide ===
@@ -901,7 +908,7 @@
 [data-theme="light"] .vs-fighter-image {
   filter: sepia(0.32) saturate(0.85) contrast(1.05) brightness(0.95);
   border: none;
-  padding: 8px;
+  padding: var(--space-sm);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--terminal-bg-input) 96%, transparent) 0%,
@@ -958,11 +965,11 @@
   background: none;
   border: none;
   clip-path: none;
-  padding: 0.4rem 0 0.25rem 0;
-  margin-top: 1.25rem;
+  padding: var(--space-sm) 0 var(--space-xs) 0;
+  margin-top: var(--space-md);
   font-weight: 900;
   letter-spacing: 0.32em;
-  font-size: 2rem;
+  font-size: var(--font-size-h3);
   position: relative;
 }
 
@@ -995,7 +1002,7 @@
 /* The VS badge — central stamped ink mark in fight-poster scale. */
 [data-theme="light"] .vs-badge {
   color: var(--terminal-white);
-  font-size: 4.5rem;
+  font-size: var(--font-size-h2);
   font-weight: 900;
   letter-spacing: 0.42em;
   /* Subtle warm/cool stamp glow + a 1px white relief so the ink "lifts" */
@@ -1045,13 +1052,13 @@
   .vs-battle-slide {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
   }
 
   .vs-fighter {
     flex-direction: row;
-    gap: 1rem;
+    gap: var(--space-md);
     max-height: none;
   }
 
@@ -1075,17 +1082,17 @@
   }
 
   .vs-fighter-name {
-    font-size: 1rem;
+    font-size: var(--font-size-small);
   }
 
   .vs-badge {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-md);
   }
 
   .vs-disclaimer-content {
-    font-size: 0.9rem;
-    padding: 1rem;
+    font-size: var(--font-size-small);
+    padding: var(--space-md);
   }
 }
 
@@ -1096,11 +1103,11 @@
   }
 
   .vs-badge {
-    font-size: 1.5rem;
+    font-size: var(--font-size-body);
   }
 
   .vs-disclaimer-content {
-    font-size: 0.85rem;
+    font-size: var(--font-size-small);
   }
 }
 
@@ -1141,7 +1148,7 @@
 
 .timeline-log__header {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: var(--font-size-small);
   margin-bottom: var(--space-md);
   color: var(--terminal-white-muted);
 }
@@ -1183,7 +1190,7 @@
 
 .timeline-log__time {
   font-family: var(--font-mono);
-  font-size: 1.6rem;
+  font-size: var(--font-size-body);
   font-weight: 700;
   color: var(--terminal-orange);
   transition: all 0.3s ease;
@@ -1228,14 +1235,14 @@
   border-radius: 50%;
   background: var(--terminal-orange);
   color: var(--terminal-bg);
-  font-size: 0.75rem;
+  font-size: var(--font-size-small);
   font-weight: bold;
   font-family: var(--font-mono);
 }
 
 .timeline-hint-box__title {
   color: var(--terminal-orange);
-  font-size: 1rem;
+  font-size: var(--font-size-small);
   font-weight: 600;
   font-family: var(--font-mono);
   text-shadow: var(--glow-text-orange);
@@ -1248,7 +1255,7 @@
 }
 
 .timeline-hint-box__list li {
-  font-size: 0.9rem;
+  font-size: var(--font-size-small);
   color: var(--terminal-white-dim);
   font-family: var(--font-mono);
   padding-left: var(--space-md);
@@ -1260,12 +1267,12 @@
   position: absolute;
   left: 0;
   color: var(--terminal-green);
-  font-size: 0.8rem;
+  font-size: var(--font-size-small);
 }
 
 .timeline-hint-box__list code {
   background: var(--terminal-bg-secondary);
-  padding: 2px 6px;
+  padding: var(--space-xs) var(--space-xs);
   border-radius: 3px;
   color: var(--terminal-cyan);
   font-size: 0.85em;
@@ -1305,23 +1312,23 @@
 
 .timeline-panel__text {
   font-family: var(--font-mono);
-  font-size: 1.75rem;
+  font-size: var(--font-size-h3);
   color: var(--terminal-white);
   line-height: 1.4;
   text-align: center;
-  max-width: 700px;
+  max-width: 100%;
 }
 
 .timeline-panel__text--emphasis {
-  font-size: 2.25rem;
+  font-size: var(--font-size-h3);
   font-weight: 600;
   color: var(--terminal-green);
   text-shadow: var(--glow-text-green);
 }
 
 .timeline-panel__image {
-  max-width: 100%;
-  max-height: calc(100% - 100px);
+  max-width: 80%;
+  max-height: 60%;
   object-fit: contain;
   border-radius: var(--input-border-radius);
   border: 2px solid var(--terminal-border);
@@ -1350,7 +1357,7 @@
 }
 
 .timeline-panel__emphasis-icon {
-  font-size: 5rem;
+  font-size: var(--font-size-h1);
   color: var(--terminal-green);
   text-shadow:
     0 0 30px var(--terminal-green-glow),
@@ -1376,7 +1383,7 @@
 
 .timeline-panel__emphasis-subtext {
   font-family: var(--font-mono);
-  font-size: 1.25rem;
+  font-size: var(--slide-text-compact);
   color: var(--terminal-green);
   text-shadow: var(--glow-text-green);
   opacity: 0.7;
@@ -1393,11 +1400,11 @@
   }
 
   .timeline-log__time {
-    font-size: 1rem;
+    font-size: var(--font-size-small);
   }
 
   .timeline-panel__text {
-    font-size: 1.5rem;
+    font-size: var(--font-size-body);
   }
 }
 
@@ -1437,7 +1444,7 @@
   }
 
   .timeline-log__time {
-    font-size: 0.85rem;
+    font-size: var(--font-size-small);
   }
 
   .timeline-hint-box {
@@ -1445,11 +1452,11 @@
   }
 
   .timeline-panel__text {
-    font-size: 1.25rem;
+    font-size: var(--slide-text-compact);
   }
 
   .timeline-panel__emphasis-icon {
-    font-size: 3rem;
+    font-size: var(--font-size-h3);
   }
 }
 
@@ -1460,7 +1467,7 @@
   }
 
   .timeline-panel__text--emphasis {
-    font-size: 1.5rem;
+    font-size: var(--font-size-body);
   }
 }
 
@@ -1517,8 +1524,8 @@
  * from the back of a conference room. */
 .bg-image-slide.context-advice-slide {
   align-items: center;
-  padding-top: 80px; /* clear the fixed-top-left title band */
-  padding-bottom: 100px; /* clear the bottom input bar */
+  padding-top: var(--space-2xl); /* clear the fixed-top-left title band */
+  padding-bottom: var(--space-3xl); /* clear the bottom input bar */
 }
 
 .context-advice-slide .context-advice-card {
@@ -1542,7 +1549,7 @@
 
 .context-advice-card__body {
   font-family: var(--font-mono);
-  font-size: 2.4rem;
+  font-size: var(--font-size-h3);
   line-height: 1.35;
   color: var(--terminal-white);
   animation: contextAdviceIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1594,17 +1601,17 @@
   }
 
   .vs-badge {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    font-size: var(--slide-text-compact);
+    margin-bottom: var(--space-sm);
   }
 
   .vs-fighter-name {
-    font-size: 0.8rem;
-    padding: 0.3rem 1rem;
+    font-size: var(--font-size-small);
+    padding: var(--space-sm) var(--space-md);
   }
 
   .vs-disclaimer-content {
-    font-size: 0.75rem;
+    font-size: var(--font-size-small);
   }
 
   /* Timeline slide */
@@ -1613,32 +1620,24 @@
   }
 
   .timeline-log__time {
-    font-size: 0.75rem;
+    font-size: var(--font-size-small);
   }
 
   .timeline-panel__text {
-    font-size: 1rem;
+    font-size: var(--font-size-small);
   }
 
   .timeline-panel__text--emphasis {
-    font-size: 1.25rem;
+    font-size: var(--slide-text-compact);
   }
 
   .timeline-panel__emphasis-icon {
-    font-size: 2.5rem;
+    font-size: var(--font-size-h3);
   }
 
   /* Bio slide */
   .bio-slide-image {
     max-width: 200px;
-  }
-
-  .bio-slide-content li {
-    font-size: 0.9rem;
-  }
-
-  .bio-slide-content p {
-    font-size: 0.9rem;
   }
 
   /* Background image slide */
@@ -1657,16 +1656,16 @@
   /* Slide items */
   .slide-item {
     grid-template-columns: 1rem 1fr;
-    gap: 0.5rem;
+    gap: var(--space-sm);
   }
 
   .slide-item--compact {
-    gap: 0.4rem;
+    gap: var(--space-sm);
   }
 
   .slide-item--dense {
     grid-template-columns: 1rem 1fr;
-    gap: 0.35rem;
+    gap: var(--space-sm);
   }
 }
 

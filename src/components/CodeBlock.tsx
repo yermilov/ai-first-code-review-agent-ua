@@ -29,7 +29,7 @@ const terminalTheme: { [key: string]: React.CSSProperties } = {
     lineHeight: 'var(--line-height-relaxed)',
     tabSize: 2,
     hyphens: 'none',
-    padding: '1rem',
+    padding: 'var(--space-md)',
     margin: 0,
     overflow: 'auto',
     background: 'transparent',
@@ -133,7 +133,7 @@ export function CodeBlock({
         wrapLines
         customStyle={{
           margin: 0,
-          padding: '1rem',
+          padding: 'var(--space-md)',
           background: 'transparent',
         }}
         codeTagProps={{

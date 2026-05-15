@@ -24,11 +24,11 @@ const MATRIX_STYLES = `
     top: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-xs);
     animation: matrixFall linear infinite;
     color: #7ee787;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: var(--font-size-small);
     line-height: 1.4;
     pointer-events: none;
     user-select: none;
@@ -143,10 +143,10 @@ function AgentsSectionSlideContent() {
         zIndex: 10,
         display: 'flex',
         alignItems: 'center',
-        gap: '2.5rem',
+        gap: 'var(--space-lg)',
         width: '100%',
         maxWidth: '1100px',
-        padding: '0 2rem',
+        padding: '0 var(--space-lg)',
       }}>
         {/* Left: title */}
         <div className="agents-section-title" style={{ flex: '0 0 auto' }}>

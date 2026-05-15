@@ -57,10 +57,10 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
           <SlideItem delay={0.08}>
             first most important skill in your marketplace to create is a skill to{' '}
             <Emphasis color="green">create skills</Emphasis>
@@ -100,7 +100,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
               position: 'relative',
               overflow: 'hidden',
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '0.72rem',
+              fontSize: 'var(--font-size-small)',
               color: 'rgba(126,231,135,0.85)',
               display: 'flex',
               flexDirection: 'column',
@@ -138,10 +138,10 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
 
             {/* Header */}
             <div style={{
-              padding: '6px 12px',
+              padding: 'var(--space-xs) var(--space-sm)',
               borderBottom: '1px solid rgba(126,231,135,0.2)',
               color: 'rgba(126,231,135,0.6)',
-              fontSize: '0.65rem',
+              fontSize: 'var(--font-size-small)',
               letterSpacing: '0.08em',
               animation: 'terminalPulse 3s ease-in-out infinite',
               flexShrink: 0,
@@ -153,7 +153,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
             {/* Scrollable content area */}
             <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
               {!content && !error && (
-                <div style={{ padding: '16px', color: 'rgba(126,231,135,0.5)' }}>
+                <div style={{ padding: 'var(--space-md)', color: 'rgba(126,231,135,0.5)' }}>
                   {['', '', ''].map((_, i) => (
                     <span key={i} style={{ animation: `loadingDot 1.4s ${i * 0.2}s ease-in-out infinite` }}>●</span>
                   ))}
@@ -162,7 +162,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
               )}
 
               {error && (
-                <div style={{ padding: '16px', color: 'rgba(240,136,62,0.7)' }}>
+                <div style={{ padding: 'var(--space-md)', color: 'rgba(240,136,62,0.7)' }}>
                   ✗ failed to fetch SKILL.md
                 </div>
               )}
@@ -172,7 +172,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
                   <div
                     ref={contentRef}
                     style={{
-                      padding: '12px 16px',
+                      padding: 'var(--space-sm) var(--space-md)',
                       whiteSpace: 'pre-wrap',
                       lineHeight: '1.6',
                       animation: 'skillMdScroll 120s linear infinite',
@@ -191,10 +191,10 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
 
             {/* Footer */}
             <div style={{
-              padding: '4px 12px',
+              padding: 'var(--space-xs) var(--space-sm)',
               borderTop: '1px solid rgba(126,231,135,0.2)',
               color: 'rgba(126,231,135,0.35)',
-              fontSize: '0.6rem',
+              fontSize: 'var(--font-size-small)',
               letterSpacing: '0.12em',
               flexShrink: 0,
               zIndex: 5,

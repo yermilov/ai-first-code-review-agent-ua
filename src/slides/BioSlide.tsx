@@ -26,17 +26,8 @@ function BioItem({ level, children }: { level: Level; children: React.ReactNode 
   const s = levelStyles[level];
 
   return (
-    <div
-      className="bio-item"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '2.5rem 1fr',
-        alignItems: 'baseline',
-        gap: '0.5rem',
-        opacity: s.opacity,
-      }}
-    >
-      <span style={{ color: s.prefixColor, fontWeight: 700, letterSpacing: '-0.02em' }}>
+    <div className="bio-item" style={{ opacity: s.opacity }}>
+      <span className="bio-item__prefix" style={{ color: s.prefixColor }}>
         {s.prefix}
       </span>
       <span style={{ color: 'var(--terminal-white)' }}>{children}</span>
@@ -62,16 +53,7 @@ export const BioSlide: SlideDefinition = {
   content: ({ revealStage }) => (
     <div className="bio-slide">
       <div className="bio-slide-content">
-        <p
-          className="bio-subtitle"
-          style={{
-            color: 'var(--terminal-orange)',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-            textShadow: '0 0 16px rgba(240, 136, 62, 0.35)',
-          }}
-        >
+        <p className="bio-subtitle">
           9 років у компанії Superhuman (раніше відомої як Grammarly)
         </p>
 

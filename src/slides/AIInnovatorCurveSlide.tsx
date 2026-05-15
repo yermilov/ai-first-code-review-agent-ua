@@ -97,7 +97,7 @@ function AIInnovatorCurveContent() {
   const bulletLineH = 28;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-sm)', width: '100%' }}>
       <style>{CURVE_STYLES}</style>
 
       <div className="section-title-header" style={{ textAlign: 'center' }}>

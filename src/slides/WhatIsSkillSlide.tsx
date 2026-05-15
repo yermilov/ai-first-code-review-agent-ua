@@ -59,8 +59,8 @@ export const WhatIsSkillSlide: SlideDefinition = {
             display: 'flex',
             height: '100%',
             alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0 0.25rem',
+            gap: 'var(--space-sm)',
+            padding: '0 var(--space-xs)',
           }}
         >
           {/* Left astronaut */}
@@ -94,7 +94,7 @@ export const WhatIsSkillSlide: SlideDefinition = {
               textAlign: 'left',
               background: 'rgba(10,14,20,0.8)',
               borderRadius: '10px',
-              padding: '0.75rem 1rem',
+              padding: 'var(--space-sm) var(--space-md)',
               backdropFilter: 'blur(4px)',
               border: '1px solid rgba(255,255,255,0.07)',
             }}

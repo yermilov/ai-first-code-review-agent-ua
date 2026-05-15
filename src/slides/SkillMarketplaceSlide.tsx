@@ -14,11 +14,11 @@ export const SkillMarketplaceSlide: SlideDefinition = {
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
-      <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--space-sm)' }}>
+      <div style={{ display: 'flex', flex: 1, gap: 'var(--space-lg)', alignItems: 'flex-start', minHeight: 0 }}>
 
         {/* Left column — bullets swap on reveal */}
-        <div key={revealStage} style={{ flex: '0 0 45%', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        <div key={revealStage} style={{ flex: '0 0 45%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
           {revealStage === 0 ? (
             <>
               <SlideItem delay={0.05}>

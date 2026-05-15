@@ -39,14 +39,14 @@ export const BreakOutOfCodingSlide: SlideDefinition = {
     </>
   ),
   content: ({ revealStage }) => (
-    <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
       {/* Left column: Ukrainian conceptual bullets */}
       <div
         style={{
           flex: '0 0 50%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.5rem',
+          gap: 'var(--space-sm)',
           textAlign: 'left',
         }}
       >
@@ -63,7 +63,7 @@ export const BreakOutOfCodingSlide: SlideDefinition = {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.5rem',
+          gap: 'var(--space-sm)',
           textAlign: 'left',
         }}
       >

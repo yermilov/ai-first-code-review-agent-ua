@@ -89,7 +89,7 @@ const BAR_COLOR: Record<DayStatus, string> = {
 
 function UptimeBars({ history }: { history: DayStatus[] }) {
   return (
-    <div style={{ display: 'flex', gap: '1.5px', alignItems: 'flex-end', height: '20px' }}>
+    <div style={{ display: 'flex', gap: 'var(--space-xs)', alignItems: 'flex-end', height: '20px' }}>
       {history.map((day, i) => (
         <div
           key={i}
@@ -115,15 +115,15 @@ function ComponentHistoryRow({ row }: { row: ComponentRow }) {
       : '#f08840';
 
   return (
-    <div style={{ marginBottom: '0.55rem' }}>
+    <div style={{ marginBottom: 'var(--space-sm)' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',
-        marginBottom: '3px',
+        marginBottom: 'var(--space-xs)',
       }}>
         <span style={{
-          fontSize: '0.7rem',
+          fontSize: 'var(--font-size-small)',
           color: 'var(--terminal-white)',
           fontFamily: 'var(--font-mono)',
           overflow: 'hidden',
@@ -134,7 +134,7 @@ function ComponentHistoryRow({ row }: { row: ComponentRow }) {
           {row.name}
         </span>
         <span style={{
-          fontSize: '0.65rem',
+          fontSize: 'var(--font-size-small)',
           color: uptimeColor,
           fontFamily: 'var(--font-mono)',
           flexShrink: 0,
@@ -210,8 +210,8 @@ function StatusHistoryPanel({
       {/* Header */}
       <div style={{
         background: 'rgba(240,136,62,0.12)',
-        padding: '0.28rem 0.75rem',
-        fontSize: '0.7rem',
+        padding: 'var(--space-xs) var(--space-sm)',
+        fontSize: 'var(--font-size-small)',
         color: 'var(--terminal-orange)',
         fontFamily: 'var(--font-mono)',
         borderBottom: '1px solid rgba(240,136,62,0.35)',
@@ -222,18 +222,18 @@ function StatusHistoryPanel({
         alignItems: 'center',
       }}>
         <span>{label}</span>
-        <span style={{ opacity: 0.55, fontSize: '0.62rem' }}>90d uptime</span>
+        <span style={{ opacity: 0.55, fontSize: 'var(--font-size-small)' }}>90d uptime</span>
       </div>
 
       {/* Body */}
       <div style={{
         flex: 1,
-        padding: '0.6rem 0.85rem 0.4rem',
+        padding: 'var(--space-sm) var(--space-sm) var(--space-sm)',
         overflowY: 'auto',
         minHeight: 0,
       }}>
         {loading && (
-          <span style={{ fontSize: '0.72rem', color: 'var(--terminal-white)', opacity: 0.4, fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--terminal-white)', opacity: 0.4, fontFamily: 'var(--font-mono)' }}>
             fetching...
           </span>
         )}
@@ -245,13 +245,13 @@ function StatusHistoryPanel({
       {/* Footer */}
       <div style={{
         borderTop: '1px solid rgba(240,136,62,0.15)',
-        padding: '0.2rem 0.85rem',
+        padding: 'var(--space-xs) var(--space-sm)',
         display: 'flex',
-        gap: '1rem',
+        gap: 'var(--space-md)',
         flexShrink: 0,
       }}>
         {(['operational', 'minor', 'major', 'critical'] as DayStatus[]).map(s => (
-          <span key={s} style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.58rem', color: '#666', fontFamily: 'var(--font-mono)' }}>
+          <span key={s} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)', fontSize: 'var(--font-size-small)', color: '#666', fontFamily: 'var(--font-mono)' }}>
             <span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '1px', background: BAR_COLOR[s] }} />
             {s}
           </span>
@@ -284,7 +284,7 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
       <div style={{
         display: 'flex',
-        gap: '2rem',
+        gap: 'var(--space-lg)',
         flex: 1,
         minHeight: 0,
         alignItems: 'stretch',
@@ -311,7 +311,7 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.75rem',
+            gap: 'var(--space-sm)',
             minWidth: 0,
             minHeight: 0,
             maxHeight: 'calc(var(--vh-full) - 310px)',
