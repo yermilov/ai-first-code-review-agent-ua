@@ -57,10 +57,10 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
           <SlideItem delay={0.08}>
             claude is still not very good at loading the <Emphasis color="orange">right skill</Emphasis>
           </SlideItem>
@@ -77,8 +77,8 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.5rem',
-            '--font-size-code': '0.85rem',
+            gap: 'var(--space-sm)',
+            '--font-size-code': 'var(--font-size-small)',
           } as React.CSSProperties}
         >
           {!showExamples ? (
@@ -87,7 +87,7 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
               <CodeBlock language="json" filename="hooks.json" code={HOOKS_CODE} />
             </>
           ) : (
-            <div className="activator-panel-reveal" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div className="activator-panel-reveal" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
               <CodeBlock language="bash" filename="prompt injection" code={PROMPT_INJECT_EXAMPLE} />
               <CodeBlock language="bash" filename="tool blocking" code={TOOL_BLOCK_EXAMPLE} />
             </div>

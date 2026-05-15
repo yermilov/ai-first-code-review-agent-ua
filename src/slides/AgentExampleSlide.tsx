@@ -17,10 +17,10 @@ function AgentExampleContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
           {revealStage >= 1 && (
             <SlideItem delay={0} reveal>
               built an <Emphasis color="green">in-house code review agent</Emphasis> based on Claude Code (+ Codex) instead of generic boxed solutions

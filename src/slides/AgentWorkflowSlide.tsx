@@ -65,10 +65,10 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
           <SlideItem delay={0.08}>
             you need an <Emphasis color="green">environment</Emphasis> for agent execution — start locally with human-controlled proof of concepts, then graduate to CI or a dedicated Kubernetes cluster
           </SlideItem>
@@ -100,7 +100,7 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
           id="agent-workflow-right"
           style={{
             flex: 1,
-            '--font-size-code': '0.82rem',
+            '--font-size-code': 'var(--font-size-small)',
           } as React.CSSProperties}
         >
           {revealStage === 1 && (

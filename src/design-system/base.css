@@ -54,17 +54,17 @@
  * Higher specificity than `.slide h2` so font-size override sticks. */
 .slide h2.slide-title {
   position: absolute;
-  top: 40px;
-  left: 40px;
+  top: var(--space-lg);
+  left: 0;
   margin: 0;
-  font-size: 3.5rem;
+  font-size: var(--font-size-h2);
   font-weight: 600;
   text-align: left;
   color: var(--terminal-green);
   letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-tight);
   text-shadow: var(--glow-text-green);
-  max-width: calc(100% - 80px);
+  max-width: 100%;
   z-index: 3;
 }
 

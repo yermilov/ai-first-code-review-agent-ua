@@ -21,7 +21,7 @@ export function SectionTitleSlide({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '1.25rem',
+        gap: 'var(--space-md)',
         width: '100%',
       }}
     >

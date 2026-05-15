@@ -279,23 +279,23 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: var(--space-md);
     background: var(--terminal-bg);
     color: var(--terminal-white);
     font-family: var(--font-mono);
     text-align: center;
-    padding: 2rem;
+    padding: var(--space-lg);
     pointer-events: none;
   }
   .rotate-hint__icon {
-    font-size: 4rem;
+    font-size: var(--font-size-h2);
     color: var(--terminal-orange);
     line-height: 1;
     transform: rotate(-90deg);
     text-shadow: var(--glow-text-orange);
   }
   .rotate-hint__text {
-    font-size: 1.125rem;
+    font-size: var(--font-size-small);
     color: var(--terminal-white-dim);
     max-width: 18rem;
   }

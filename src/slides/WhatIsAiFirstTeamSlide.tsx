@@ -200,12 +200,12 @@ export const WhatIsAiFirstTeamSlide: SlideDefinition = {
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.8rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--space-sm)' }}>
       {/* Two-column body */}
-      <div style={{ display: 'flex', flex: 1, gap: '2rem', alignItems: 'flex-start', minHeight: 0 }}>
+      <div style={{ display: 'flex', flex: 1, gap: 'var(--space-lg)', alignItems: 'flex-start', minHeight: 0 }}>
 
         {/* Left: 40% — progressive text reveals */}
-        <div style={{ flex: '0 0 40%', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+        <div style={{ flex: '0 0 40%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
 
           <SlideItem delay={0.05}>
             <Emphasis color="orange">simplest definition:</Emphasis> a team of ai-first engineers

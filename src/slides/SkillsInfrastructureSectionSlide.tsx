@@ -3,7 +3,7 @@ import { SlideDefinition } from '../types/slides';
 
 function SkillsInfrastructureSectionSlideContent() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-md)', width: '100%' }}>
       <div className="section-title-header" style={{ textAlign: 'center' }}>
         <h2>
           <span className="text-dim">$</span>{' '}

@@ -35,7 +35,7 @@ function DisclaimerItem({ level, children }: { level: Level; children: React.Rea
         display: 'grid',
         gridTemplateColumns: '2.5rem 1fr',
         alignItems: 'start',
-        gap: '0.75rem',
+        gap: 'var(--space-sm)',
         opacity: s.opacity,
       }}
     >

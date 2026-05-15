@@ -44,10 +44,10 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
 
         {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
           {revealStage >= 1 && (
             <SlideItem delay={0} reveal>
               since agents work autonomously, you need an <Emphasis color="green">observability system</Emphasis> — you can't review every decision, but you must be able to audit them
@@ -81,7 +81,7 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
           id="agent-traces-right"
           style={{
             flex: 1,
-            '--font-size-code': '0.82rem',
+            '--font-size-code': 'var(--font-size-small)',
           } as React.CSSProperties}
         >
           {revealStage >= 1 && revealStage < 3 && (
