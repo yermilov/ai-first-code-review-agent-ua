@@ -65,7 +65,7 @@
   --font-size-h1: clamp(2rem, 4vw, 5rem);
   --font-size-h2: clamp(2rem, 4vw, 5rem);
   --font-size-h3: clamp(1.5rem, 3vw, 3rem);
-  --font-size-body: clamp(1.2rem, 2vw, 2.5rem);
+  --font-size-body: clamp(1rem, 1.6vw, 2rem);
   --font-size-code: clamp(0.9rem, 1.3vw, 1.5rem);
   --font-size-input: clamp(0.95rem, 1vw, 1.25rem);
   --font-size-small: clamp(0.8rem, 0.8vw, 1rem);

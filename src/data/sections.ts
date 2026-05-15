@@ -31,5 +31,5 @@ export const SECTIONS: SectionData[] = [
       { command: 'skills --agents', image: agentsSectionThumbImage, alt: 'Agents', desc: '// autonomous and semi-autonomous workflows', slideId: 'agents-section' },
     ],
   },
-  { part: 3, image: agendaOrgImage,      alt: 'AI-First Organization', desc: '// ai-first organization', slideId: 'agenda-org' },
+  { part: 3, image: agendaOrgImage,      alt: 'AI-First Organization', desc: '// ai-first організація', slideId: 'agenda-org' },
 ];

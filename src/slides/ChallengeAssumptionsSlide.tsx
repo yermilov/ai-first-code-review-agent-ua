@@ -1,68 +1,41 @@
+import { ReactNode } from 'react';
 import { SlideDefinition } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 
+const QUESTIONS: ReactNode[] = [
+  <>якщо ми релізимо фічі у 10 разів швидше — чи встигатимемо ми так само швидко <Emphasis color="orange">ухвалювати рішення</Emphasis>?</>,
+  <>чи потрібно тижнями писати й обговорювати дизайн-доки, якщо <Emphasis color="green">прототип</Emphasis> можна запустити швидше, ніж пишеться документ про нього?</>,
+  <>чи можемо ми обміняти частину <Emphasis color="green">стандартів аптайму</Emphasis> на швидкість розробки?</>,
+  <>чи варто оцінювати <Emphasis color="orange">AI-кодинг скіли</Emphasis> на технічних інтерв'ю?</>
+];
+
 export const ChallengeAssumptionsSlide: SlideDefinition = {
   id: 'challenge-assumptions',
-  title: (
-    <>
-      <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">org</span>{' '}
-      <span className="text-orange">--rethink</span>
-    </>
-  ),
   content: ({ revealStage }) => (
     <>
+      <h2>
+        <span className="text-dim">//</span>{' '}
+        <span className="text-green">складні</span>{' '}
+        <span className="text-orange">питання</span>
+      </h2>
+
       <div
         style={{
           textAlign: 'left',
-          maxWidth: '1000px',
+          maxWidth: '1400px',
           width: '100%',
           margin: '0 auto',
         }}
       >
-        <SlideItem delay={0.06}>
-          if we deliver 2×–10× faster, will we be able to <Emphasis color="orange">make decisions</Emphasis> as fast?
-        </SlideItem>
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0}>
-            do we need weeks writing design docs if we can build <Emphasis color="green">prototypes faster</Emphasis> than we can write the document?
-          </SlideItem>
-        )}
-
-        {revealStage >= 2 && (
-          <SlideItem delay={0}>
-            do we need to <Emphasis color="orange">plan in quarters</Emphasis> if we can ship a feature two weeks after inception and get user feedback one month after?
-          </SlideItem>
-        )}
-
-        {revealStage >= 3 && (
-          <SlideItem delay={0}>
-            can we trade some <Emphasis color="orange">uptime standards</Emphasis> for development velocity?
-          </SlideItem>
-        )}
-
-        {revealStage >= 4 && (
-          <SlideItem delay={0}>
-            can we relax <Emphasis color="green">rigorous code review</Emphasis> standards to allow AI-assisted code reviews?
-          </SlideItem>
-        )}
-
-        {revealStage >= 5 && (
-          <SlideItem delay={0}>
-            should we evaluate <Emphasis color="orange">AI-coding skills</Emphasis> in interviews?
-          </SlideItem>
-        )}
-
-        {revealStage >= 6 && (
-          <SlideItem delay={0}>
-            what discussions are <Emphasis color="orange">no longer meaningful</Emphasis> when code generation is increasingly cheap — do we need architecture if code can be fully regenerated weekly?
-          </SlideItem>
+        {QUESTIONS.map((q, i) =>
+          revealStage >= i ? (
+            <SlideItem key={i} delay={i === 0 ? 0.06 : 0}>{q}</SlideItem>
+          ) : null,
         )}
       </div>
     </>
   ),
-  maxRevealStages: 6,
+  maxRevealStages: QUESTIONS.length - 1,
   notes:
-    "These aren't rhetorical. Each question is a team conversation waiting to happen. Pick the two that would change the most for your org and start there.",
+    "Закриваюча секція AI-first: ці питання — не риторичні. Кожне з них — командна розмова, яка чекає, коли її почнуть. Запропонуйте слухачам обрати два питання, що найбільше змінять їхню організацію, і починати з них.",
 };

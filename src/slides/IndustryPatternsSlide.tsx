@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { exportRegistry } from '../components/exportRegistry';
+import releaseCalendar from '../assets/anthropic-release-calendar.jpg?url';
+import statusComponentsFallback from '../assets/status-components.json';
+import statusIncidentsFallback from '../assets/status-incidents.json';
 
 const bullets = [
-  <>recent progress from the companies behind AI coding agents tools shows a clear leap forward in software engineering processes</>,
-  <>Anthropic releases Claude Code <Emphasis color="orange">15–20 internal releases per day</Emphasis>, including major new features every couple of days</>,
-  <>OpenAI claimed to build and ship <Emphasis color="green">Agent Builder in 6 weeks</Emphasis>; Anysphere continues to trailblaze agentic IDEs with Cursor</>,
-  <>these companies <Emphasis color="orange">build the tools they use</Emphasis> — synergy between engineering culture and tooling; tight feedback loops between tool developers and tool users</>,
-  <>they ship <Emphasis color="green">a lot of features, fast</Emphasis> — features are unpolished but receive immediate user feedback; "vibes" and direct feedback replace A/B tests and lengthy UX studies; features that don't resonate are removed without mercy</>,
-  <>they tolerate frequent outages and performance degradations — and it <Emphasis color="green">doesn't hurt</Emphasis> company perception from users</>,
+  <>Anthropic релізить нову Claude Code/Desktop фічу <Emphasis color="orange">майже щодня</Emphasis></>,
+  <>ці фічі, звісно, часто недополіровані, але команда отримує миттєвий <Emphasis color="green">вайб-чек</Emphasis> замість довгих A/B-тестів і UX-досліджень; що не зайшло користувачам — так само легко видаляється</>,
+  <>ціна — часті outages та баги в продакшені, але парадоксально, що це <Emphasis color="orange">майже не шкодить</Emphasis> сприйняттю компанії з боку користувачів та інвесторів</>,
 ];
 
 // --- types ---
@@ -78,6 +78,24 @@ function calcUptime(history: DayStatus[]): number {
   return Math.round((ok / history.length) * 1000) / 10;
 }
 
+function buildRows(
+  compData: { components?: ApiComponent[] } | null | undefined,
+  incData: { incidents?: ApiIncident[] } | null | undefined,
+  maxComponents: number,
+): ComponentRow[] {
+  const components: ApiComponent[] = compData?.components ?? [];
+  const incidents: ApiIncident[] = incData?.incidents ?? [];
+  const leaves = components
+    .filter(c => !c.group && c.name !== 'Visit our website')
+    .slice(0, maxComponents);
+  return leaves.map(c => {
+    const history = buildHistory(incidents, c.id);
+    return { id: c.id, name: c.name, history, uptime: calcUptime(history) };
+  });
+}
+
+// Semantic per-status colors. Treated like SVG fill constants per the design-system spec —
+// these are an enum mapping, not arbitrary chrome colors.
 const BAR_COLOR: Record<DayStatus, string> = {
   operational: '#3fb950',
   minor: '#f0c040',
@@ -89,16 +107,16 @@ const BAR_COLOR: Record<DayStatus, string> = {
 
 function UptimeBars({ history }: { history: DayStatus[] }) {
   return (
-    <div style={{ display: 'flex', gap: 'var(--space-xs)', alignItems: 'flex-end', height: '20px' }}>
+    <div style={{ display: 'flex', gap: '3px', alignItems: 'flex-end', height: '36px' }}>
       {history.map((day, i) => (
         <div
           key={i}
           title={day}
           style={{
             flex: 1,
-            height: day === 'operational' ? '14px' : day === 'minor' ? '16px' : '20px',
+            height: day === 'operational' ? '24px' : day === 'minor' ? '30px' : '36px',
             background: BAR_COLOR[day],
-            borderRadius: '1px',
+            borderRadius: '2px',
             opacity: 0.9,
           }}
         />
@@ -109,22 +127,21 @@ function UptimeBars({ history }: { history: DayStatus[] }) {
 
 function ComponentHistoryRow({ row }: { row: ComponentRow }) {
   const uptimeColor = row.uptime >= 99.5
-    ? 'var(--terminal-green)'
+    ? 'var(--dou-mint)'
     : row.uptime >= 98
-      ? '#f0c040'
-      : '#f08840';
+      ? BAR_COLOR.minor
+      : BAR_COLOR.major;
 
   return (
-    <div style={{ marginBottom: 'var(--space-sm)' }}>
+    <div style={{ marginBottom: '1rem' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'baseline',
-        marginBottom: 'var(--space-xs)',
+        marginBottom: '6px',
       }}>
         <span style={{
-          fontSize: 'var(--font-size-small)',
-          color: 'var(--terminal-white)',
+          color: 'var(--dou-white)',
           fontFamily: 'var(--font-mono)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -134,7 +151,6 @@ function ComponentHistoryRow({ row }: { row: ComponentRow }) {
           {row.name}
         </span>
         <span style={{
-          fontSize: 'var(--font-size-small)',
           color: uptimeColor,
           fontFamily: 'var(--font-mono)',
           flexShrink: 0,
@@ -152,16 +168,19 @@ function StatusHistoryPanel({
   componentsUrl,
   incidentsUrl,
   maxComponents = 5,
-  onReady,
+  onComplete,
 }: {
   label: string;
   componentsUrl: string;
   incidentsUrl: string;
   maxComponents?: number;
-  onReady?: () => void;
+  onComplete?: (err?: Error) => void;
 }) {
-  const [rows, setRows] = useState<ComponentRow[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Seed with the bundled snapshot so the panel renders fully populated even
+  // on a flaky connection; swap to live data once the fetch resolves.
+  const [rows, setRows] = useState<ComponentRow[]>(() =>
+    buildRows(statusComponentsFallback, statusIncidentsFallback, maxComponents)
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -171,88 +190,35 @@ function StatusHistoryPanel({
       fetch(incidentsUrl).then(r => r.json()),
     ]).then(([compData, incData]) => {
       if (cancelled) return;
-
-      const components: ApiComponent[] = compData.components ?? [];
-      const incidents: ApiIncident[] = incData.incidents ?? [];
-
-      const leaves = components
-        .filter(c => !c.group && c.name !== 'Visit our website')
-        .slice(0, maxComponents);
-
-      const built: ComponentRow[] = leaves.map(c => {
-        const history = buildHistory(incidents, c.id);
-        return { id: c.id, name: c.name, history, uptime: calcUptime(history) };
-      });
-
-      setRows(built);
-      setLoading(false);
-      onReady?.();
-    }).catch(() => {
-      if (!cancelled) {
-        setLoading(false);
-        onReady?.();
-      }
+      setRows(buildRows(compData, incData, maxComponents));
+      onComplete?.();
+    }).catch((err: Error) => {
+      if (!cancelled) onComplete?.(err);
     });
 
     return () => { cancelled = true; };
-  }, [componentsUrl, incidentsUrl, maxComponents, onReady]);
+  }, [componentsUrl, incidentsUrl, maxComponents, onComplete]);
 
   return (
-    <div style={{
-      border: '1px solid var(--terminal-orange)',
-      borderRadius: '4px',
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      minHeight: 0,
-    }}>
+    <div className="industry-patterns-status">
       {/* Header */}
-      <div style={{
-        background: 'rgba(240,136,62,0.12)',
-        padding: 'var(--space-xs) var(--space-sm)',
-        fontSize: 'var(--font-size-small)',
-        color: 'var(--terminal-orange)',
-        fontFamily: 'var(--font-mono)',
-        borderBottom: '1px solid rgba(240,136,62,0.35)',
-        letterSpacing: '0.05em',
-        flexShrink: 0,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
+      <div className="industry-patterns-status__header">
         <span>{label}</span>
-        <span style={{ opacity: 0.55, fontSize: 'var(--font-size-small)' }}>90d uptime</span>
+        <span className="industry-patterns-status__header-meta">90d uptime</span>
       </div>
 
       {/* Body */}
-      <div style={{
-        flex: 1,
-        padding: 'var(--space-sm) var(--space-sm) var(--space-sm)',
-        overflowY: 'auto',
-        minHeight: 0,
-      }}>
-        {loading && (
-          <span style={{ fontSize: 'var(--font-size-small)', color: 'var(--terminal-white)', opacity: 0.4, fontFamily: 'var(--font-mono)' }}>
-            fetching...
-          </span>
-        )}
+      <div className="industry-patterns-status__body">
         {rows.map(row => (
           <ComponentHistoryRow key={row.id} row={row} />
         ))}
       </div>
 
       {/* Footer */}
-      <div style={{
-        borderTop: '1px solid rgba(240,136,62,0.15)',
-        padding: 'var(--space-xs) var(--space-sm)',
-        display: 'flex',
-        gap: 'var(--space-md)',
-        flexShrink: 0,
-      }}>
+      <div className="industry-patterns-status__footer">
         {(['operational', 'minor', 'major', 'critical'] as DayStatus[]).map(s => (
-          <span key={s} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)', fontSize: 'var(--font-size-small)', color: '#666', fontFamily: 'var(--font-mono)' }}>
-            <span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '1px', background: BAR_COLOR[s] }} />
+          <span key={s} className="industry-patterns-status__legend-item">
+            <span className="industry-patterns-status__legend-swatch" style={{ background: BAR_COLOR[s] }} />
             {s}
           </span>
         ))}
@@ -267,86 +233,69 @@ const SLIDE_ID = 'industry-patterns';
 
 function IndustryPatternsContent({ revealStage }: SlideContentProps) {
   const visibleCount = Math.min(revealStage + 1, bullets.length);
-  const showStatus = revealStage >= 5;
-  const [readyCount, setReadyCount] = useState(0);
-  const bumpReady = () => setReadyCount(c => c + 1);
-
-  // Mark slide settled for PDF export once both status panels finish their fetches.
-  // When status panels aren't visible (earlier reveal stages), we don't fetch
-  // and don't need to signal — the exporter always captures at max reveal anyway.
-  useEffect(() => {
-    if (showStatus && readyCount >= 2) {
+  const showStatus = revealStage >= 2;
+  const handleStatusLoaded = useCallback((err?: Error) => {
+    if (err) {
+      exportRegistry.markSlideError(SLIDE_ID, err.message);
+    } else {
       exportRegistry.markSlideSettled(SLIDE_ID);
     }
-  }, [showStatus, readyCount]);
+  }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
-      <div style={{
-        display: 'flex',
-        gap: 'var(--space-lg)',
-        flex: 1,
-        minHeight: 0,
-        alignItems: 'stretch',
-      }}>
+    <>
+      <h2>
+        <span className="text-dim">//</span>{' '}
+        <span className="text-green">AI-first</span>{' '}
+        <span className="text-orange">організація</span>
+      </h2>
+
+      <div className="industry-patterns-body">
         {/* Left: bullets */}
-        <div style={{
-          flex: showStatus ? '0 0 52%' : '1',
-          maxWidth: showStatus ? '52%' : '1000px',
-          margin: showStatus ? undefined : '0 auto',
-          fontSize: showStatus ? '0.85em' : undefined,
-          textAlign: 'left',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}>
+        <div className="industry-patterns-bullets">
           {bullets.slice(0, visibleCount).map((bullet, i) => (
             <SlideItem key={i} delay={0}>{bullet}</SlideItem>
           ))}
         </div>
 
-        {/* Right: uptime history panels */}
-        {showStatus && (
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'var(--space-sm)',
-            minWidth: 0,
-            minHeight: 0,
-            maxHeight: 'calc(var(--vh-full) - 310px)',
-          }}>
-            <StatusHistoryPanel
-              label="status.claude.com"
-              componentsUrl="https://status.claude.com/api/v2/components.json"
-              incidentsUrl="https://status.claude.com/api/v2/incidents.json?page_size=100"
-              onReady={bumpReady}
-            />
-            <StatusHistoryPanel
-              label="status.openai.com"
-              componentsUrl="https://status.openai.com/api/v2/components.json"
-              incidentsUrl="https://status.openai.com/api/v2/incidents.json?page_size=100"
-              onReady={bumpReady}
+        {/* Right: bare release-calendar image on stages 0–1, framed status
+            panel on stage 2. */}
+        {showStatus ? (
+          <div className="industry-patterns-panel" key="status">
+            <div className="industry-patterns-panel__viewport">
+              <StatusHistoryPanel
+                label="status.claude.com"
+                componentsUrl="https://status.claude.com/api/v2/components.json"
+                incidentsUrl="https://status.claude.com/api/v2/incidents.json?page_size=100"
+                onComplete={handleStatusLoaded}
+              />
+            </div>
+          </div>
+        ) : (
+          <div
+            className={
+              'industry-patterns-image' +
+              (revealStage >= 1 ? ' industry-patterns-image--zoom' : '')
+            }
+            key={`image-${revealStage >= 1 ? 'zoom' : 'static'}`}
+          >
+            <img
+              src={releaseCalendar}
+              alt="Календар релізів Anthropic — 52 дні релізів від Claude Team"
+              loading="lazy"
             />
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
 
 export const IndustryPatternsSlide: SlideDefinition = {
-  id: SLIDE_ID,
-  title: (
-    <>
-      <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">org</span>{' '}
-      <span className="text-orange">--industry</span>
-    </>
-  ),
+  id: 'industry-patterns',
   content: (props: SlideContentProps) => <IndustryPatternsContent {...props} />,
-  maxRevealStages: 5,
+  maxRevealStages: bullets.length - 1,
   asyncSettle: true,
   notes:
-    'The meta-lesson: these companies eat their own dog food. That creates a feedback loop no external user study can replicate.',
+    'Мета-урок: Anthropic їсть власну собачу їжу — будує інструменти, якими користується сама. Це створює feedback loop, який жодне зовнішнє юзер-дослідження не повторить. Stages 0–1: календар релізів — 15–20 внутрішніх збірок на день, мажорні фічі раз на кілька днів. Stage 2: жива сторінка status.claude.com — часті outage не вбивають сприйняття, бо швидкість важливіша за полірування.',
 };

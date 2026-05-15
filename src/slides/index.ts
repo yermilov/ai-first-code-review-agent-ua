@@ -1,7 +1,6 @@
 import { TitleSlide } from './TitleSlide';
 import { BioSlide } from './BioSlide';
 import { TimelineSlide } from './TimelineSlide';
-import { ClaudeCodeSlide } from './ClaudeCodeSlide';
 import { IntroSlide } from './IntroSlide';
 import { AgendaSlide } from './AgendaSlide';
 import { EngineerSectionSlide } from './EngineerSectionSlide';
@@ -31,10 +30,8 @@ import { AgentWorkflowSlide } from './AgentWorkflowSlide';
 import { AgentTracesSlide } from './AgentTracesSlide';
 import { AgentExampleSlide } from './AgentExampleSlide';
 import { IndustryPatternsSlide } from './IndustryPatternsSlide';
-import { OrgDecisionSlide } from './OrgDecisionSlide';
 import { HumanAiEngSlide } from './HumanAiEngSlide';
-import { AutonomousAiSlide } from './AutonomousAiSlide';
 import { ChallengeAssumptionsSlide } from './ChallengeAssumptionsSlide';
 import { FinalSlide } from './FinalSlide';
 
-export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, AIInnovatorCurveSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentWorkflowSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, IndustryPatternsSlide, OrgDecisionSlide, AutonomousAiSlide, HumanAiEngSlide, ChallengeAssumptionsSlide, ClaudeCodeSlide, FinalSlide];
+export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentWorkflowSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];
