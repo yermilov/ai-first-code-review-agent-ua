@@ -179,9 +179,18 @@ The `.image-slide` class automatically:
 
 The `.slide` container has `max-height: 100%; overflow: hidden` as a hard CSS guard. If content overflows the viewport and overlaps the input bar:
 
-- Reduce font sizes and margins first (prefer `1.3–1.5rem` for body text in dense slides)
-- Use `calc(var(--vh-full) - 220px)` (or similar offset) for image/media containers so they leave room for the timer and input bar
-- The standard image-slide pattern already handles this via `.image-slide` height constraint
+- **Accumulating bullets that run out of room → use a sliding window, NOT a smaller font.** Bullets on a slide are spoken in order, so older points have already done their job by the time the next two are on screen. Drop them. Shrinking the font hurts projector legibility and is almost never the right answer.
+  ```tsx
+  const WINDOW = 3;
+  const firstVisible = Math.max(0, revealStage - WINDOW + 1);
+  const isVisible = (i: number) => revealStage >= i && i >= firstVisible;
+  // …
+  {isVisible(0) && <SlideItem>…</SlideItem>}
+  {isVisible(1) && <SlideItem>…</SlideItem>}
+  ```
+- For image/media containers, use `calc(var(--vh-full) - 220px)` (or similar offset) so they leave room for the timer and input bar.
+- The standard image-slide pattern already handles this via `.image-slide` height constraint.
+- Last-resort font tightening: `1.3–1.5rem` body text in genuinely dense reference slides where every bullet must stay visible at once.
 
 Example fix pattern for overflow:
 ```css
@@ -189,6 +198,31 @@ Example fix pattern for overflow:
   max-height: calc(var(--vh-full) - 220px);
   object-fit: contain;
 }
+```
+
+### Edge-to-edge backdrops (e.g. space, photo, fullbleed art)
+
+Don't wrap the backdrop in an inner rounded container — that frame will clip
+anything (like the astronauts on `WhatIsSkillSlide`) that wants to reach the
+slide edges. Set `SlideDefinition.background` to a layered CSS background
+instead; `Slide.tsx` applies it to the `.slide` element itself, and child
+content can then float freely over the full-bleed art.
+
+```tsx
+import bgImg from '../assets/bg.png?url';
+
+const SLIDE_BG = `
+  linear-gradient(180deg,
+    rgba(10,14,20,0.6) 0%,
+    rgba(10,14,20,0.35) 50%,
+    rgba(10,14,20,0.6) 100%),
+  url(${bgImg}) center/cover no-repeat
+`;
+
+export const MySlide: SlideDefinition = {
+  background: SLIDE_BG,
+  // …
+};
 ```
 
 ### Slide Content Classes

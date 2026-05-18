@@ -1,80 +1,92 @@
+import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import superhumanAidevImage from '../assets/superhuman-aidev.png?url';
-import diagramImage from '../assets/skill-distribution-diagram.png?url';
+
+// Ported from dou-days-2026 #slide-13, second half only — the DIY/symlink
+// pre-marketplace bullets were dropped; we keep just the four Anthropic-
+// marketplace bullets and the Superhuman AI Dev screenshot on the right.
+const BULLETS: ReactNode[] = [
+  <>Anthropic має <Emphasis color="green">marketplaces</Emphasis> — гіт репозиторії які claude code викачує регулярно і лінкує</>,
+  <>створіть ОДИН центральний внутрішній <Emphasis color="orange">marketplace</Emphasis> у вашій організації</>,
+  <>використовуйте плагіни для <Emphasis color="orange">неймспейсингу</Emphasis> — кожен користувач сам обирає, які плагіни встановити</>,
+  <>якщо є можливість — використовуйте <Emphasis color="green">Claude Enterprise</Emphasis>, щоб примусово встановити marketplace і певні плагіни всім в організації</>,
+];
 
 export const SkillMarketplaceSlide: SlideDefinition = {
   id: 'skill-marketplace',
-  maxRevealStages: 1,
+  // 4 bullets across reveal stages 0..3.
+  maxRevealStages: BULLETS.length - 1,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">skills</span>{' '}
-      <span className="text-orange">--marketplace</span>
+      <span className="text-green">як шарити між</span>{' '}
+      <span className="text-orange">агентами і людьми?</span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: 'var(--space-sm)' }}>
-      <div style={{ display: 'flex', flex: 1, gap: 'var(--space-lg)', alignItems: 'flex-start', minHeight: 0 }}>
+  content: ({ revealStage }: SlideContentProps) => {
+    const visibleCount = revealStage + 1;
 
-        {/* Left column — bullets swap on reveal */}
-        <div key={revealStage} style={{ flex: '0 0 45%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-          {revealStage === 0 ? (
-            <>
-              <SlideItem delay={0.05}>
-                first thing you would need to make it work is a way to distribute a skill
-              </SlideItem>
-
-              <SlideItem delay={0.15}>
-                if you have exactly ONE repository you may commit skills there, but even for monorepo organizations this is rarely the case
-              </SlideItem>
-
-              <SlideItem delay={0.25}>
-                at Superhuman, we have built a system that clones a github repo with the skills, symlinks it to user <code>.claude</code> directory and periodically fetches updates from remote
-              </SlideItem>
-            </>
-          ) : (
-            <>
-              <SlideItem delay={0} reveal>
-                later Anthropic introduced <Emphasis color="green">marketplaces</Emphasis> which basically works exactly like that but natively
-              </SlideItem>
-
-              <SlideItem delay={0.12} reveal>
-                create ONE central internal <Emphasis color="orange">marketplace</Emphasis> for skills inside your organization
-              </SlideItem>
-
-              <SlideItem delay={0.24} reveal>
-                use plugins for <Emphasis color="orange">namespacing</Emphasis> — every user can select which plugins to install
-              </SlideItem>
-
-              <SlideItem delay={0.36} reveal>
-                use <Emphasis color="green">Claude Enterprise</Emphasis> controls to enforce marketplace and certain plugins on all accounts
-              </SlideItem>
-            </>
-          )}
+    return (
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '2rem',
+          minHeight: 0,
+          height: 'calc(var(--vh-full) - 220px)',
+        }}
+      >
+        {/* Bullets — half-width column on the left */}
+        <div
+          style={{
+            flex: '0 0 50%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 'var(--space-sm)',
+            textAlign: 'left',
+          }}
+        >
+          {BULLETS.slice(0, visibleCount).map((bullet, i) => (
+            <SlideItem key={i} delay={i === 0 ? 0.05 : 0}>{bullet}</SlideItem>
+          ))}
         </div>
 
-        {/* Right column — image swaps on reveal */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-          {revealStage === 0 ? (
-            <img
-              src={diagramImage}
-              alt="Skill distribution diagram"
-              loading="lazy"
-              style={{ maxWidth: '100%', maxHeight: 'calc(var(--vh-full) - 220px)', objectFit: 'contain' }}
-            />
-          ) : (
-            <img
-              src={superhumanAidevImage}
-              alt="Superhuman AI dev marketplace"
-              loading="lazy"
-              style={{ maxWidth: '100%', maxHeight: 'calc(var(--vh-full) - 220px)', objectFit: 'contain' }}
-            />
-          )}
+        {/* Right — Superhuman AI Dev marketplace screenshot */}
+        <div
+          style={{
+            flex: 1,
+            alignSelf: 'stretch',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(10, 14, 20, 0.55)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: '14px',
+            padding: '20px',
+            boxShadow:
+              '0 18px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+            overflow: 'hidden',
+          }}
+        >
+          <img
+            src={superhumanAidevImage}
+            alt="Superhuman AI Dev marketplace"
+            loading="lazy"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
         </div>
-
       </div>
-    </div>
-  ),
-  notes: 'Distribution is the unsexy but critical part. Without a marketplace, skills stay siloed. With one, they compound. Stage 0: show our custom symlink approach + diagram. Stage 1: Anthropic now has native marketplaces + Superhuman screenshot.',
+    );
+  },
+  notes:
+    'Anthropic нативні marketplaces — створи один внутрішній marketplace, використовуй плагіни для неймспейсингу, Enterprise-контролі для примусового встановлення. Праворуч — скріншот нашого Superhuman AI Dev marketplace.',
 };

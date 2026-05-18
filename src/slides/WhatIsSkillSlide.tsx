@@ -1,190 +1,180 @@
 import { SlideDefinition } from '../types/slides';
-import { SlideItem, Emphasis, SlideLink } from '../components/SlideElements';
+import { SlideItem, Emphasis } from '../components/SlideElements';
 import spaceBg from '../assets/skill-space-bg.png?url';
 import leftAstronaut from '../assets/skill-was-it-md.png?url';
 import rightAstronaut from '../assets/skill-always-been.png?url';
 
+// Slide-level backdrop: dim the nebula so the green/orange terminal copy
+// retains contrast, then let the actual nebula bleed full-edge. Layered
+// gradient sits ABOVE the image (CSS draws backgrounds top→bottom).
+const SLIDE_BG = `
+  linear-gradient(180deg,
+    rgba(10, 14, 20, 0.62) 0%,
+    rgba(10, 14, 20, 0.38) 45%,
+    rgba(10, 14, 20, 0.62) 100%
+  ),
+  url(${spaceBg}) center/cover no-repeat
+`;
+
 export const WhatIsSkillSlide: SlideDefinition = {
   id: 'what-is-skill',
+  background: SLIDE_BG,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">skill</span>{' '}
-      <span className="text-orange">--what-is</span>
+      <span className="text-green">але головне що має бути в маркетплейсі</span>{' '}—{' '}
+      <span className="text-orange">скіли</span>
     </>
   ),
-  content: ({ revealStage }) => (
-    <div style={{ width: '100%' }}>
-      <style>{`
-        @keyframes astronautFloat {
-          0%, 100% { transform: translateY(0px) rotate(-2deg); }
-          50%       { transform: translateY(-18px) rotate(2deg); }
-        }
-      `}</style>
+  content: ({ revealStage }) => {
+    // Sliding window: keep only the last 3 revealed bullets on screen so the
+    // newest point always has room. Older bullets have already been spoken;
+    // dropping them protects font legibility on a 1920×1080 projector.
+    const WINDOW = 3;
+    const firstVisible = Math.max(0, revealStage - WINDOW + 1);
+    const isVisible = (i: number) => revealStage >= i && i >= firstVisible;
 
-      {/* Space background area — fills all remaining height */}
-      <div
-        style={{
-          position: 'relative',
-          height: 'calc(var(--vh-full) - 195px)',
-          overflow: 'hidden',
-          borderRadius: '6px',
-        }}
-      >
-        {/* Space background */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${spaceBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+    return (
+      <>
+        <style>{`
+          @keyframes astronautFloat {
+            0%, 100% { transform: translateY(0px)   rotate(-2deg); }
+            50%       { transform: translateY(-14px) rotate(2deg); }
+          }
+          @keyframes astronautFloatReverse {
+            0%, 100% { transform: translateY(0px)   rotate(2deg); }
+            50%       { transform: translateY(-14px) rotate(-2deg); }
+          }
+          .what-is-skill__astro {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.55));
+            pointer-events: none;
+          }
+        `}</style>
 
-        {/* Dark overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(10,14,20,0.5)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* 3-column layout */}
         <div
           style={{
             position: 'relative',
-            display: 'flex',
-            height: '100%',
+            display: 'grid',
+            gridTemplateColumns: '22% 1fr 22%',
             alignItems: 'center',
-            gap: 'var(--space-sm)',
-            padding: '0 var(--space-xs)',
+            height: 'calc(var(--vh-full) - 220px)',
+            width: '100%',
+            gap: 'var(--space-md)',
           }}
         >
-          {/* Left astronaut */}
-          <div
-            style={{
-              flex: '0 0 24%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          {/* Left astronaut — full vertical run, no inner frame clipping */}
+          <div style={{ height: '100%', minHeight: 0 }}>
             <img
               src={leftAstronaut}
               alt="wait, it's all .md files?"
               loading="lazy"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                mixBlendMode: 'screen',
-                animation: 'astronautFloat 6s ease-in-out infinite',
-              }}
+              className="what-is-skill__astro"
+              style={{ animation: 'astronautFloat 6s ease-in-out infinite' }}
             />
           </div>
 
-          {/* Bullets */}
+          {/* HUD-style bullet card — floats in the nebula */}
           <div
             style={{
-              flex: 1,
+              maxWidth: '780px',
+              justifySelf: 'center',
+              alignSelf: 'center',
               textAlign: 'left',
-              background: 'rgba(10,14,20,0.8)',
-              borderRadius: '10px',
-              padding: 'var(--space-sm) var(--space-md)',
-              backdropFilter: 'blur(4px)',
-              border: '1px solid rgba(255,255,255,0.07)',
+              padding: 'var(--space-md) var(--space-lg)',
+              background:
+                'linear-gradient(135deg, rgba(10, 14, 20, 0.72) 0%, rgba(20, 12, 36, 0.62) 100%)',
+              border: '1px solid rgba(126, 231, 135, 0.18)',
+              borderRadius: '6px',
+              backdropFilter: 'blur(8px) saturate(140%)',
+              WebkitBackdropFilter: 'blur(8px) saturate(140%)',
+              boxShadow:
+                '0 24px 64px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             }}
           >
-            <SlideItem size="normal" delay={0.05}>
-              skill is just an <Emphasis color="green">md file</Emphasis> with
-              instructions how to do something
-            </SlideItem>
-
-            {revealStage >= 1 && (
-              <SlideItem size="normal" delay={0}>
-                unlike <Emphasis color="orange">MCP server</Emphasis> — doesn't
-                waste context window, loads only on model's demand
+            {isVisible(0) && (
+              <SlideItem size="normal" delay={revealStage === 0 ? 0.05 : 0}>
+                скіл — це просто <Emphasis color="green">SKILL.md</Emphasis>-файл з
+                інструкціями, як щось робити
               </SlideItem>
             )}
 
-            {revealStage >= 2 && (
+            {isVisible(1) && (
               <SlideItem size="normal" delay={0}>
-                unlike <Emphasis color="orange">slash command</Emphasis> — model
-                can invoke it when it needs it
+                на відміну від <Emphasis color="orange">MCP server</Emphasis>, не
+                займає context window — завантажується лише тоді, коли це
+                потрібно моделі
               </SlideItem>
             )}
 
-            {revealStage >= 3 && (
+            {isVisible(2) && (
               <SlideItem size="normal" delay={0}>
-                can be a full <Emphasis color="green">library</Emphasis> of many
-                md files hyperlinked — model navigates and loads as needed
+                на відміну від <Emphasis color="orange">slash command</Emphasis>,
+                модель сама викликає його, коли це потрібно
               </SlideItem>
             )}
 
-            {revealStage >= 4 && (
+            {isVisible(3) && (
               <SlideItem size="normal" delay={0}>
-                can package{' '}
-                <Emphasis color="green">TypeScript / Python / bash scripts</Emphasis>{' '}
-                for deterministic automation
+                може бути цілою <Emphasis color="green">бібліотекою</Emphasis>{' '}
+                md-файлів із посиланнями — модель сама навігує та завантажує їх
+                за потреби
               </SlideItem>
             )}
 
-            {revealStage >= 5 && (
+            {isVisible(4) && (
               <SlideItem size="normal" delay={0}>
-                after success — switch to plan mode:{' '}
-                <span className="text-quote">
-                  'please read{' '}
-                  <SlideLink href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices">
-                    platform.claude.com/docs/.../agent-skills/best-practices
-                  </SlideLink>{' '}
-                  and create a skill that will replicate how we did X'
-                </span>
+                може містити{' '}
+                <Emphasis color="green">TypeScript / Python / bash</Emphasis>{' '}
+                скрипти для детермінованої автоматизації
               </SlideItem>
             )}
 
-            {revealStage >= 6 && (
+            {isVisible(5) && (
               <SlideItem size="normal" delay={0}>
-                every time something wasn't perfect — finish with:{' '}
-                <span className="text-quote">
-                  'reflect on the session and update the skill files to avoid
-                  mistakes and streamline experience next time'
-                </span>
+                скіли — <Emphasis color="green">будівельні блоки</Emphasis>,
+                {' '}з яких кожен інженер (або агент) може побудувати свій власний воркфлоу
+              </SlideItem>
+            )}
+
+            {isVisible(6) && (
+              <SlideItem size="normal" delay={0}>
+                люди не люблять читати і писати документацію,
+                {' '}а <Emphasis color="orange">агенти це обожнюють</Emphasis>
+                {' '}— конвертуйте всю документацію в скіли
+              </SlideItem>
+            )}
+
+            {isVisible(7) && (
+              <SlideItem size="normal" delay={0}>
+                кожен інженер, який використовує скіл із{' '}
+                <Emphasis color="orange">маркетплейсу</Emphasis>, додає покращення
+                {' '}— і всі стають <Emphasis color="green">продуктивнішими</Emphasis>
               </SlideItem>
             )}
           </div>
 
-          {/* Right astronaut */}
-          <div
-            style={{
-              flex: '0 0 22%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          {/* Right astronaut — mirror of the left, slightly slower drift */}
+          <div style={{ height: '100%', minHeight: 0 }}>
             <img
               src={rightAstronaut}
               alt="always have been."
               loading="lazy"
+              className="what-is-skill__astro"
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                mixBlendMode: 'screen',
-                animation: 'astronautFloat 7s ease-in-out infinite reverse',
+                animation: 'astronautFloatReverse 7s ease-in-out infinite',
               }}
             />
           </div>
         </div>
-      </div>
-    </div>
-  ),
-  maxRevealStages: 6,
+      </>
+    );
+  },
+  maxRevealStages: 7,
   notes:
-    'A skill is just markdown. After achieving a result, create a skill from it. Then iterate: every imperfect use is a chance to improve the skill via reflect.',
+    'Скіл — це просто markdown. Не займає контекст (на відміну від MCP), модель сама вирішує коли його завантажувати (на відміну від slash command), може бути бібліотекою md з посиланнями, може містити TypeScript/Python/bash скрипти для детермінованої автоматизації. Sliding-window pattern: only the last 3 revealed bullets stay on screen so newer points have room without shrinking the body font.',
 };
