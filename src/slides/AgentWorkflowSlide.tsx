@@ -2,129 +2,176 @@ import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
 
-const STYLES = `
-  #agent-workflow-right .code-block {
-    margin: 0;
-  }
-  @keyframes revealPanel {
-    from { opacity: 0; transform: translateX(14px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  .code-reveal {
-    animation: revealPanel 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-`;
-
-const SDK_CODE = `import { query } from "@anthropic-ai/claude-agent-sdk";
-
+const EXECUTION_CODE = `import { query } from
+  "@anthropic-ai/claude-agent-sdk";
 for await (const message of query({
-  prompt: "Review the PR and post comments on issues found",
-  options: { allowedTools: ["Bash", "Read", "Glob"] },
+  prompt:
+    "Review the PR and post comments on issues",
+  options: {
+    allowedTools: ["Bash", "Read", "Glob"],
+  },
 })) {
   // handle streaming messages
 }`;
-
-const PLUGINS_CODE = `for (const marketplace of marketplaces) {
-  const dir = \`/tmp/agent-runner/\${marketplace.owner}-\${marketplace.repo}\`;
-  await apiClient.cloneRepo(marketplace.owner, marketplace.repo, {
-    targetDir: dir, depth: 1,
-  });
-  for (const pluginsDir of marketplace.pluginsDirs) {
-    const found = discoverPluginsInDir(
-      \`\${dir}/\${pluginsDir}\`,
-      marketplace.enabledPlugins,  // allowlist filter
-    );
-    pluginPaths.push(...found);
-  }
-}`;
-
-const EXECUTION_CODE = `// agentic: Claude produces structured ReviewResult
-const { result } = await claudeClient.executeWithSkills<ReviewResult>(
-  steps, reviewResultSchema, plugins, ["cicd:github"],
-);
-// deterministic: traditional code processes result and drives side effects
-const valid = sanitizeReviewResult(result, minConfidence, minSeverity);
-for (const comment of valid.review.comments) {
-  await cicdClient.postInlineComment(prNumber, comment);
-}
-if (valid.review.approve) { await cicdClient.approvePR(prNumber); }`;
 
 const SCHEMA_CODE = `const reviewResultSchema = z.object({
   approve: z.boolean(),
   comments: z.array(z.object({
     file:         z.string().optional(),
-    comment_body: z.string(),
-    severity:     z.enum(["critical", "high", "medium", "low"]),
-    confidence:   z.number().int().min(0).max(100),
-  })),
-});
-export type ReviewResult = z.infer<typeof reviewResultSchema>;`;
+    comment_body: z.string(), })), });
+export type ReviewResult = z.infer<typeof reviewResultSchema>;
+const { result } = await claudeClient.execute<ReviewResult>();
+for (const c of result.comments) {
+  await cicdClient.postInlineComment(prNumber, c);
+}
+if (result.approve) await cicdClient.approvePR(prNumber);`;
+
+type PanelVariant = {
+  key: string;
+  label: string;
+  language: 'typescript';
+  code: string;
+};
+
+function panelFor(revealStage: number): PanelVariant | null {
+  if (revealStage >= 3) {
+    return { key: 'schema', label: 'types.ts — structured output schema', language: 'typescript', code: SCHEMA_CODE };
+  }
+  if (revealStage >= 2) {
+    return { key: 'execution', label: 'federated-orchestrator.ts — mixed execution', language: 'typescript', code: EXECUTION_CODE };
+  }
+  return null;
+}
+
+const STYLES = `
+  @keyframes agentWorkflowPanelIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  .agent-workflow-body {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    height: calc(var(--vh-full) - 220px);
+    gap: var(--space-lg);
+    min-height: 0;
+    text-align: left;
+  }
+
+  .agent-workflow-bullets {
+    flex: 0 0 44%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-sm);
+    min-width: 0;
+  }
+
+  .agent-workflow-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 14px;
+    background: rgba(10, 14, 20, 0.6);
+    border: 1px solid rgba(126, 231, 135, 0.35);
+    box-shadow:
+      0 18px 48px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    font-family: var(--font-mono);
+    animation: agentWorkflowPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  }
+
+  .agent-workflow-panel__chrome {
+    padding: 10px 18px;
+    letter-spacing: 0.08em;
+    color: rgba(126, 231, 135, 0.6);
+    font-size: var(--font-size-small);
+    flex-shrink: 0;
+  }
+  .agent-workflow-panel__chrome--top    { border-bottom: 1px solid rgba(126, 231, 135, 0.22); }
+  .agent-workflow-panel__chrome--bottom {
+    border-top: 1px solid rgba(126, 231, 135, 0.22);
+    color: rgba(126, 231, 135, 0.35);
+    letter-spacing: 0.12em;
+  }
+
+  .agent-workflow-panel__viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .agent-workflow-panel__viewport .code-block {
+    flex: 1 1 auto;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .agent-workflow-panel__viewport .code-block-header { display: none; }
+  .agent-workflow-panel__viewport .code-block pre {
+    flex: 1 1 auto;
+    margin: 0 !important;
+    height: 100%;
+  }
+`;
 
 function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
+  const panel = panelFor(revealStage);
+
   return (
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
-
-        {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
-          <SlideItem delay={0.08}>
-            you need an <Emphasis color="green">environment</Emphasis> for agent execution — start locally with human-controlled proof of concepts, then graduate to CI or a dedicated Kubernetes cluster
-          </SlideItem>
-
-          {revealStage === 1 && (
+      <div className="agent-workflow-body">
+        {/* Left column: bullets accumulate across reveal stages */}
+        <div className="agent-workflow-bullets">
+          {revealStage >= 1 && (
             <SlideItem delay={0} reveal>
-              use <Emphasis color="orange">claude agents sdk</Emphasis> — essentially a TypeScript wrapper around the Claude Code CLI — as your agent runtime
+              комунікацію з людиною довіряти
+              {' '}<Emphasis color="orange">Provide detailed feedback using inline comments for specific issues. Use top-level comments for general observations or praise.</Emphasis>
+              {' '} ще рано
             </SlideItem>
           )}
-          {revealStage === 2 && (
+          {revealStage >= 2 && (
             <SlideItem delay={0} reveal>
-              always clone your <Emphasis color="green">skills marketplace</Emphasis> and inject it into the SDK execution context; enable needed plugins and skill activation hooks
+              обгортаємо код рев'ю промпт в <Emphasis color="orange">Claude Agent SDK</Emphasis> (TypeScript-обгортка над Claude Code CLI)
             </SlideItem>
           )}
-          {revealStage === 3 && (
+          {revealStage >= 3 && (
             <SlideItem delay={0} reveal>
-              embrace <Emphasis color="orange">mixed deterministic/agentic execution</Emphasis>: write traditional scripts with loops and conditionals that invoke the Claude SDK only for the complex, non-deterministic work
-            </SlideItem>
-          )}
-          {revealStage === 4 && (
-            <SlideItem delay={0} reveal>
-              use <Emphasis color="green">claude structured output</Emphasis> for decisions and deterministic code for all side effects — keeps agents predictable and auditable
+              але просимо повернути через <Emphasis color="green">structured output</Emphasis>
+              {' '}результати рев'ю які виконує звичайний Type Script код
             </SlideItem>
           )}
         </div>
 
-        {/* ── Right column: code panels ── */}
-        <div
-          id="agent-workflow-right"
-          style={{
-            flex: 1,
-            '--font-size-code': 'var(--font-size-small)',
-          } as React.CSSProperties}
-        >
-          {revealStage === 1 && (
-            <div key="1" className="code-reveal">
-              <CodeBlock language="typescript" filename="agent.ts" code={SDK_CODE} />
+        {/* Right column: framed code panel — mounts only at reveal stage >= 1 */}
+        {panel && (
+          <div className="agent-workflow-panel" key={panel.key}>
+            <div className="agent-workflow-panel__chrome agent-workflow-panel__chrome--top">
+              ░░░ {panel.label} ░░░
             </div>
-          )}
-          {revealStage === 2 && (
-            <div key="2" className="code-reveal">
-              <CodeBlock language="typescript" filename="plugins.ts" code={PLUGINS_CODE} />
+            <div className="agent-workflow-panel__viewport">
+              <CodeBlock language={panel.language} code={panel.code} />
             </div>
-          )}
-          {revealStage === 3 && (
-            <div key="3" className="code-reveal">
-              <CodeBlock language="typescript" filename="federated-orchestrator.ts" code={EXECUTION_CODE} />
+            <div className="agent-workflow-panel__chrome agent-workflow-panel__chrome--bottom">
+              [END OF TRANSMISSION]
             </div>
-          )}
-          {revealStage === 4 && (
-            <div key="4" className="code-reveal">
-              <CodeBlock language="typescript" filename="types.ts" code={SCHEMA_CODE} />
-            </div>
-          )}
-        </div>
-
+          </div>
+        )}
       </div>
     </>
   );
@@ -132,15 +179,14 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
 
 export const AgentWorkflowSlide: SlideDefinition = {
   id: 'agent-workflow',
-  maxRevealStages: 4,
+  maxRevealStages: 3,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">agents</span>{' '}
-      <span className="text-orange">--workflow</span>
+      <span className="text-green">починаємо працювати</span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <AgentWorkflowContent revealStage={revealStage} />,
   notes:
-    'The key insight: agents should be deterministic at the boundaries. Claude handles ambiguity in the middle; traditional code handles I/O, retries, and side effects.',
+    'Структурний blueprint побудови агентів. Stage 0: bullets-only intro. Stage 1: Claude Agent SDK як рантайм. Stage 2: змішане детерміністичне/агентне виконання. Stage 3: Structured Output для рішень + код для сайд-ефектів. Ключова теза: детермінізм на межах, агентність всередині.',
 };
