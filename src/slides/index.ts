@@ -30,6 +30,9 @@ import { SkillsMetricsSlide } from './SkillsMetricsSlide';
 import { AgentsSectionSlide } from './AgentsSectionSlide';
 import { AgentsSlide } from './AgentsSlide';
 import { AgentWorkflowSlide } from './AgentWorkflowSlide';
+import { TeachClaudeCommunicateSlide } from './TeachClaudeCommunicateSlide';
+import { AutoApproveHookSlide } from './AutoApproveHookSlide';
+import { WarcraftFunSlide } from './WarcraftFunSlide';
 import { AgentTracesSlide } from './AgentTracesSlide';
 import { AgentExampleSlide } from './AgentExampleSlide';
 import { IndustryPatternsSlide } from './IndustryPatternsSlide';
@@ -37,4 +40,4 @@ import { HumanAiEngSlide } from './HumanAiEngSlide';
 import { ChallengeAssumptionsSlide } from './ChallengeAssumptionsSlide';
 import { FinalSlide } from './FinalSlide';
 
-export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, PovTeammatesSlide, AiCodeReviewSlide, StartHereSlide, AgentWorkflowSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];
+export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, PovTeammatesSlide, AiCodeReviewSlide, StartHereSlide, AgentWorkflowSlide, TeachClaudeCommunicateSlide, AutoApproveHookSlide, WarcraftFunSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];

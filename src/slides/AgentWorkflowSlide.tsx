@@ -87,20 +87,6 @@ const STYLES = `
     animation: agentWorkflowPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
   }
 
-  .agent-workflow-panel__chrome {
-    padding: 10px 18px;
-    letter-spacing: 0.08em;
-    color: rgba(126, 231, 135, 0.6);
-    font-size: var(--font-size-small);
-    flex-shrink: 0;
-  }
-  .agent-workflow-panel__chrome--top    { border-bottom: 1px solid rgba(126, 231, 135, 0.22); }
-  .agent-workflow-panel__chrome--bottom {
-    border-top: 1px solid rgba(126, 231, 135, 0.22);
-    color: rgba(126, 231, 135, 0.35);
-    letter-spacing: 0.12em;
-  }
-
   .agent-workflow-panel__viewport {
     flex: 1 1 auto;
     min-height: 0;
@@ -161,14 +147,8 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
         {/* Right column: framed code panel — mounts only at reveal stage >= 1 */}
         {panel && (
           <div className="agent-workflow-panel" key={panel.key}>
-            <div className="agent-workflow-panel__chrome agent-workflow-panel__chrome--top">
-              ░░░ {panel.label} ░░░
-            </div>
             <div className="agent-workflow-panel__viewport">
               <CodeBlock language={panel.language} code={panel.code} />
-            </div>
-            <div className="agent-workflow-panel__chrome agent-workflow-panel__chrome--bottom">
-              [END OF TRANSMISSION]
             </div>
           </div>
         )}

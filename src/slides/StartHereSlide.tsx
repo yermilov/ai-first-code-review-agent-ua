@@ -10,10 +10,6 @@ const YAML_DISPLAY_URL =
   'github.com/anthropics/claude-code-action/blob/main/examples/pr-review-comprehensive.yml';
 
 const STYLES = `
-  @keyframes startHereTerminalPulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.6; }
-  }
   @keyframes startHereLoadingDot {
     0%, 80%, 100% { opacity: 0; }
     40%           { opacity: 1; }
@@ -160,20 +156,6 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
             }} />
           ))}
 
-          {/* Header */}
-          <div style={{
-            padding: 'var(--space-xs) var(--space-sm)',
-            borderBottom: '1px solid rgba(126,231,135,0.2)',
-            color: 'rgba(126,231,135,0.6)',
-            fontSize: 'var(--font-size-small)',
-            letterSpacing: '0.08em',
-            animation: 'startHereTerminalPulse 3s ease-in-out infinite',
-            flexShrink: 0,
-            zIndex: 5,
-          }}>
-            ░░░ pr-review-comprehensive.yml ░░░
-          </div>
-
           {/* Scrollable content area */}
           <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
             {!content && !error && (
@@ -209,18 +191,6 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
             )}
           </div>
 
-          {/* Footer */}
-          <div style={{
-            padding: 'var(--space-xs) var(--space-sm)',
-            borderTop: '1px solid rgba(126,231,135,0.2)',
-            color: 'rgba(126,231,135,0.35)',
-            fontSize: 'var(--font-size-small)',
-            letterSpacing: '0.12em',
-            flexShrink: 0,
-            zIndex: 5,
-          }}>
-            [END OF TRANSMISSION]
-          </div>
         </div>
 
       </div>
