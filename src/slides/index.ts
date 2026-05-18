@@ -5,6 +5,7 @@ import { IntroSlide } from './IntroSlide';
 import { AgendaSlide } from './AgendaSlide';
 import { EngineerSectionSlide } from './EngineerSectionSlide';
 import { TeamSectionSlide } from './TeamSectionSlide';
+import { PovTeammatesSlide } from './PovTeammatesSlide';
 import { WhatIsAiFirstTeamSlide } from './WhatIsAiFirstTeamSlide';
 import { BreakOutOfCodingSlide } from './BreakOutOfCodingSlide';
 import { WhatIsSkillSlide } from './WhatIsSkillSlide';
@@ -34,4 +35,4 @@ import { HumanAiEngSlide } from './HumanAiEngSlide';
 import { ChallengeAssumptionsSlide } from './ChallengeAssumptionsSlide';
 import { FinalSlide } from './FinalSlide';
 
-export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentWorkflowSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];
+export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, CodeSlopSlide, DisclaimerSlide, JuniorEngineerSlide, BreakOutOfCodingSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, PovTeammatesSlide, WhatIsAiFirstTeamSlide, WhatIsSkillSlide, SkillsPyramidSlide, SkillFlywheelSlide, SkillsInfrastructureSectionSlide, SkillMarketplaceSlide, MetaSkillsSlide, SkillsActivatorSlide, SkillsMetricsSlide, AgentsSectionSlide, AgentsSlide, AgentWorkflowSlide, AgentTracesSlide, AgentExampleSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];

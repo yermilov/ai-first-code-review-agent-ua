@@ -7,7 +7,7 @@ export const TeamSectionSlide: SlideDefinition = {
     <>
       <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">частина друга</span>
-      <span className="slide-title-meta text-muted">// ai-first team</span>
+      <span className="slide-title-meta text-muted">// ai-first команда</span>
     </>
   ),
   content: (

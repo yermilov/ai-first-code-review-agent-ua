@@ -24,7 +24,7 @@ export interface SectionData {
 
 export const SECTIONS: SectionData[] = [
   { part: 1, image: agendaEngineerImage, alt: 'AI-First Engineer',     desc: 'декілька порад щодо персональної продуктивності',     slideId: 'agenda-engineer' },
-  { part: 2, image: agendaTeamImage,     alt: 'AI-First Team',         desc: '// ai-first team',         slideId: 'agenda-team',
+  { part: 2, image: agendaTeamImage,     alt: 'AI-First Team',         desc: '// ai-first команда',         slideId: 'agenda-team',
     subsections: [
       { command: 'skills --infrastructure', image: skillsInfrastructureImage, alt: 'Skills Infrastructure', desc: '// distribution & marketplace', slideId: 'skills-infrastructure-section' },
       { command: 'ainnovator --curve', image: aiInnovatorCurveImage, alt: 'AI Innovator Curve', desc: '// rogers innovation adoption curve', slideId: 'ai-innovator-curve' },
