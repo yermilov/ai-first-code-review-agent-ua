@@ -314,7 +314,7 @@ export const PovTeammatesSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-orange">pov</span>
+      <span className="text-orange">пов</span>
       <span className="text-dim">:</span>{' '}
       <span className="text-green">ваші тім-мейти успішно адоптять claude code</span>
     </>
