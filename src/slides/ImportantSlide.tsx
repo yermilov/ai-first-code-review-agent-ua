@@ -62,11 +62,13 @@ export const ImportantSlide: SlideDefinition = {
         </SlideItem>
       </div>
 
-      {/* Right column — Pac-Man animation */}
+      {/* Right column — Pac-Man animation. Drive size from parent height so
+       * the 4:3 canvas always fits inside the title-band layout instead of
+       * overflowing and getting clipped by the row's overflow: hidden. */}
       <div
         style={{
-          flex: '0 0 55%',
-          maxHeight: 'calc(var(--vh-full) - 220px)',
+          flex: '0 0 auto',
+          height: '100%',
           aspectRatio: '320 / 240',
         }}
       >

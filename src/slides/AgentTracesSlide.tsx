@@ -1,123 +1,124 @@
+import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
-import { SlideItem, Emphasis } from '../components/SlideElements';
+import { SlideItem, Emphasis, SlideLink, Code } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
-import vibesImage from '../assets/vibes.png?url';
 
-const STYLES = `
-  #agent-traces-right .code-block {
-    margin: 0;
-  }
-  @keyframes revealPanel {
-    from { opacity: 0; transform: translateX(14px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  .code-reveal {
-    animation: revealPanel 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-`;
-
-const TRACER_CODE = `export function getSessionFilePath(
-  sessionId: string, workDir: string,
-): string {
-  const encodedPath = workDir.replace(/\\//g, "-");
-  return join(
-    homedir(), ".claude", "projects",
-    encodedPath, \`\${sessionId}.jsonl\`,
-  );
-}
-
-export async function uploadSession(
-  sessionId: string, workDir: string,
+const TRACER_CODE = `export async function uploadSession(
+  sessionId: string,
+  workDir: string,
 ) {
-  const filePath = getSessionFilePath(sessionId, workDir);
-  const formData = new FormData();
-  formData.append(
-    "file",
-    new Blob([await readFile(filePath)]),
-    \`\${sessionId}.jsonl\`,
-  );
-  await fetch(VIBES_API_URL, { method: "POST", body: formData });
+  const encoded = workDir.replace(/\\//g, "-");
+  const path = join(homedir(), ".claude",
+    "projects", encoded, \`\${sessionId}.jsonl\`);
+  const body = new FormData();
+  body.append("file",
+    new Blob([await readFile(path)]),
+    \`\${sessionId}.jsonl\`);
+  await fetch(VIBES_API_URL, {
+    method: "POST", body,
+  });
 }`;
 
+const FIRST_BULLET: ReactNode = (
+  <>
+    завантажуйте <Code>.jsonl</Code>-лог кожної сесії агента
+    {' '}в <Emphasis color="green">S3</Emphasis>
+    {' '}— і <Emphasis color="orange">ви зможете дебажити</Emphasis>, як саме він працює та що можна покращити
+  </>
+);
+
+const SECOND_SET: ReactNode[] = [
+  <>
+    <Emphasis color="orange">СТОП, ПОПАЛИСЬ!</Emphasis>
+    {' '}не робіть нічого вручну: напишіть <Emphasis color="green">скіл</Emphasis>,
+    {' '}який витягуватиме семпли сесій, аналізуватиме їх і пропонуватиме покращення
+    {' '}для ваших скілів та інструкцій агентів
+  </>,
+  <>
+    людям ділитися своїми сесіями ще цінніше — це створює основу для{' '}
+    <Emphasis color="orange">командної пам'яті</Emphasis>;
+    {' '}можна використати ту саму інфраструктуру або спробувати{' '}
+    <SlideLink href="https://entire.io">entire.io</SlideLink>
+  </>,
+  <>
+    тепер агенти можуть <Emphasis color="green">рев'ювити сесії людей</Emphasis>,
+    {' '}а також напівавтоматично створювати чи оновлювати скіли
+    {' '}на основі їхнього аналізу
+  </>,
+];
+
 function AgentTracesContent({ revealStage }: { revealStage: number }) {
+  const setIndex = revealStage === 0 ? 0 : 1;
+  const visibleCount = setIndex === 1 ? revealStage : 0;
+
   return (
-    <>
-      <style>{STYLES}</style>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 'calc(var(--vh-full) - 220px)',
+      }}
+    >
+      <h2 style={{ textAlign: 'left', margin: 0 }}>
+        <span className="text-dim">&gt;</span>{' '}
+        <span className="text-green">зберігайте</span>{' '}
+        <span className="text-orange">квитанції</span>
+      </h2>
 
-      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start' }}>
-
-        {/* ── Left column: bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', textAlign: 'left' }}>
-          {revealStage >= 1 && (
-            <SlideItem delay={0} reveal>
-              since agents work autonomously, you need an <Emphasis color="green">observability system</Emphasis> — you can't review every decision, but you must be able to audit them
-            </SlideItem>
-          )}
-          {revealStage >= 1 && (
-            <SlideItem delay={0.08} reveal>
-              build a thin wrapper around <Emphasis color="orange">S3</Emphasis> and have all agents upload their session log <code>.jsonl</code> files there after every run
-            </SlideItem>
-          )}
-          {revealStage >= 2 && (
-            <SlideItem delay={0} reveal>
-              create a <Emphasis color="green">skill</Emphasis> that downloads a sample of sessions, analyzes them, and suggests improvements to skills and agent instructions — agents improving agents
-            </SlideItem>
-          )}
-          {revealStage >= 3 && (
-            <SlideItem delay={0} reveal>
-              vibe-code a nice <Emphasis color="orange">UI</Emphasis> around it so humans can also upload their own sessions for knowledge sharing and debugging — shared context between human and machine runs
-            </SlideItem>
-          )}
-          {revealStage >= 3 && (
-            <SlideItem delay={0.08} reveal>
-              <a href="https://entire.io" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--terminal-green)', textDecoration: 'underline' }}>entire.io</a>{' '}
-              and the <code>share-session</code> Claude Code feature are the first steps in this direction
-            </SlideItem>
-          )}
-        </div>
-
-        {/* ── Right column: code / image panels ── */}
+      <div
+        key={setIndex}
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: setIndex === 0 ? '2rem' : 0,
+          minHeight: 0,
+          ['--slide-line-height-normal' as string]: '1.3',
+        } as React.CSSProperties}
+      >
         <div
-          id="agent-traces-right"
           style={{
-            flex: 1,
-            '--font-size-code': 'var(--font-size-small)',
-          } as React.CSSProperties}
+            flex: setIndex === 0 ? '0 0 50%' : 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '0.6rem',
+            textAlign: 'left',
+          }}
         >
-          {revealStage >= 1 && revealStage < 3 && (
-            <div key="code" className="code-reveal">
-              <CodeBlock language="typescript" filename="vibes.ts" code={TRACER_CODE} />
-            </div>
-          )}
-          {revealStage === 3 && (
-            <div key="image" className="code-reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-              <img
-                src={vibesImage}
-                alt="Vibes session sharing UI"
-                loading="lazy"
-                style={{ maxWidth: '100%', maxHeight: 'calc(var(--vh-full) - 220px)', objectFit: 'contain', borderRadius: '8px' }}
-              />
-            </div>
+          {setIndex === 0 ? (
+            <SlideItem delay={0.05}>{FIRST_BULLET}</SlideItem>
+          ) : (
+            SECOND_SET.slice(0, visibleCount).map((bullet, i) => (
+              <SlideItem key={i} delay={i === 0 ? 0.05 : 0}>{bullet}</SlideItem>
+            ))
           )}
         </div>
 
+        {setIndex === 0 && (
+          <div className="agent-traces-panel">
+            <div className="agent-traces-panel__chrome agent-traces-panel__chrome--top">
+              ░░░ vibes.ts — завантажувач сесій агентів ░░░
+            </div>
+            <div className="agent-traces-panel__viewport">
+              <CodeBlock language="typescript" code={TRACER_CODE} />
+            </div>
+            <div className="agent-traces-panel__chrome agent-traces-panel__chrome--bottom">
+              [END OF TRANSMISSION]
+            </div>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
 export const AgentTracesSlide: SlideDefinition = {
   id: 'agent-traces',
-  maxRevealStages: 3,
-  initialRevealStage: 1,
-  title: (
-    <>
-      <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">agents</span>{' '}
-      <span className="text-orange">--traces</span>
-    </>
-  ),
+  maxRevealStages: SECOND_SET.length,
+  initialRevealStage: 0,
   content: ({ revealStage }: SlideContentProps) => <AgentTracesContent revealStage={revealStage} />,
   notes:
-    'Session traces are your audit log, your training data, and your improvement loop all in one. The UI makes it social — engineers start reading each other\'s sessions.',
+    'Треси агентів — observability для автономної роботи. Phase 0: теза "завантажуйте .jsonl кожної сесії на S3" + uploadSession TS-сніпет. Phase 1 (по одному булету): "СТОП, ПОПАЛИСЬ — напишіть скіл-аналізатор" → "людям шарити свої сесії ще цінніше — entire.io" → "агенти рев\'юють людські сесії і напів-автоматично оновлюють скіли".',
 };

@@ -138,7 +138,7 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
           )}
           {revealStage >= 3 && (
             <SlideItem delay={0} reveal>
-              але просимо повернути через <Emphasis color="green">structured output</Emphasis>
+              і просимо повернути через <Emphasis color="green">structured output</Emphasis>
               {' '}результати рев'ю які виконує звичайний Type Script код
             </SlideItem>
           )}

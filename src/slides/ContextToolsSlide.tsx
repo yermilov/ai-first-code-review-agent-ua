@@ -26,7 +26,15 @@ const ADVICE: ReactNode[] = [
     шукаємо статті та блог-пости на тему й додаємо посилання (або{' '}
     <Code>pdf</Code>-и)
   </>,
-  <>не використовуємо MCP — натомість CLI або skills</>,
+  <>
+    коли робимо UI зміни — додаємо{' '}
+    <Quote>use frontend-design skill to create well-crafted ui/ux</Quote>
+  </>,
+  <>
+    додаємо{' '}
+    <Quote>ask questions first — never assume, use AskUserQuestion tool</Quote>{' '}
+    у свій CLAUDE.md
+  </>,
 ];
 
 export const ContextToolsSlide: SlideDefinition = {
@@ -52,5 +60,5 @@ export const ContextToolsSlide: SlideDefinition = {
     );
   },
   notes:
-    'Формування контексту, по одній пораді за раз: детальний опис задачі, Deep Research, статті/PDF, опен-сорс репозиторії, діаграми/скриншоти, CLI/skills замість MCP',
+    'Формування контексту, по одній пораді за раз: детальний опис задачі, Deep Research, статті/PDF, опен-сорс репозиторії, діаграми/скриншоти, CLI/skills замість MCP, frontend-design skill для UI, ask questions first у CLAUDE.md',
 };

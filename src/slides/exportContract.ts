@@ -30,5 +30,4 @@ export const KNOWN_RUNTIME_ASYNC_SLIDES = new Set<string>([
 export const ASYNC_LITERAL_FALSE_POSITIVES = new Set<string>([
   'AgentTracesSlide',
   'AgentWorkflowSlide',
-  'SkillsMetricsSlide',
 ]);

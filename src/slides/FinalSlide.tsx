@@ -9,15 +9,11 @@ const TAKEAWAYS: ReactNode[] = [
   <>скіли — ваш мультиплікатор для команди; побудуйте <Emphasis color="green">інфраструктуру</Emphasis>, щоб ними було легко ділитися й перевикористовувати</>,
   <>напівавтономні агенти — наступний рубіж; починайте зі <Emphasis color="orange">спеціалізованих агентів</Emphasis>: тріажу тікетів, код-рев'ю, міграцій тощо</>,
   <><Emphasis color="green">люди</Emphasis> — найбільша цінність: AI підсилює команду, а не замінює її</>,
+  <>пишіть мені в LinkedIn, я люблю поспілкуватися про AI</>,
 ];
 
-const LINKEDIN_BULLET: ReactNode = (
-  <>пишіть мені в LinkedIn, я люблю поспілкуватися про AI</>
-);
-
-// One extra reveal stage after the 5 takeaways for the LinkedIn bullet + QR
-// pair on the right column.
-const TOTAL_STAGES = TAKEAWAYS.length + 1;
+// Final stage reveals both the last takeaway (LinkedIn bullet) and the QR.
+const TOTAL_STAGES = TAKEAWAYS.length;
 
 export const FinalSlide: SlideDefinition = {
   id: 'final',
@@ -38,7 +34,6 @@ export const FinalSlide: SlideDefinition = {
 
         {revealStage >= TOTAL_STAGES && (
           <div className="final-slide__contact">
-            <SlideItem delay={0}>{LINKEDIN_BULLET}</SlideItem>
             <img
               className="final-slide__qr final-qr-reveal"
               src={linkedinQr}
@@ -52,5 +47,5 @@ export const FinalSlide: SlideDefinition = {
   ),
   maxRevealStages: TOTAL_STAGES,
   notes:
-    "Фінальні висновки: vibe flow як фундамент, Клод поза кодом, інфраструктура для skills, спеціалізовані агенти, люди — найбільша цінність. На фінальній стадії — права колонка з реплікою про LinkedIn та QR-код одразу під нею.",
+    "Фінальні висновки: vibe flow як фундамент, Клод поза кодом, інфраструктура для skills, спеціалізовані агенти, люди — найбільша цінність, LinkedIn-репліка. На фінальній стадії остання булет-репліка про LinkedIn з'являється в лівій колонці разом із QR-кодом справа.",
 };

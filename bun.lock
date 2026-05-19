@@ -5,6 +5,7 @@
     "": {
       "name": "pragmatic-vibe-clauding-ua",
       "dependencies": {
+        "qrcode.react": "^4.2.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-syntax-highlighter": "^16.1.0",
@@ -871,6 +872,8 @@
     "pseudomap": ["pseudomap@1.0.2", "https://artifactory.grammarly.io/artifactory/api/npm/common-npm/pseudomap/-/pseudomap-1.0.2.tgz", {}, "sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ=="],
 
     "pump": ["pump@3.0.4", "https://artifactory.grammarly.io/artifactory/api/npm/common-npm/pump/-/pump-3.0.4.tgz", { "dependencies": { "end-of-stream": "^1.1.0", "once": "^1.3.1" } }, "sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA=="],
+
+    "qrcode.react": ["qrcode.react@4.2.0", "https://artifactory.grammarly.io/artifactory/api/npm/common-npm/qrcode.react/-/qrcode.react-4.2.0.tgz", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA=="],
 
     "query-string": ["query-string@5.1.1", "https://artifactory.grammarly.io/artifactory/api/npm/common-npm/query-string/-/query-string-5.1.1.tgz", { "dependencies": { "decode-uri-component": "^0.2.0", "object-assign": "^4.1.0", "strict-uri-encode": "^1.0.0" } }, "sha512-gjWOsm2SoGlgLEdAGt7a6slVOk9mGiXmPFMqrEhLQ68rhQuBnpfs3+EmlvqKyxnCo9/PPlF+9MtY02S1aFg+Jw=="],
 
