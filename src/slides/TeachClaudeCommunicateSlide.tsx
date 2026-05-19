@@ -1,5 +1,6 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { CodeBlock } from '../components/CodeBlock';
+import conversationImg from '../assets/mango-conversation-inkwell.png?url';
 
 // Simplified prompt snippets distilled from the real skills/steps —
 // stripped of "Step N/12" headers, Skill(…) invocations, and other
@@ -31,18 +32,24 @@ Output:
   UNRESOLVE  comment_id: 67890
     REASON: Fix was reverted`;
 
-type PanelVariant = {
-  key: string;
-  language: 'markdown';
-  code: string;
-};
+type PanelVariant =
+  | { kind: 'prompt'; key: string; language: 'markdown'; code: string }
+  | { kind: 'image'; key: string; src: string; alt: string };
 
 function panelFor(revealStage: number): PanelVariant | null {
+  if (revealStage >= 3) {
+    return {
+      kind: 'image',
+      key: 'conversation',
+      src: conversationImg,
+      alt: 'Real GitLab discussion thread: mango flags missing tests on getTextFieldContent; Ling Huang replies with three bullet points claiming all paths are covered; mango replies that the fixes are in ChatService.spec.ts, but the original finding was about AssistantBackgroundController.getTextFieldContent — a different file with no tests.',
+    };
+  }
   if (revealStage >= 2) {
-    return { key: 'thread-analysis', language: 'markdown', code: THREAD_ANALYSIS_PROMPT };
+    return { kind: 'prompt', key: 'thread-analysis', language: 'markdown', code: THREAD_ANALYSIS_PROMPT };
   }
   if (revealStage >= 1) {
-    return { key: 'fetch-comments', language: 'markdown', code: FETCH_COMMENTS_PROMPT };
+    return { kind: 'prompt', key: 'fetch-comments', language: 'markdown', code: FETCH_COMMENTS_PROMPT };
   }
   return null;
 }
@@ -109,6 +116,25 @@ const STYLES = `
     margin: 0 !important;
     height: 100%;
   }
+
+  /* Image variant — center the screenshot, contain it, no chrome around it.
+     The panel still provides the green border + shadow. */
+  .teach-claude-panel--image {
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    background: rgba(10, 14, 20, 0.6);
+  }
+  .teach-claude-panel--image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
 `;
 
 function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number }) {
@@ -119,11 +145,19 @@ function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number })
       <style>{STYLES}</style>
 
       <div className="teach-claude-body">
-        {panel && (
+        {panel && panel.kind === 'prompt' && (
           <div className="teach-claude-panel" key={panel.key}>
             <div className="teach-claude-panel__viewport">
               <CodeBlock language={panel.language} code={panel.code} />
             </div>
+          </div>
+        )}
+        {panel && panel.kind === 'image' && (
+          <div
+            className="teach-claude-panel teach-claude-panel--image"
+            key={panel.key}
+          >
+            <img src={panel.src} alt={panel.alt} loading="lazy" />
           </div>
         )}
       </div>
@@ -133,7 +167,7 @@ function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number })
 
 export const TeachClaudeCommunicateSlide: SlideDefinition = {
   id: 'teach-claude-communicate',
-  maxRevealStages: 2,
+  maxRevealStages: 3,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
@@ -144,5 +178,5 @@ export const TeachClaudeCommunicateSlide: SlideDefinition = {
   ),
   content: ({ revealStage }: SlideContentProps) => <TeachClaudeCommunicateContent revealStage={revealStage} />,
   notes:
-    'Two-prompt walkthrough showing how the reviewer is taught to use review-channel state. Reveal 1: pre-review — load every existing comment as $EXISTING_COMMENTS so we de-dupe against humans and other AI bots. Reveal 2: post-review — Claude looks at threads it itself opened earlier and decides RESOLVE / UNRESOLVE (humans resolve their own). Snippets are distilled from review/skills/fetch-existing-comments/SKILL.md and mango/.../prompt.ts:getSkillBasedThreadAnalysisStep.',
+    'Three-stage walkthrough: how Claude is taught to use review-channel state, plus a real-world payoff. Reveal 1: pre-review — load every existing comment as $EXISTING_COMMENTS so we de-dupe against humans and other AI bots. Reveal 2: post-review — Claude looks at threads it itself opened earlier and decides RESOLVE / UNRESOLVE (humans resolve their own). Reveal 3: payoff — real Inkwell MR thread (Ling Huang) where mango catches that the human "fixed" tests in ChatService.spec.ts but the original finding was about AssistantBackgroundController.getTextFieldContent — a different file. Snippets distilled from review/skills/fetch-existing-comments/SKILL.md and mango/.../prompt.ts:getSkillBasedThreadAnalysisStep.',
 };

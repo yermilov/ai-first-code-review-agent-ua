@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import agendaEngineerImage from '../assets/agenda-engineer.png?url';
 import agendaTeamImage from '../assets/agenda-team.png?url';
 import agendaOrgImage from '../assets/agenda-org.png?url';
+import mrDescriptionResultImage from '../assets/mr-description-result.png?url';
 import { PovSolitairePreview, SkillAstronautsPreview } from '../components/AgendaPreviews';
 
 export interface SubsectionData {
@@ -61,6 +62,8 @@ export const SECTIONS: SectionData[] = [
             <span className="text-orange">квитанції</span>
           </>
         ),
+        image: mrDescriptionResultImage,
+        alt: 'Rendered MR description: session links, Why? / How?, and a collapsible Implementation plan',
       },
     ],
   },
