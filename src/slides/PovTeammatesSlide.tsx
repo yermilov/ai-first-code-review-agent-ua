@@ -19,7 +19,6 @@ import pov12 from '../assets/pov-screenshots/pov-12-grammarly-superhuman-aidev-3
 const CLEAN = [pov10, pov07, pov03];
 // Remaining 9 in chaos pile (reveal 3)
 const CHAOS = [pov01, pov02, pov04, pov05, pov06, pov08, pov09, pov11, pov12];
-const ALL_CARDS = [...CLEAN, ...CHAOS];
 
 // Stage-3 layout (% of container)
 const POSITIONS: { left: number; top: number; rot: number; delay: number }[] = [

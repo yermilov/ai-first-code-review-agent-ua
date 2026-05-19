@@ -1,5 +1,5 @@
 import { SlideDefinition } from '../types/slides';
-import { Code, Emphasis, SlideItem } from '../components/SlideElements';
+import { Code, SlideItem } from '../components/SlideElements';
 
 // Command styling (orange code)
 function Command({ children }: { children: string }) {

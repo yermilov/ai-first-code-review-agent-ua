@@ -295,7 +295,7 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            {ZONES.map((zone, i) => {
+            {ZONES.map((_, i) => {
               const x1 = (i / ZONES.length) * CURVE_W;
               const x2 = ((i + 1) / ZONES.length) * CURVE_W;
               return (
