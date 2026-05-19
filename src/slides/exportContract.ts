@@ -21,6 +21,7 @@
 export const KNOWN_RUNTIME_ASYNC_SLIDES = new Set<string>([
   'IndustryPatternsSlide',
   'MetaSkillsSlide',
+  'StartHereSlide',
 ]);
 
 /**
