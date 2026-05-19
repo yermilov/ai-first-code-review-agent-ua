@@ -147,6 +147,14 @@ function AgendaSlideContent() {
         .agenda-subcard .agenda-card-desc {
           font-size: var(--slide-text-dense);
         }
+
+        /* Preview wrapper for cards whose body is a live mini-preview. */
+        .agenda-preview-wrap {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          border-radius: 4px;
+          overflow: hidden;
+        }
       `}</style>
 
       {/* Row 1: main sections */}
@@ -173,7 +181,7 @@ function AgendaSlideContent() {
       {subsections.length > 0 && (
         <div className="agenda-connector">
           <div className="agenda-connector-line" />
-          <span className="agenda-connector-label">// part 2 deep dives</span>
+          <span className="agenda-connector-label">// кейс створення code review агента</span>
           <div className="agenda-connector-line" />
         </div>
       )}
@@ -183,18 +191,32 @@ function AgendaSlideContent() {
         <div className="agenda-subs-row">
           {subsections.map((sub) => (
             <div
-              key={sub.command}
+              key={sub.slideId}
               className="agenda-card agenda-subcard"
               onClick={() => goToSlideById(sub.slideId)}
             >
-              <div className="agenda-card-command">
-                <span className="text-dim">$</span>{' '}
-                <span className="text-orange">{sub.command}</span>
-              </div>
-              <div className="agenda-img-wrap agenda-sub-img-wrap">
-                <img src={sub.image} alt={sub.alt} loading="lazy" className="agenda-card-image" />
-              </div>
-              <div className="agenda-card-desc text-muted">{sub.desc}</div>
+              {sub.previewNode ? (
+                <div className="agenda-preview-wrap">{sub.previewNode}</div>
+              ) : (
+                <>
+                  {sub.labelNode && (
+                    <div className="agenda-card-command">{sub.labelNode}</div>
+                  )}
+                  {sub.image && (
+                    <div className="agenda-img-wrap agenda-sub-img-wrap">
+                      <img
+                        src={sub.image}
+                        alt={sub.alt ?? ''}
+                        loading="lazy"
+                        className="agenda-card-image"
+                      />
+                    </div>
+                  )}
+                  {sub.desc && (
+                    <div className="agenda-card-desc text-muted">{sub.desc}</div>
+                  )}
+                </>
+              )}
             </div>
           ))}
         </div>
