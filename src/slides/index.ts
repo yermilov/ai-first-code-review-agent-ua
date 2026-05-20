@@ -1,7 +1,6 @@
 import { TitleSlide } from './TitleSlide';
 import { BioSlide } from './BioSlide';
 import { TimelineSlide } from './TimelineSlide';
-import { IntroSlide } from './IntroSlide';
 import { AgendaSlide } from './AgendaSlide';
 import { EngineerSectionSlide } from './EngineerSectionSlide';
 import { TeamSectionSlide } from './TeamSectionSlide';
@@ -21,6 +20,7 @@ import { SkillMarketplaceSlide } from './SkillMarketplaceSlide';
 import { MetaSkillsSlide } from './MetaSkillsSlide';
 import { EverythingIsSkillSlide } from './EverythingIsSkillSlide';
 import { SubagentLensesSlide } from './SubagentLensesSlide';
+import { ReviewConsolidatorSlide } from './ReviewConsolidatorSlide';
 import { AIInnovatorCurveSlide } from './AIInnovatorCurveSlide';
 import { SkillsActivatorSlide } from './SkillsActivatorSlide';
 import { AgentWorkflowSlide } from './AgentWorkflowSlide';
@@ -35,4 +35,4 @@ import { HumanAiEngSlide } from './HumanAiEngSlide';
 import { ChallengeAssumptionsSlide } from './ChallengeAssumptionsSlide';
 import { FinalSlide } from './FinalSlide';
 
-export const slides = [TitleSlide, BioSlide, TimelineSlide, IntroSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, DisclaimerSlide, BreakOutOfCodingSlide, ClaudeCodeSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, PovTeammatesSlide, AiCodeReviewSlide, StartHereSlide, AgentWorkflowSlide, TeachClaudeCommunicateSlide, AutoApproveHookSlide, WarcraftFunSlide, SkillMarketplaceSlide, WhatIsSkillSlide, MetaSkillsSlide, EverythingIsSkillSlide, SubagentLensesSlide, SkillsActivatorSlide, AgentTracesSlide, MrDescriptionSlide, ConclusionsSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];
+export const slides = [TitleSlide, BioSlide, TimelineSlide, AgendaSlide, EngineerSectionSlide, VibeFlowSlide, ContextToolsSlide, DisclaimerSlide, BreakOutOfCodingSlide, ClaudeCodeSlide, UltimateExampleSlide, ImportantSlide, TeamSectionSlide, PovTeammatesSlide, AiCodeReviewSlide, StartHereSlide, AgentWorkflowSlide, TeachClaudeCommunicateSlide, AutoApproveHookSlide, WarcraftFunSlide, SkillMarketplaceSlide, WhatIsSkillSlide, MetaSkillsSlide, EverythingIsSkillSlide, SubagentLensesSlide, ReviewConsolidatorSlide, SkillsActivatorSlide, AgentTracesSlide, MrDescriptionSlide, ConclusionsSlide, OrgSectionSlide, AIInnovatorCurveSlide, IndustryPatternsSlide, ChallengeAssumptionsSlide, HumanAiEngSlide, FinalSlide];

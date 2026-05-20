@@ -112,7 +112,7 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
         <div style={{ flex: 1, display: 'flex', gap: '1.5rem', alignItems: 'center', minHeight: 0 }}>
           <div
             className="cc-bullets"
-            style={{ flex: '0 0 48%', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'left' }}
+            style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'left' }}
           >
             <SlideItem delay={0.05}>
               цю презентацію повністю створено у Claude Code

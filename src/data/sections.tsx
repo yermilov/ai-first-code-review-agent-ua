@@ -2,8 +2,7 @@ import { ReactNode } from 'react';
 import agendaEngineerImage from '../assets/agenda-engineer.png?url';
 import agendaTeamImage from '../assets/agenda-team.png?url';
 import agendaOrgImage from '../assets/agenda-org.png?url';
-import mrDescriptionResultImage from '../assets/mr-description-result.png?url';
-import { PovSolitairePreview, SkillAstronautsPreview } from '../components/AgendaPreviews';
+import { PovSolitairePreview, SkillAstronautsPreview, MrDescriptionPreview } from '../components/AgendaPreviews';
 
 export interface SubsectionData {
   /** Live preview component rendered as the entire card body. When set, label/image/desc are skipped. */
@@ -54,16 +53,7 @@ export const SECTIONS: SectionData[] = [
       },
       {
         slideId: 'agent-traces',
-        desc: '// observability та автономність',
-        labelNode: (
-          <>
-            <span className="text-dim">&gt;</span>{' '}
-            <span className="text-green">зберігайте</span>{' '}
-            <span className="text-orange">квитанції</span>
-          </>
-        ),
-        image: mrDescriptionResultImage,
-        alt: 'Rendered MR description: session links, Why? / How?, and a collapsible Implementation plan',
+        previewNode: <MrDescriptionPreview />,
       },
     ],
   },

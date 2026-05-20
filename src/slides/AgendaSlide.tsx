@@ -152,6 +152,7 @@ function AgendaSlideContent() {
         .agenda-preview-wrap {
           width: 100%;
           aspect-ratio: 16 / 9;
+          max-height: calc(var(--vh-full) * 0.22);
           border-radius: 4px;
           overflow: hidden;
         }

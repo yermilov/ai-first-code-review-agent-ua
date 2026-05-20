@@ -243,56 +243,55 @@ function IndustryPatternsContent({ revealStage }: SlideContentProps) {
   }, []);
 
   return (
-    <>
-      <h2>
-        <span className="text-dim">//</span>{' '}
-        <span className="text-green">AI-first</span>{' '}
-        <span className="text-orange">організація</span>
-      </h2>
+    <div className="industry-patterns-body">
+      {/* Left: bullets */}
+      <div className="industry-patterns-bullets">
+        {bullets.slice(0, visibleCount).map((bullet, i) => (
+          <SlideItem key={i} delay={0}>{bullet}</SlideItem>
+        ))}
+      </div>
 
-      <div className="industry-patterns-body">
-        {/* Left: bullets */}
-        <div className="industry-patterns-bullets">
-          {bullets.slice(0, visibleCount).map((bullet, i) => (
-            <SlideItem key={i} delay={0}>{bullet}</SlideItem>
-          ))}
-        </div>
-
-        {/* Right: bare release-calendar image on stages 0–1, framed status
-            panel on stage 2. */}
-        {showStatus ? (
-          <div className="industry-patterns-panel" key="status">
-            <div className="industry-patterns-panel__viewport">
-              <StatusHistoryPanel
-                label="status.claude.com"
-                componentsUrl="https://status.claude.com/api/v2/components.json"
-                incidentsUrl="https://status.claude.com/api/v2/incidents.json?page_size=100"
-                onComplete={handleStatusLoaded}
-              />
-            </div>
-          </div>
-        ) : (
-          <div
-            className={
-              'industry-patterns-image' +
-              (revealStage >= 1 ? ' industry-patterns-image--zoom' : '')
-            }
-            key={`image-${revealStage >= 1 ? 'zoom' : 'static'}`}
-          >
-            <img
-              src={releaseCalendar}
-              alt="Календар релізів Anthropic — 52 дні релізів від Claude Team"
-              loading="lazy"
+      {/* Right: bare release-calendar image on stages 0–1, framed status
+          panel on stage 2. */}
+      {showStatus ? (
+        <div className="industry-patterns-panel" key="status">
+          <div className="industry-patterns-panel__viewport">
+            <StatusHistoryPanel
+              label="status.claude.com"
+              componentsUrl="https://status.claude.com/api/v2/components.json"
+              incidentsUrl="https://status.claude.com/api/v2/incidents.json?page_size=100"
+              onComplete={handleStatusLoaded}
             />
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      ) : (
+        <div
+          className={
+            'industry-patterns-image' +
+            (revealStage >= 1 ? ' industry-patterns-image--zoom' : '')
+          }
+          key={`image-${revealStage >= 1 ? 'zoom' : 'static'}`}
+        >
+          <img
+            src={releaseCalendar}
+            alt="Календар релізів Anthropic — 52 дні релізів від Claude Team"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
   );
 }
 
 export const IndustryPatternsSlide: SlideDefinition = {
   id: 'industry-patterns',
+  title: (
+    <>
+      <span className="text-dim">&gt;</span>{' '}
+      <span className="text-green">AI-first</span>{' '}
+      <span className="text-orange">організація</span>
+    </>
+  ),
   content: (props: SlideContentProps) => <IndustryPatternsContent {...props} />,
   maxRevealStages: bullets.length - 1,
   asyncSettle: true,

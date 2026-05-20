@@ -16,8 +16,7 @@ For each one emit:
   thread_id = in_reply_to_id ?? id   // group replies
 If the fetch fails, return [] and keep going.
 
-Why: you MUST NOT raise a concern that was already raised — by a human or
-another AI reviewer. De-dupe against this list before posting anything.`;
+Why: you MUST NOT raise a concern that was already raised — by a human or another AI reviewer. De-dupe against this list before posting anything.`;
 
 const THREAD_ANALYSIS_PROMPT = `Look at every comment thread YOU previously opened on this PR.
 For each one, decide:
@@ -32,27 +31,8 @@ Output:
   UNRESOLVE  comment_id: 67890
     REASON: Fix was reverted`;
 
-type PanelVariant =
-  | { kind: 'prompt'; key: string; language: 'markdown'; code: string }
-  | { kind: 'image'; key: string; src: string; alt: string };
-
-function panelFor(revealStage: number): PanelVariant | null {
-  if (revealStage >= 3) {
-    return {
-      kind: 'image',
-      key: 'conversation',
-      src: conversationImg,
-      alt: 'Real GitLab discussion thread: mango flags missing tests on getTextFieldContent; Ling Huang replies with three bullet points claiming all paths are covered; mango replies that the fixes are in ChatService.spec.ts, but the original finding was about AssistantBackgroundController.getTextFieldContent — a different file with no tests.',
-    };
-  }
-  if (revealStage >= 2) {
-    return { kind: 'prompt', key: 'thread-analysis', language: 'markdown', code: THREAD_ANALYSIS_PROMPT };
-  }
-  if (revealStage >= 1) {
-    return { kind: 'prompt', key: 'fetch-comments', language: 'markdown', code: FETCH_COMMENTS_PROMPT };
-  }
-  return null;
-}
+const CONVERSATION_ALT =
+  'Real GitLab discussion thread: mango flags missing tests on getTextFieldContent; Ling Huang replies with three bullet points claiming all paths are covered; mango replies that the fixes are in ChatService.spec.ts, but the original finding was about AssistantBackgroundController.getTextFieldContent — a different file with no tests.';
 
 const STYLES = `
   @keyframes teachClaudePanelIn {
@@ -62,13 +42,26 @@ const STYLES = `
 
   .teach-claude-body {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
     justify-content: center;
+    gap: var(--space-md);
     width: 100%;
     height: calc(var(--vh-full) - 220px);
     min-height: 0;
     text-align: left;
+  }
+
+  .teach-claude-col {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .teach-claude-col--prompts {
+    gap: var(--space-md);
   }
 
   .teach-claude-panel {
@@ -115,6 +108,13 @@ const STYLES = `
     flex: 1 1 auto;
     margin: 0 !important;
     height: 100%;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+  .teach-claude-panel__viewport .code-block pre code,
+  .teach-claude-panel__viewport .code-block pre code * {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
   }
 
   /* Image variant — center the screenshot, contain it, no chrome around it.
@@ -138,28 +138,36 @@ const STYLES = `
 `;
 
 function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number }) {
-  const panel = panelFor(revealStage);
+  const showImage = revealStage >= 1;
+  const activePrompt =
+    revealStage >= 2
+      ? { key: 'thread-analysis', code: THREAD_ANALYSIS_PROMPT }
+      : revealStage >= 1
+        ? { key: 'fetch-comments', code: FETCH_COMMENTS_PROMPT }
+        : null;
 
   return (
     <>
       <style>{STYLES}</style>
 
       <div className="teach-claude-body">
-        {panel && panel.kind === 'prompt' && (
-          <div className="teach-claude-panel" key={panel.key}>
-            <div className="teach-claude-panel__viewport">
-              <CodeBlock language={panel.language} code={panel.code} />
+        <div className="teach-claude-col teach-claude-col--image">
+          {showImage && (
+            <div className="teach-claude-panel teach-claude-panel--image" key="conversation">
+              <img src={conversationImg} alt={CONVERSATION_ALT} loading="lazy" />
             </div>
-          </div>
-        )}
-        {panel && panel.kind === 'image' && (
-          <div
-            className="teach-claude-panel teach-claude-panel--image"
-            key={panel.key}
-          >
-            <img src={panel.src} alt={panel.alt} loading="lazy" />
-          </div>
-        )}
+          )}
+        </div>
+
+        <div className="teach-claude-col teach-claude-col--prompts">
+          {activePrompt && (
+            <div className="teach-claude-panel" key={activePrompt.key}>
+              <div className="teach-claude-panel__viewport">
+                <CodeBlock language="markdown" code={activePrompt.code} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
@@ -167,13 +175,12 @@ function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number })
 
 export const TeachClaudeCommunicateSlide: SlideDefinition = {
   id: 'teach-claude-communicate',
-  maxRevealStages: 3,
+  maxRevealStages: 2,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">вчимо</span>{' '}
-      <span className="text-orange">Клода</span>{' '}
-      <span className="text-green">коментувати</span>
+      <span className="text-orange">Клода спілкуватися</span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <TeachClaudeCommunicateContent revealStage={revealStage} />,

@@ -7,7 +7,6 @@ import designSystemReviewerImg from '../assets/subagent-comments/design-system-r
 import claudeMdReviewerImg from '../assets/subagent-comments/claude-md-reviewer.png?url';
 import claudeMetaReviewerImg from '../assets/subagent-comments/claude-meta-reviewer.png?url';
 import skillReviewerJavaHttpImg from '../assets/subagent-comments/skill-reviewer-java-http-client.png?url';
-import skillReviewerReactInteractionImg from '../assets/subagent-comments/skill-reviewer-react-interaction-tests.png?url';
 import codexImg from '../assets/subagent-comments/codex.png?url';
 
 // One entry per reveal stage. Bullet = short "what this lens looks for".
@@ -50,8 +49,8 @@ const LENSES: Lens[] = [
     bullet: (
       <>
         <Code>design-system-reviewer</Code>{' '}
-        — відповідність <Emphasis color="green">Origin design system</Emphasis>:
-        {' '}нативні елементи замість компонентів, hardcoded токени
+        — відповідність <Emphasis color="green">нашій дизайн системі</Emphasis>:
+        {' '}нативні елементи замість компонентів, захардкожені токени
       </>
     ),
     src: designSystemReviewerImg,
@@ -62,7 +61,7 @@ const LENSES: Lens[] = [
     bullet: (
       <>
         <Code>claude-md-reviewer</Code>{' '}
-        — <Emphasis color="green">точність</Emphasis>{' '}
+        — <Emphasis color="green">якість</Emphasis>{' '}
         <Code>CLAUDE.md</Code> / <Code>AGENTS.md</Code>:
         {' '}правила, які насправді не працюють, або застаріли
       </>
@@ -75,8 +74,8 @@ const LENSES: Lens[] = [
     bullet: (
       <>
         <Code>claude-meta-reviewer</Code>{' '}
-        — якість <Emphasis color="green">SKILL.md / commands / hooks / agents</Emphasis>:
-        {' '}інструкції, які не виконують те, що обіцяють
+        — якість <Emphasis color="green">SKILL.md / commands / hooks / agents</Emphasis>
+        {' '}відмовідно до мета скілу
       </>
     ),
     src: claudeMetaReviewerImg,
@@ -87,7 +86,7 @@ const LENSES: Lens[] = [
     bullet: (
       <>
         <Code>skill-reviewer(java-http-client)</Code>{' '}
-        — конфігурація HTTP-клієнта за <Emphasis color="green">golden path</Emphasis>:
+        — конфігурація нашого стандартного <Emphasis color="green">HTTP-клієнта</Emphasis>:
         {' '}таймаути, retry, circuit-breaker, версії
       </>
     ),
@@ -95,58 +94,18 @@ const LENSES: Lens[] = [
     alt: 'skill-reviewer: SNAPSHOT dependency on grammarly:http-client in a published library POM',
   },
   {
-    key: 'skill-reviewer-react-interaction-tests',
-    bullet: (
-      <>
-        <Code>skill-reviewer(react-interaction-tests)</Code>{' '}
-        — <Emphasis color="green">інтерактивна семантика</Emphasis> React-компонентів через лінзу testing-library
-      </>
-    ),
-    src: skillReviewerReactInteractionImg,
-    alt: 'skill-reviewer: TreeItem renders role="button" + tabIndex=0 without onClick',
-  },
-  {
     key: 'codex',
     bullet: (
       <>
-        <Code>codex</Code>{' '}
-        — <Emphasis color="green">OpenAI</Emphasis>{' '}
-        як <Emphasis color="orange">друга думка</Emphasis>:
-        {' '}той самий MR, але іншою моделлю
+        окремо <Code>codex</Code>{' '}
+        — для <Emphasis color="orange">сторонньої думки</Emphasis>
+        {' '}щодо найскладніших рев'ю
       </>
     ),
     src: codexImg,
     alt: 'codex: when keyArn is neither old nor new, errors increments but processVerifyPage declares SUCCEEDED',
   },
 ];
-
-// Consolidator bullets — what the review-consolidator agent does after all
-// the per-lens findings come back. Distilled from
-// claude-code-plugins/review/agents/review-consolidator.md.
-const CONSOLIDATOR_BULLETS: ReactNode[] = [
-  <>
-    збирає результати від усіх <Emphasis color="green">background-агентів</Emphasis>
-    {' '}через <Code>TaskOutput</Code>
-  </>,
-  <>
-    <Emphasis color="green">дедуплікує</Emphasis> знахідки
-    {' '}на однаковому <Code>file:line</Code> (±3 рядки)
-  </>,
-  <>
-    <Emphasis color="green">підвищує впевненість</Emphasis> при збігу:
-    {' '}<Code>+10%</Code> якщо знайшли 2 агенти, <Code>+20%</Code> якщо 3+
-  </>,
-  <>
-    сортує за пріоритетом:
-    {' '}<Emphasis color="orange">CRITICAL</Emphasis> → HIGH → MEDIUM → LOW
-  </>,
-  <>
-    тайм-аути не блокують — <Emphasis color="green">публікуємо те, що встигли</Emphasis>
-    {' '}за 20 хвилин
-  </>,
-];
-
-const CONSOLIDATOR_STAGE_INDEX = LENSES.length; // i.e. 8 (zero-indexed final stage)
 
 const STYLES = `
   @keyframes subagentPanelIn {
@@ -219,60 +178,9 @@ const STYLES = `
     border-radius: 6px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   }
-
-  /* Consolidator panel — full-width bullet list. Same border/shadow chrome
-     as the screenshot panel so it reads as the same "evidence canvas",
-     but content is a centered stack of bullets. */
-  .subagent-consolidator-panel {
-    flex: 1 1 auto;
-    min-height: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-md);
-    overflow: hidden;
-    border-radius: 14px;
-    background: rgba(10, 14, 20, 0.6);
-    border: 1px solid rgba(126, 231, 135, 0.35);
-    box-shadow:
-      0 18px 48px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(126, 231, 135, 0.08);
-    padding: var(--space-lg) var(--space-xl);
-    text-align: left;
-    font-size: var(--slide-text-normal);
-    animation: subagentPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
 `;
 
 function SubagentLensesContent({ revealStage }: { revealStage: number }) {
-  const isConsolidator = revealStage >= CONSOLIDATOR_STAGE_INDEX;
-
-  if (isConsolidator) {
-    return (
-      <>
-        <style>{STYLES}</style>
-
-        <div className="subagent-lens-stage">
-          <h2 className="subagent-lens-title">
-            <span className="text-dim">&gt;</span>{' '}
-            <span className="text-green">а потім</span>{' '}
-            <span className="text-orange">review-consolidator</span>{' '}
-            <span className="text-green">збирає все докупи</span>
-          </h2>
-
-          <div key="consolidator-panel" className="subagent-consolidator-panel">
-            {CONSOLIDATOR_BULLETS.map((b, i) => (
-              <SlideItem key={i} delay={0.05 + i * 0.08}>
-                {b}
-              </SlideItem>
-            ))}
-          </div>
-        </div>
-      </>
-    );
-  }
-
   const lens = LENSES[Math.min(revealStage, LENSES.length - 1)];
 
   return (
@@ -282,8 +190,8 @@ function SubagentLensesContent({ revealStage }: { revealStage: number }) {
       <div className="subagent-lens-stage">
         <h2 className="subagent-lens-title">
           <span className="text-dim">&gt;</span>{' '}
-          <span className="text-green">кожна лінза</span>{' '}
-          <span className="text-orange">шукає своє</span>
+          <span className="text-green">скілові</span>{' '}
+          <span className="text-orange">рев'ювери</span>
         </h2>
 
         <div className="subagent-lens-row">
@@ -302,12 +210,12 @@ function SubagentLensesContent({ revealStage }: { revealStage: number }) {
 
 export const SubagentLensesSlide: SlideDefinition = {
   id: 'subagent-lenses',
-  // 8 lens stages (0..7) + 1 consolidator stage (8) = 9 total → maxRevealStages = 8.
-  maxRevealStages: LENSES.length,
+  // One reveal per lens (0..LENSES.length-1). maxRevealStages is N-1.
+  maxRevealStages: LENSES.length - 1,
   initialRevealStage: 0,
   content: ({ revealStage }: SlideContentProps) => (
     <SubagentLensesContent revealStage={revealStage} />
   ),
   notes:
-    'Спеціалізовані лінзи код-рев\'ю агента. Layout: текст ліворуч (40%), реальний скріншот коментаря праворуч (60%). 8 reveals — по одному субагенту: pr-test-analyzer → accessibility → design-system → claude-md → claude-meta → skill-reviewer(java-http-client) → skill-reviewer(react-interaction-tests) → codex. 9-й (фінальний) reveal — як review-consolidator зводить усі знахідки разом: TaskOutput → дедуп по file:line (±3) → boost confidence при збігу (+10% / +20%) → severity-сорт → тайм-аути не блокують.',
+    'Спеціалізовані лінзи код-рев\'ю агента. Layout: текст ліворуч (40%), реальний скріншот коментаря праворуч (60%). По одному субагенту за reveal: pr-test-analyzer → accessibility → design-system → claude-md → claude-meta → skill-reviewer(java-http-client) → codex. Консолідатор (як review-consolidator зводить усі знахідки разом) винесений у окремий слайд.',
 };

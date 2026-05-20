@@ -38,11 +38,14 @@ blocks: download+exec, credential leaks,
 
 type PanelVariant = { key: string; language: 'bash'; code: string };
 
-function panelFor(revealStage: number): PanelVariant {
-  if (revealStage >= 1) {
+function panelFor(revealStage: number): PanelVariant | null {
+  if (revealStage >= 2) {
     return { key: 'auto-mode', language: 'bash', code: AUTO_MODE_CODE };
   }
-  return { key: 'tiers', language: 'bash', code: TIER_CODE };
+  if (revealStage >= 1) {
+    return { key: 'tiers', language: 'bash', code: TIER_CODE };
+  }
+  return null;
 }
 
 const STYLES = `
@@ -126,7 +129,7 @@ function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
       <div className="auto-approve-body">
         {/* Left column: bullets swap (not accumulate) per stage */}
         <div className="auto-approve-bullets">
-          {revealStage === 0 && (
+          {revealStage === 1 && (
             <SlideItem delay={0.05}>
               <Emphasis color="green">хук для класифікації операцій</Emphasis>:
               {' '}LLM-as-a-judge класифікує дії Клода
@@ -137,7 +140,7 @@ function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
             </SlideItem>
           )}
 
-          {revealStage === 1 && (
+          {revealStage === 2 && (
             <SlideItem delay={0} reveal>
               Anthropic зашипили <Emphasis color="green">--permission-mode auto</Emphasis>
               {' '}— фоновий Sonnet-класифікатор із тією самою філософією: дозволяй
@@ -147,11 +150,13 @@ function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
         </div>
 
         {/* Right column: framed code panel — stable height across stages */}
-        <div className="auto-approve-panel" key={panel.key}>
-          <div className="auto-approve-panel__viewport">
-            <CodeBlock language={panel.language} code={panel.code} />
+        {panel && (
+          <div className="auto-approve-panel" key={panel.key}>
+            <div className="auto-approve-panel__viewport">
+              <CodeBlock language={panel.language} code={panel.code} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
@@ -159,7 +164,7 @@ function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
 
 export const AutoApproveHookSlide: SlideDefinition = {
   id: 'auto-approve-hook',
-  maxRevealStages: 1,
+  maxRevealStages: 2,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}

@@ -194,14 +194,15 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
         <div className="skills-activator-bullets">
           {revealStage === 0 && (
             <SlideItem delay={0.05}>
-              Клод все ще ненадійно завантажує{' '}
-              <Emphasis color="orange">потрібні скіли</Emphasis>
+              як вибрати 
+              {' '}<Emphasis color="orange">потрібні скіли</Emphasis>
+              {' '}для рев'ю?
             </SlideItem>
           )}
 
           {isSolutionVisible(0) && (
             <SlideItem delay={0} reveal>
-              тому ми зробили <Emphasis color="green">skills-activator</Emphasis> — у{' '}
+              ми зробили <Emphasis color="green">skills-activator</Emphasis> — у{' '}
               <Emphasis color="orange">SKILL.md</Emphasis> описуємо правила активації:
               {' '}ключові слова, патерни tool-викликів, директорії
             </SlideItem>

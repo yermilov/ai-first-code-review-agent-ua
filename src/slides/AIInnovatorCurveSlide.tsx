@@ -178,18 +178,19 @@ const STYLES = `
   .ainnovator-curve-zone__bullets {
     display: flex;
     flex-direction: column;
-    gap: 0.3em;
+    gap: 0.2em;
     align-items: center;
     padding-bottom: var(--space-xs);
     font-family: var(--font-mono);
+    min-height: 0;
   }
 
   .ainnovator-curve-zone__bullet {
     color: var(--zone-color);
-    /* Slightly tighter than --slide-text-dense so 4 bullets fit in a
-       quarter-width column without forcing the longest one to wrap. */
-    font-size: clamp(0.9rem, 1.25vw, 1.55rem);
-    line-height: 1.2;
+    /* Sized so 4 bullets fit in a quarter-width column without forcing the
+       longest one to wrap, and without overflowing past the slide bottom. */
+    font-size: clamp(0.85rem, 1.05vw, 1.3rem);
+    line-height: 1.15;
   }
 
   .ainnovator-curve-zone__mystery {

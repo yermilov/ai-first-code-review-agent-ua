@@ -107,6 +107,13 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
               <Emphasis color="orange">ai-код рев'ю</Emphasis> і побудовані
             </SlideItem>
           )}
+
+          {revealStage >= 3 && (
+            <SlideItem delay={0} reveal>
+              але ми звичайно{' '}
+              <Emphasis color="green">можемо краще</Emphasis>
+            </SlideItem>
+          )}
         </div>
 
         {/* ── Right column: scrolling YAML panel ── */}
@@ -200,7 +207,7 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
 
 export const StartHereSlide: SlideDefinition = {
   id: SLIDE_ID,
-  maxRevealStages: 2,
+  maxRevealStages: 3,
   asyncSettle: true,
   title: (
     <>

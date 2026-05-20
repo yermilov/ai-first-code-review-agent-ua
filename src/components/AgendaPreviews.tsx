@@ -6,6 +6,7 @@ import pov10 from '../assets/pov-screenshots/pov-10-grammarly-synthia-1.png?url'
 import spaceBg from '../assets/skill-space-bg.png?url';
 import leftAstronaut from '../assets/skill-was-it-md.png?url';
 import rightAstronaut from '../assets/skill-always-been.png?url';
+import mrDescriptionResultImage from '../assets/mr-description-result.png?url';
 
 /**
  * Miniature continuously-shuffling pile of screenshots — the agenda preview
@@ -137,6 +138,36 @@ export function SkillAstronautsPreview() {
       `}</style>
       <img className="astro-preview__astro astro-preview__astro--left"  src={leftAstronaut}  alt="" loading="lazy" />
       <img className="astro-preview__astro astro-preview__astro--right" src={rightAstronaut} alt="" loading="lazy" />
+    </div>
+  );
+}
+
+/**
+ * Static screenshot preview for the AgentTraces subsection — the rendered MR
+ * description with session links and the collapsible implementation plan.
+ */
+export function MrDescriptionPreview() {
+  return (
+    <div className="mr-preview" aria-hidden>
+      <style>{`
+        .mr-preview {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background: #0a0e14;
+          border-radius: 4px;
+          border: 1px solid var(--terminal-border);
+        }
+        .mr-preview img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+          display: block;
+        }
+      `}</style>
+      <img src={mrDescriptionResultImage} alt="" loading="lazy" />
     </div>
   );
 }
