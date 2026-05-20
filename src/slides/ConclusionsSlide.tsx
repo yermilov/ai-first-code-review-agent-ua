@@ -305,36 +305,41 @@ function SatisfactionChart() {
 }
 
 /**
- * Cost-per-review infographic. Box-plot inspired: each tier is a filled pill
- * for its *typical* range, with an optional dashed whisker + endpoint dot
- * that calls out the long-tail outlier max. Communicates "majority of MRs
- * cost $5–$10, but a very large one can run up to $30" without a histogram.
- *   • Anthropic's official agent — $20–$25 (orange, no whisker)
- *   • our agent on a regular MR  — $5–$10 typical, up to $30 outlier
- *   • our follow-up review       — $2–$5 (bright green, no whisker)
+ * Cost-per-review infographic. Anthropic is shown as a range pill; our agent
+ * is shown as two average markers (single review vs. whole-PR total), so the
+ * audience reads "we're ~4–7× cheaper on average" at a glance.
+ *   • Anthropic's official agent — $20–$25 (orange range pill)
+ *   • наш — одне рев'ю           — ≈$3.5 average (bright green dot)
+ *   • наш — усі рев'ю PR         — ≈$6.5 average (mid green dot)
  */
 function CostsChart() {
-  const ROWS = [
+  type Row =
+    | { kind: 'range'; label: string; labelColor: string; min: number; max: number; color: string }
+    | { kind: 'point'; label: string; labelColor: string; value: number; color: string };
+
+  const ROWS: Row[] = [
     {
+      kind: 'range',
       label: 'Anthropic',
       labelColor: COLOR_ORANGE,
       min: 20, max: 25,
       color: '#f0883e',
     },
     {
-      label: "наш — звичайний MR",
-      labelColor: COLOR_GREEN,
-      min:  5, max: 10,
-      tail: 30,
-      color: '#56c267',
-    },
-    {
-      label: 'наш — follow-up',
+      kind: 'point',
+      label: "наш — одне рев'ю",
       labelColor: '#7ee787',
-      min:  2, max:  5,
+      value: 3.8,
       color: '#7ee787',
     },
-  ] as const;
+    {
+      kind: 'point',
+      label: "наш — рев'ю одного PR",
+      labelColor: COLOR_GREEN,
+      value: 6.9,
+      color: '#56c267',
+    },
+  ];
 
   const X_MIN = 0;
   const X_MAX = 35;
@@ -385,14 +390,11 @@ function CostsChart() {
         </text>
       ))}
 
-      {/* === Range bars + optional outlier whiskers === */}
+      {/* === Per-row marker: range pill or single-point dot === */}
       {ROWS.map((row, i) => {
         const y    = ROW_Y0 + i * ROW_GAP;
-        const x0   = xOf(row.min);
-        const x1   = xOf(row.max);
-        const w    = x1 - x0;
-        const tail = 'tail' in row ? row.tail : undefined;
         const yMid = y + BAR_H / 2;
+
         return (
           <g key={row.label}>
             {/* Row label */}
@@ -404,65 +406,52 @@ function CostsChart() {
               {row.label}
             </text>
 
-            {/* Filled typical-range pill */}
-            <rect
-              x={x0} y={y} width={w} height={BAR_H}
-              rx={BAR_H / 2} fill={row.color}
-            />
-
-            {/* Min $ marker — outside-left */}
-            <text
-              x={x0 - 8} y={yMid + 6}
-              fontSize="14" fontFamily="var(--font-mono)"
-              fill={row.color} textAnchor="end" fontWeight="600"
-            >
-              ${row.min}
-            </text>
-
-            {/* Max $ marker — outside-right of the pill when there's no
-                outlier tail; otherwise we let the whisker handle the right
-                side and place max as a small caption below the pill. */}
-            {tail == null ? (
-              <text
-                x={x1 + 8} y={yMid + 6}
-                fontSize="14" fontFamily="var(--font-mono)"
-                fill={row.color} textAnchor="start" fontWeight="600"
-              >
-                ${row.max}
-              </text>
-            ) : (
-              <text
-                x={x1 - 2} y={y + BAR_H + 18}
-                fontSize="12" fontFamily="var(--font-mono)"
-                fill={row.color} textAnchor="end" opacity={0.85}
-              >
-                ${row.max}
-              </text>
-            )}
-
-            {/* === Outlier whisker (only when tail is set) === */}
-            {tail != null && (
-              <g opacity={0.85}>
-                <line
-                  x1={x1 + 4} x2={xOf(tail)}
-                  y1={yMid} y2={yMid}
-                  stroke={row.color}
-                  strokeWidth={2.5}
-                  strokeDasharray="4 5"
-                  opacity={0.7}
-                />
-                <circle
-                  cx={xOf(tail)} cy={yMid}
-                  r={6} fill={row.color}
+            {row.kind === 'range' ? (
+              <>
+                {/* Filled range pill */}
+                <rect
+                  x={xOf(row.min)} y={y}
+                  width={xOf(row.max) - xOf(row.min)} height={BAR_H}
+                  rx={BAR_H / 2} fill={row.color}
                 />
                 <text
-                  x={xOf(tail) + 12} y={yMid + 6}
-                  fontSize="14" fontWeight="600"
-                  fontFamily="var(--font-mono)" fill={row.color}
+                  x={xOf(row.min) - 8} y={yMid + 6}
+                  fontSize="14" fontFamily="var(--font-mono)"
+                  fill={row.color} textAnchor="end" fontWeight="600"
                 >
-                  ${tail}
+                  ${row.min}
                 </text>
-              </g>
+                <text
+                  x={xOf(row.max) + 8} y={yMid + 6}
+                  fontSize="14" fontFamily="var(--font-mono)"
+                  fill={row.color} textAnchor="start" fontWeight="600"
+                >
+                  ${row.max}
+                </text>
+              </>
+            ) : (
+              <>
+                {/* Single-point average marker */}
+                <circle
+                  cx={xOf(row.value)} cy={yMid}
+                  r={BAR_H / 2 - 2}
+                  fill={row.color}
+                />
+                <text
+                  x={xOf(row.value) + (BAR_H / 2) + 6} y={yMid + 6}
+                  fontSize="16" fontFamily="var(--font-mono)"
+                  fill={row.color} textAnchor="start" fontWeight="700"
+                >
+                  ≈${row.value}
+                </text>
+                <text
+                  x={xOf(row.value) + (BAR_H / 2) + 6} y={y + BAR_H + 20}
+                  fontSize="12" fontFamily="var(--font-mono)"
+                  fill={row.color} textAnchor="start" opacity={0.7}
+                >
+                  у середньому
+                </text>
+              </>
             )}
           </g>
         );

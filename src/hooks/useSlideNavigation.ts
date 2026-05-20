@@ -190,12 +190,18 @@ export function useSlideNavigation(
         case 'ArrowDown':
         case ' ':
         case 'PageDown':
+        case 'Enter':
+        case 'n':
+        case 'N':
           e.preventDefault();
           revealNext();
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
         case 'PageUp':
+        case 'Backspace':
+        case 'p':
+        case 'P':
           e.preventDefault();
           revealPrev();
           break;

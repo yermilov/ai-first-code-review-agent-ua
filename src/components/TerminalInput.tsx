@@ -38,16 +38,38 @@ export function TerminalInput({
       return;
     }
 
-    // Arrow key navigation when input is empty
+    // Clicker- and keyboard-friendly navigation. PageDown/PageUp work
+    // regardless of input contents (no clicker ever types a value there).
+    // Letters (n/p) only fire when the input is empty so the user can still
+    // type words that contain them.
+    const isPageNext = e.key === 'PageDown';
+    const isPagePrev = e.key === 'PageUp';
+
+    if (isPageNext && onArrowRight) {
+      e.preventDefault();
+      onArrowRight();
+      return;
+    }
+    if (isPagePrev && onArrowLeft) {
+      e.preventDefault();
+      onArrowLeft();
+      return;
+    }
+
     if (!value) {
-      if ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') && onArrowLeft) {
-        e.preventDefault();
-        onArrowLeft();
-        return;
-      }
-      if ((e.key === 'ArrowRight' || e.key === 'ArrowDown') && onArrowRight) {
+      const nextKey = e.key === 'ArrowRight' || e.key === 'ArrowDown'
+        || e.key === 'Enter' || e.key === 'n' || e.key === 'N';
+      const prevKey = e.key === 'ArrowLeft' || e.key === 'ArrowUp'
+        || e.key === 'Backspace' || e.key === 'p' || e.key === 'P';
+
+      if (nextKey && onArrowRight) {
         e.preventDefault();
         onArrowRight();
+        return;
+      }
+      if (prevKey && onArrowLeft) {
+        e.preventDefault();
+        onArrowLeft();
         return;
       }
     }
