@@ -98,14 +98,8 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
 
         {setIndex === 0 && (
           <div className="agent-traces-panel">
-            <div className="agent-traces-panel__chrome agent-traces-panel__chrome--top">
-              ░░░ vibes.ts — завантажувач сесій агентів ░░░
-            </div>
             <div className="agent-traces-panel__viewport">
               <CodeBlock language="typescript" code={TRACER_CODE} />
-            </div>
-            <div className="agent-traces-panel__chrome agent-traces-panel__chrome--bottom">
-              [END OF TRANSMISSION]
             </div>
           </div>
         )}
