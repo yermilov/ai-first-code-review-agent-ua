@@ -28,7 +28,7 @@ const COLOR_GRID = 'rgba(226, 232, 240, 0.08)';
  * on a linear scale (5h → 210h fits comfortably). Numbers from the MR
  * cohort with/without agent_hacker_mango comments.
  */
-function TimeShiftChart() {
+export function TimeShiftChart() {
   const X_TICKS = ['p50', 'p80', 'p90', 'p95'];
 
   // p50, p80, p90, p95 — hours

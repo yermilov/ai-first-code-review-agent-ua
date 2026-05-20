@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import agendaEngineerImage from '../assets/agenda-engineer.png?url';
 import agendaTeamImage from '../assets/agenda-team.png?url';
 import agendaOrgImage from '../assets/agenda-org.png?url';
-import { PovSolitairePreview, SkillAstronautsPreview, MrDescriptionPreview } from '../components/AgendaPreviews';
+import { PovSolitairePreview, SkillAstronautsPreview, TimeShiftPreview } from '../components/AgendaPreviews';
 
 export interface SubsectionData {
   /** Live preview component rendered as the entire card body. When set, label/image/desc are skipped. */
@@ -53,7 +53,7 @@ export const SECTIONS: SectionData[] = [
       },
       {
         slideId: 'agent-traces',
-        previewNode: <MrDescriptionPreview />,
+        previewNode: <TimeShiftPreview />,
       },
     ],
   },

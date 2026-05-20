@@ -6,7 +6,7 @@ import pov10 from '../assets/pov-screenshots/pov-10-grammarly-synthia-1.png?url'
 import spaceBg from '../assets/skill-space-bg.png?url';
 import leftAstronaut from '../assets/skill-was-it-md.png?url';
 import rightAstronaut from '../assets/skill-always-been.png?url';
-import mrDescriptionResultImage from '../assets/mr-description-result.png?url';
+import { TimeShiftChart } from '../slides/ConclusionsSlide';
 
 /**
  * Miniature continuously-shuffling pile of screenshots — the agenda preview
@@ -143,14 +143,15 @@ export function SkillAstronautsPreview() {
 }
 
 /**
- * Static screenshot preview for the AgentTraces subsection — the rendered MR
- * description with session links and the collapsible implementation plan.
+ * Mini TimeShift preview for the AgentTraces subsection — the same two
+ * percentile-line charts (time-to-first-review vs. time-to-merge) the
+ * Conclusions slide renders, scaled into the agenda card as a teaser.
  */
-export function MrDescriptionPreview() {
+export function TimeShiftPreview() {
   return (
-    <div className="mr-preview" aria-hidden>
+    <div className="time-shift-preview" aria-hidden>
       <style>{`
-        .mr-preview {
+        .time-shift-preview {
           position: relative;
           width: 100%;
           height: 100%;
@@ -158,16 +159,13 @@ export function MrDescriptionPreview() {
           background: #0a0e14;
           border-radius: 4px;
           border: 1px solid var(--terminal-border);
-        }
-        .mr-preview img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: top center;
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4px;
         }
       `}</style>
-      <img src={mrDescriptionResultImage} alt="" loading="lazy" />
+      <TimeShiftChart />
     </div>
   );
 }
