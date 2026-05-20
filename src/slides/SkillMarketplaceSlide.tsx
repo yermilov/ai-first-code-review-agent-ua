@@ -7,7 +7,7 @@ import superhumanAidevImage from '../assets/superhuman-aidev.png?url';
 // pre-marketplace bullets were dropped; we keep just the four Anthropic-
 // marketplace bullets and the Superhuman AI Dev screenshot on the right.
 const BULLETS: ReactNode[] = [
-  <>Anthropic має <Emphasis color="green">marketplaces</Emphasis> — гіт репозиторії які claude code викачує регулярно і лінкує</>,
+  <>Anthropic має <Emphasis color="green">marketplaces</Emphasis> — гіт репозиторії, які Claude Code регулярно завантажує і лінкує</>,
   <>створіть ОДИН центральний внутрішній <Emphasis color="orange">marketplace</Emphasis> у вашій організації</>,
   <>використовуйте плагіни для <Emphasis color="orange">неймспейсингу</Emphasis> — кожен користувач сам обирає, які плагіни встановити</>,
   <>якщо є можливість — використовуйте <Emphasis color="green">Claude Enterprise</Emphasis>, щоб примусово встановити marketplace і певні плагіни всім в організації</>,

@@ -133,13 +133,13 @@ function AgentWorkflowContent({ revealStage }: { revealStage: number }) {
           )}
           {revealStage >= 2 && (
             <SlideItem delay={0} reveal>
-              обгортаємо код рев'ю промпт в <Emphasis color="orange">Claude Agent SDK</Emphasis> (TypeScript-обгортка над Claude Code CLI)
+              загортаємо code review prompt у <Emphasis color="orange">Claude Agent SDK</Emphasis> (TypeScript-обгортка над Claude Code CLI)
             </SlideItem>
           )}
           {revealStage >= 3 && (
             <SlideItem delay={0} reveal>
               і просимо повернути через <Emphasis color="green">structured output</Emphasis>
-              {' '}результати рев'ю які виконує звичайний Type Script код
+              {' '}результати рев'ю, які виконує звичайний Type Script код
             </SlideItem>
           )}
         </div>

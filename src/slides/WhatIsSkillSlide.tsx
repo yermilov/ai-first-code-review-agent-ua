@@ -22,7 +22,7 @@ export const WhatIsSkillSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">але головне що має бути в маркетплейсі</span>{' '}—{' '}
+      <span className="text-green">але головне, що має бути в маркетплейсі</span>{' '}—{' '}
       <span className="text-orange">скіли</span>
     </>
   ),

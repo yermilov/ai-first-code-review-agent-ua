@@ -18,7 +18,7 @@ const BULLETS: ReactNode[] = [
     {' '}щоб показувати тільки проблеми, в яких ми впевнені
   </>,
   <>
-    за замовчуванням відписуємо тільки про CRITICAL, додаємо <Emphasis color="orange">HIGH</Emphasis> і <Emphasis color="orange">MEDIUM</Emphasis> тільки якщо є хоч один CRITICAL
+    за замовчуванням відписуємо тільки щодо CRITICAL, додаємо <Emphasis color="orange">HIGH</Emphasis> і <Emphasis color="orange">MEDIUM</Emphasis> тільки, якщо є хоч один CRITICAL
   </>,
 ];
 

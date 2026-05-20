@@ -201,7 +201,7 @@ export const WarcraftFunSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">людям це теж буде в нагоді</span>
+      <span className="text-green">людям це теж стане в пригоді</span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <WarcraftFunContent revealStage={revealStage} />,

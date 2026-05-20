@@ -23,7 +23,7 @@ const FIRST_BULLET: ReactNode = (
   <>
     завантажуйте <Code>.jsonl</Code>-лог кожної сесії агента
     {' '}в <Emphasis color="green">S3</Emphasis>
-    {' '}— і <Emphasis color="orange">ви зможете дебажити</Emphasis>, як саме він працює та що можна покращити
+    {' '}— і <Emphasis color="orange">ви зможете дебажити</Emphasis>, як саме він працює, та що можна покращити
   </>
 );
 

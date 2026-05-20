@@ -96,15 +96,15 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
 
           {revealStage >= 1 && (
             <SlideItem delay={0} reveal>
-              як не дивно це вже{' '}
-              <Emphasis color="green">працюючий код рев'ювер</Emphasis>
+              Як не дивно, це вже{' '}
+              <Emphasis color="green">робочий код рев'ювер</Emphasis>
             </SlideItem>
           )}
 
           {revealStage >= 2 && (
             <SlideItem delay={0} reveal>
-              десь так всі стартапи по{' '}
-              <Emphasis color="orange">ai-код рев'ю</Emphasis> і побудовані
+              десь так і побудовані всі стартапи у сфері{' '}
+              <Emphasis color="orange">AI code review</Emphasis>
             </SlideItem>
           )}
 

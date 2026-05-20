@@ -44,7 +44,7 @@ const SECOND_SET: ReactNode[] = [
   </>,
   <>
     <Emphasis color="green">Claude</Emphasis>
-    {' '} — <Emphasis color="orange">дорого</Emphasis> (і його не існувало ще коли ми починали)
+    {' '} — <Emphasis color="orange">дорого</Emphasis> (і його ще не існувало, коли ми починали)
   </>,
   <>
     <Emphasis color="green">Copilot</Emphasis>

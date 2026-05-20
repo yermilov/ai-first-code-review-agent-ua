@@ -468,7 +468,7 @@ const CONCLUSIONS: Conclusion[] = [
         час на <Emphasis color="green">початок рев'ю</Emphasis>{' '}
         <Emphasis color="green">падає</Emphasis>,
         {' '}а на <Emphasis color="orange">завершення рев'ю</Emphasis>{' '}
-        <Emphasis color="orange">росте</Emphasis>
+        — <Emphasis color="orange">росте</Emphasis>
       </>
     ),
     hasGraph: true,
@@ -478,8 +478,8 @@ const CONCLUSIONS: Conclusion[] = [
     key: 'time-psychology',
     text: (
       <>
-        <Emphasis color="green">психологія часу</Emphasis>:
-        {' '}очікувати рев'ю 30 хвилин від людини і від агента відчувається по-різному
+        <Emphasis color="green">психологія очікування</Emphasis>:
+        {' '}30 хвилин очікування рев'ю від людини й від агента сприймаються по-різному
       </>
     ),
     hasGraph: true,
@@ -490,8 +490,8 @@ const CONCLUSIONS: Conclusion[] = [
     text: (
       <>
         <Emphasis color="green">вайби</Emphasis>{' '}
-        — <Emphasis color="orange">набагато кращі метрики</Emphasis>
-        {' '}ніж будь які евал сети, але для цього потрібно миттєво реагувати на фідбек
+        — <Emphasis color="orange">набагато кращі метрики</Emphasis>,
+        {' '}ніж будь-які евал-сети, але для цього потрібно миттєво реагувати на фідбек
       </>
     ),
     hasGraph: true,
@@ -503,7 +503,7 @@ const CONCLUSIONS: Conclusion[] = [
       <>
         <Emphasis color="orange">рев'ю</Emphasis>{' '}
         — <Emphasis color="orange">це дорого</Emphasis>;
-        {' '}рішення - оптимізації + запуск тільки по запиту
+        {' '}рішення - оптимізації + запуск тільки на запит
       </>
     ),
     hasGraph: true,
@@ -514,7 +514,7 @@ const CONCLUSIONS: Conclusion[] = [
     text: (
       <>
         <Emphasis color="green">людина</Emphasis>{' '}
-        залишається <Emphasis color="green">головним апрувером</Emphasis>{' '}
+        залишається <Emphasis color="green">головним апрувером</Emphasis>,{' '}
         якого або яку ми підсилюємо АІ агентом
       </>
     ),

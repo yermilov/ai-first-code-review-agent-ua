@@ -169,7 +169,7 @@ export const AutoApproveHookSlide: SlideDefinition = {
     <>
       <span className="text-dim">&gt;</span>{' '}
       <span className="text-green">Клод</span>{' '}
-      <span className="text-orange">буде намагатися коментувати напряму</span>
+      <span className="text-orange">буде намагатися коментувати безпосередньо в коді</span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <AutoApproveHookContent revealStage={revealStage} />,

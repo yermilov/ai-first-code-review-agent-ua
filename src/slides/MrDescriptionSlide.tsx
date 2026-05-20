@@ -94,7 +94,7 @@ Size limits: small MR (≤5 files) max 1500 chars, large MR max 2000 chars. Avoi
     bullet: (
       <>
         плани із сесії приклеюємо як <Emphasis color="green">collapsible details</Emphasis>
-        {' '}— команда бачить як ми думали
+        {' '}— команда бачить, як ми думали
       </>
     ),
     panel: {

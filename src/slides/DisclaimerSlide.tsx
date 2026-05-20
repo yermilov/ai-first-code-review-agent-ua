@@ -92,10 +92,10 @@ export const DisclaimerSlide: SlideDefinition = {
           </DisclaimerItem>
 
           <DisclaimerItem level="medium">
-            термінал швидше відучує від старої ментальної моделі{' '}
-            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}>"я редагую текст"</em>
-            {' '}і вчить новій:{' '}
-            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}>"я ставлю задачі агенту"</em>
+            Термінал швидше відучує від старої ментальної моделі{' '}
+            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}>«я редагую текст»</em>
+            {' '}і вчить нової:{' '}
+            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}>«я ставлю задачі агенту»</em>
           </DisclaimerItem>
 
           <DisclaimerItem level="low">

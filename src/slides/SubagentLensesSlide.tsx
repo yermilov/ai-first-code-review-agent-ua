@@ -50,7 +50,7 @@ const LENSES: Lens[] = [
       <>
         <Code>design-system-reviewer</Code>{' '}
         — відповідність <Emphasis color="green">нашій дизайн системі</Emphasis>:
-        {' '}нативні елементи замість компонентів, захардкожені токени
+        {' '}нативні елементи замість компонентів, захардкоджені токени
       </>
     ),
     src: designSystemReviewerImg,
@@ -75,7 +75,7 @@ const LENSES: Lens[] = [
       <>
         <Code>claude-meta-reviewer</Code>{' '}
         — якість <Emphasis color="green">SKILL.md / commands / hooks / agents</Emphasis>
-        {' '}відмовідно до мета скілу
+        {' '}відповідно до мета скілу
       </>
     ),
     src: claudeMetaReviewerImg,
@@ -98,8 +98,8 @@ const LENSES: Lens[] = [
     bullet: (
       <>
         окремо <Code>codex</Code>{' '}
-        — для <Emphasis color="orange">сторонньої думки</Emphasis>
-        {' '}щодо найскладніших рев'ю
+        — для <Emphasis color="orange">стороннього погляду</Emphasis>
+        {' '}на найскладніші рев'ю
       </>
     ),
     src: codexImg,
