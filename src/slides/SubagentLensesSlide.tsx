@@ -161,86 +161,11 @@ const LENSES: Lens[] = [
   },
 ];
 
-const STYLES = `
-  @keyframes subagentPanelIn {
-    from { opacity: 0; transform: translateY(8px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)   scale(1); }
-  }
-  @keyframes subagentBulletIn {
-    from { opacity: 0; transform: translateX(-16px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  .subagent-lens-stage {
-    display: flex;
-    flex-direction: column;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-md);
-    width: 100%;
-  }
-
-  .subagent-lens-title {
-    text-align: left;
-    margin: 0;
-  }
-
-  /* Two-column row: text on the left, image on the right. The row fills
-     the remaining vertical space so the screenshot panel can grow tall. */
-  .subagent-lens-row {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 2rem;
-  }
-
-  .subagent-lens-bullet {
-    flex: 0 0 40%;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    font-size: var(--slide-text-normal);
-    animation: subagentBulletIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .subagent-lens-panel {
-    flex: 1 1 60%;
-    min-width: 0;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-green) 8%, transparent);
-    padding: var(--space-md);
-    animation: subagentPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .subagent-lens-panel img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    border-radius: 6px;
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--terminal-black) 50%, transparent);
-  }
-`;
-
 function SubagentLensesContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const lens = LENSES[Math.min(revealStage, LENSES.length - 1)];
 
   return (
     <>
-      <style>{STYLES}</style>
-
       <div className="subagent-lens-stage">
         <h2 className="subagent-lens-title">
           <span className="text-dim">&gt;</span>{' '}

@@ -57,86 +57,6 @@ const BULLETS_EN: ReactNode[] = [
   </>,
 ];
 
-const STYLES = `
-  @keyframes warcraftPanelIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-  }
-
-  .warcraft-fun-body {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-lg);
-    min-height: 0;
-    text-align: left;
-  }
-
-  .warcraft-fun-bullets {
-    flex: 0 0 36%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-sm);
-    min-width: 0;
-  }
-
-  .warcraft-fun-right {
-    flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .warcraft-fun-right img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: 100%;
-    object-fit: contain;
-    image-rendering: pixelated;
-    border-radius: 14px;
-    box-shadow: 0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    animation: warcraftPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .warcraft-fun-panel {
-    flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent);
-    font-family: var(--font-mono);
-    animation: warcraftPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .warcraft-fun-prompt {
-    flex: 1 1 auto;
-    margin: 0;
-    padding: 1.4rem 1.6rem;
-    font-family: var(--font-mono);
-    font-size: var(--font-size-code);
-    line-height: var(--line-height-relaxed);
-    color: var(--terminal-white);
-    white-space: pre-wrap;
-    word-break: normal;
-    overflow-wrap: anywhere;
-    overflow: auto;
-  }
-`;
 
 function WarcraftFunContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   // Track which stages have already triggered audio so re-renders within the
@@ -185,7 +105,6 @@ function WarcraftFunContent({ revealStage, lang }: { revealStage: number; lang: 
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div className="warcraft-fun-body">
         {/* Left column — bullets accumulate across reveal stages. */}

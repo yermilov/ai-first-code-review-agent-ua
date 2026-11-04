@@ -3,7 +3,6 @@ import pov03 from '../assets/pov-screenshots/pov-03-gitlab-checkout-ui-575.png?u
 import pov05 from '../assets/pov-screenshots/pov-05-superhuman-platform-tools-290.png?url';
 import pov08 from '../assets/pov-screenshots/pov-08-superhuman-fewm-6625.png?url';
 import pov10 from '../assets/pov-screenshots/pov-10-grammarly-synthia-1.png?url';
-import spaceBg from '../assets/skill-space-bg.png?url';
 import leftAstronaut from '../assets/skill-was-it-md.png?url';
 import rightAstronaut from '../assets/skill-always-been.png?url';
 import { TimeShiftChart } from '../slides/ConclusionsSlide';
@@ -24,39 +23,6 @@ const POV_PREVIEW_CARDS = [
 export function PovSolitairePreview() {
   return (
     <div className="pov-preview" aria-hidden>
-      <style>{`
-        .pov-preview {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background: var(--terminal-bg);
-          border-radius: 4px;
-          border: 1px solid var(--terminal-border);
-        }
-        .pov-preview__card {
-          position: absolute;
-          width: 32%;
-          aspect-ratio: 4 / 3;
-          background: #fff;
-          border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 18%, transparent);
-          border-radius: 3px;
-          box-shadow: 0 4px 12px color-mix(in srgb, var(--terminal-black) 55%, transparent);
-          overflow: hidden;
-          animation: pov-preview-drift 5s ease-in-out infinite;
-        }
-        .pov-preview__card img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: top left;
-          display: block;
-        }
-        @keyframes pov-preview-drift {
-          0%, 100% { transform: translate(0, 0)         rotate(var(--rot)) scale(1); }
-          50%      { transform: translate(2%, -3%)      rotate(calc(var(--rot) + 2deg)) scale(1.02); }
-        }
-      `}</style>
       {POV_PREVIEW_CARDS.map((card, i) => (
         <div
           key={i}
@@ -85,57 +51,6 @@ export function PovSolitairePreview() {
 export function SkillAstronautsPreview() {
   return (
     <div className="astro-preview" aria-hidden>
-      <style>{`
-        .astro-preview {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background-color: var(--terminal-bg);
-          background-image: url(${spaceBg});
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-          border-radius: 4px;
-          border: 1px solid var(--terminal-border);
-        }
-        .astro-preview::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(180deg,
-            color-mix(in srgb, var(--terminal-bg) 45%, transparent) 0%,
-            color-mix(in srgb, var(--terminal-bg) 25%, transparent) 50%,
-            color-mix(in srgb, var(--terminal-bg) 55%, transparent) 100%);
-          pointer-events: none;
-        }
-        .astro-preview__astro {
-          position: absolute;
-          top: 50%;
-          height: 86%;
-          width: auto;
-          object-fit: contain;
-          mix-blend-mode: screen;
-          filter: drop-shadow(0 4px 16px color-mix(in srgb, var(--terminal-black) 55%, transparent));
-          pointer-events: none;
-        }
-        .astro-preview__astro--left {
-          left: 4%;
-          animation: astro-preview-float 6s ease-in-out infinite;
-        }
-        .astro-preview__astro--right {
-          right: 4%;
-          animation: astro-preview-float-rev 7s ease-in-out infinite;
-        }
-        @keyframes astro-preview-float {
-          0%, 100% { transform: translateY(-50%)       rotate(-2deg); }
-          50%      { transform: translateY(calc(-50% - 6px)) rotate(2deg); }
-        }
-        @keyframes astro-preview-float-rev {
-          0%, 100% { transform: translateY(-50%)       rotate(2deg); }
-          50%      { transform: translateY(calc(-50% - 6px)) rotate(-2deg); }
-        }
-      `}</style>
       <img className="astro-preview__astro astro-preview__astro--left"  src={leftAstronaut}  alt="" loading="lazy" />
       <img className="astro-preview__astro astro-preview__astro--right" src={rightAstronaut} alt="" loading="lazy" />
     </div>
@@ -150,21 +65,6 @@ export function SkillAstronautsPreview() {
 export function TimeShiftPreview() {
   return (
     <div className="time-shift-preview" aria-hidden>
-      <style>{`
-        .time-shift-preview {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background: var(--terminal-bg);
-          border-radius: 4px;
-          border: 1px solid var(--terminal-border);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 4px;
-        }
-      `}</style>
       <TimeShiftChart />
     </div>
   );

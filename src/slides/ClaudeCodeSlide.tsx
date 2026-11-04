@@ -24,67 +24,8 @@ const TASKS: ReactNode[] = [
 const QR_REVEAL_STAGE = 2;
 const DS_REVEAL_STAGE = 1;
 
-// "No design system" mode strips the terminal aesthetic — white bg, black
-// serif text, no CRT overlay, no bottom-bar chrome, no bullet chevrons —
-// so the slide *looks* like raw unstyled HTML before the user reveals the
-// "use /fronted-design skill" prompt that switches the look on.
-const SCOPED_STYLES = `
-  .presentation,
-  .presentation::before,
-  .presentation::after,
-  .presentation .input-bar,
-  .presentation .slide-progress,
-  .presentation .slide h2,
-  .presentation .slide h2 span,
-  .presentation .slide .slide-item,
-  .presentation .slide .slide-item span,
-  .presentation .slide a,
-  .presentation .slide a span {
-    transition: opacity 0.55s ease, background 0.55s ease, color 0.55s ease;
-  }
-
-  .presentation.cc-no-ds::before,
-  .presentation.cc-no-ds::after,
-  .presentation.cc-no-ds .input-bar,
-  .presentation.cc-no-ds .slide-progress {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .presentation.cc-no-ds {
-    background: #ffffff;
-  }
-  .presentation.cc-no-ds .slide,
-  .presentation.cc-no-ds .slide * {
-    font-family: "Times New Roman", Times, serif !important;
-  }
-
-  .presentation.cc-no-ds .slide h2,
-  .presentation.cc-no-ds .slide h2 span,
-  .presentation.cc-no-ds .slide .slide-item,
-  .presentation.cc-no-ds .slide .slide-item span {
-    color: #000 !important;
-    text-shadow: none !important;
-  }
-
-  .presentation.cc-no-ds .slide .slide-item__prefix {
-    color: #000 !important;
-  }
-
-  .presentation.cc-no-ds .slide .slide-item span[style*="terminal-orange"] {
-    color: #000 !important;
-  }
-
-  .presentation.cc-no-ds .slide a {
-    color: #0000EE !important;
-    text-decoration: underline !important;
-  }
-  .presentation.cc-no-ds .slide a span {
-    color: #0000EE !important;
-    font-weight: normal !important;
-  }
-`;
-
+// Stage 0 renders as raw unstyled HTML (.cc-no-ds, styles in slide-layouts.css)
+// until the /frontend-design prompt is revealed.
 function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
   const dsApplied = revealStage >= DS_REVEAL_STAGE;
   useEffect(() => {
@@ -102,7 +43,6 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
 
   return (
     <>
-      <style>{SCOPED_STYLES}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <h2 style={{ textAlign: 'left', margin: 0 }}>

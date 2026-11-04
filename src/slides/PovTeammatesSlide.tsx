@@ -101,106 +101,10 @@ const TRAILS = buildTrails();
 
 const CARD_STAGGER_MS = 150;
 const STEP_MS = 18;
-const FADE_MS = 1;
+// Ghost fade-in duration (1ms) lives in slide-layouts.css (.pov-ghost).
 
 // ----------------------------------------------------------------------------
 
-const STYLES = `
-@keyframes pov-fade-in {
-  from { opacity: 0; transform: translateY(-12px) rotate(var(--base-rot)) scale(0.92); }
-  to   { opacity: 1; transform: translateY(0)     rotate(var(--base-rot)) scale(1); }
-}
-
-@keyframes pov-chaos-drop {
-  0%   { opacity: 0; transform: rotate(var(--base-rot)) scale(0.5) translateY(-40vh); }
-  60%  { opacity: 1; transform: rotate(var(--base-rot)) scale(1.05) translateY(12px); }
-  100% { opacity: 1; transform: rotate(var(--base-rot)) scale(1)    translateY(0); }
-}
-
-@keyframes pov-ghost-pop {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* Clean-card vertical scroll — image scaled up so it overflows the
-   portrait-shaped frame; gentle ping-pong reveals more content over time. */
-@keyframes pov-scroll-down {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
-/* ── Chaos card (used in stage 3+ for the 9 non-scrolling screenshots) ── */
-.pov-card {
-  position: absolute;
-  width: 26%;
-  border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 15%, transparent);
-  border-radius: 6px;
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--terminal-black) 35%, transparent);
-  background: #fff;
-  user-select: none;
-  will-change: transform, opacity;
-}
-
-.pov-card-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 5px;
-}
-
-.pov-card-chaos { animation: pov-chaos-drop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-
-/* ── Clean card with scroll (used in reveals 1-2 for the 3 longest descriptions) ── */
-.pov-card-scroll {
-  position: absolute;
-  width: 24%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 15%, transparent);
-  border-radius: 6px;
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--terminal-black) 35%, transparent);
-  background: #fff;
-  user-select: none;
-  animation: pov-fade-in 0.55s ease-out both;
-}
-
-.pov-card-scroll-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: pov-scroll-down 18s ease-in-out infinite alternate;
-}
-
-/* ── Solitaire ghost (stage 4) ── */
-.pov-ghost {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  background: #ffffff;
-  color: #1f2328;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 0.7rem;
-  line-height: 1.2;
-  white-space: nowrap;
-  border: 1px solid color-mix(in srgb, var(--terminal-black) 18%, transparent);
-  border-radius: 4px;
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--terminal-black) 40%, transparent);
-  user-select: none;
-  pointer-events: none;
-  opacity: 0;
-  animation: pov-ghost-pop ${FADE_MS}ms linear forwards;
-}
-
-.pov-ghost-link {
-  color: #0969da;
-  text-decoration: underline;
-}
-`;
 
 function PovTeammatesContent({ revealStage }: { revealStage: number }) {
   const showFirst        = revealStage >= 1;
@@ -222,7 +126,6 @@ function PovTeammatesContent({ revealStage }: { revealStage: number }) {
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div
         style={{

@@ -35,108 +35,6 @@ Output:
 const CONVERSATION_ALT =
   'Real GitLab discussion thread: mango flags missing tests on getTextFieldContent; Ling Huang replies with three bullet points claiming all paths are covered; mango replies that the fixes are in ChatService.spec.ts, but the original finding was about AssistantBackgroundController.getTextFieldContent — a different file with no tests.';
 
-const STYLES = `
-  @keyframes teachClaudePanelIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-  }
-
-  .teach-claude-body {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    gap: var(--space-md);
-    width: 100%;
-    height: calc(var(--vh-full) - 220px);
-    min-height: 0;
-    text-align: left;
-  }
-
-  .teach-claude-col {
-    flex: 1 1 0;
-    min-width: 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .teach-claude-col--prompts {
-    gap: var(--space-md);
-  }
-
-  .teach-claude-panel {
-    width: 100%;
-    flex: 1 1 auto;
-    max-height: 100%;
-    min-height: 0;
-    min-width: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent);
-    font-family: var(--font-mono);
-    animation: teachClaudePanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .teach-claude-panel__viewport {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-  }
-
-  .teach-claude-panel__viewport .code-block {
-    flex: 1 1 auto;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .teach-claude-panel__viewport .code-block-header { display: none; }
-  .teach-claude-panel__viewport .code-block pre {
-    flex: 1 1 auto;
-    margin: 0 !important;
-    height: 100%;
-    white-space: pre-wrap !important;
-    word-break: break-word !important;
-  }
-  .teach-claude-panel__viewport .code-block pre code,
-  .teach-claude-panel__viewport .code-block pre code * {
-    white-space: pre-wrap !important;
-    word-break: break-word !important;
-  }
-
-  /* Image variant — center the screenshot, contain it, no chrome around it.
-     The panel still provides the green border + shadow. */
-  .teach-claude-panel--image {
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-md);
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-  }
-  .teach-claude-panel--image img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    border-radius: 6px;
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--terminal-black) 50%, transparent);
-  }
-`;
 
 function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number }) {
   const showImage = revealStage >= 1;
@@ -149,7 +47,6 @@ function TeachClaudeCommunicateContent({ revealStage }: { revealStage: number })
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div className="teach-claude-body">
         <div className="teach-claude-col teach-claude-col--image">

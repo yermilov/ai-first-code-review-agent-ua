@@ -153,77 +153,6 @@ const SOLUTIONS_EN: ReactNode[] = [
   </>,
 ];
 
-const STYLES = `
-  @keyframes skillsActivatorPanelIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-  }
-
-  .skills-activator-body {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-lg);
-    min-height: 0;
-    text-align: left;
-  }
-
-  .skills-activator-bullets {
-    flex: 0 0 44%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-sm);
-    min-width: 0;
-  }
-
-  .skills-activator-panel {
-    flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent);
-    font-family: var(--font-mono);
-    animation: skillsActivatorPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .skills-activator-panel__viewport {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-  }
-
-  .skills-activator-panel__viewport .code-block {
-    flex: 1 1 auto;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .skills-activator-panel__viewport .code-block-header { display: none; }
-  .skills-activator-panel__viewport .code-block pre {
-    flex: 1 1 auto;
-    margin: 0 !important;
-    height: 100%;
-  }
-`;
-
 function SkillsActivatorContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const panel = panelFor(revealStage);
 
@@ -254,8 +183,6 @@ function SkillsActivatorContent({ revealStage, lang }: { revealStage: number; la
 
   return (
     <>
-      <style>{STYLES}</style>
-
       <div className="skills-activator-body">
         {/* Left column: bullets — stage 0 = problem statement (single bullet,
             swapped out at stage 1); stages 1..4 = solution bullets accumulate. */}

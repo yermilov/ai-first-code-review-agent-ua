@@ -68,25 +68,6 @@ export const WhatIsSkillSlide: SlideDefinition = {
 
     return (
       <>
-        <style>{`
-          @keyframes astronautFloat {
-            0%, 100% { transform: translateY(0px)   rotate(-2deg); }
-            50%       { transform: translateY(-14px) rotate(2deg); }
-          }
-          @keyframes astronautFloatReverse {
-            0%, 100% { transform: translateY(0px)   rotate(2deg); }
-            50%       { transform: translateY(-14px) rotate(-2deg); }
-          }
-          .what-is-skill__astro {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-            mix-blend-mode: screen;
-            filter: drop-shadow(0 8px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent));
-            pointer-events: none;
-          }
-        `}</style>
 
         <div
           style={{

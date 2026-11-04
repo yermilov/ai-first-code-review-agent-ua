@@ -161,12 +161,6 @@ export const AiCodeReviewSlide: SlideDefinition = {
               minHeight: 0,
             }}
           >
-            <style>{`
-              @keyframes ai-code-review-fade-in {
-                from { opacity: 0; transform: translateY(8px); }
-                to   { opacity: 1; transform: translateY(0); }
-              }
-            `}</style>
             {TOOL_SCREENSHOTS.map((src, i) => {
               // Bullet i is visible when (i + 1) <= visibleCount, i.e. when
               // revealStage >= FIRST_SET.length + i. Skip the intro slot.

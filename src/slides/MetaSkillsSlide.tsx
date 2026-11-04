@@ -62,19 +62,6 @@ const SECOND_SET_EN: ReactNode[] = [
     all your in-house specifics</>,
 ];
 
-const STYLES = `
-  @keyframes metaSkillsPanelIn {
-    from { opacity: 0; transform: translateX(18px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes metaSkillsScroll {
-    0%    { transform: translateY(0);     animation-timing-function: linear; }
-    12.5% { transform: translateY(-1%);   animation-timing-function: linear; }
-    25%   { transform: translateY(-5%);   animation-timing-function: linear; }
-    50%   { transform: translateY(-20%);  animation-timing-function: linear; }
-    100%  { transform: translateY(-100%); }
-  }
-`;
 
 function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const FIRST_SET = tr(lang, FIRST_SET_UK, FIRST_SET_EN);
@@ -106,7 +93,6 @@ function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: L
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div
         key={setIndex}

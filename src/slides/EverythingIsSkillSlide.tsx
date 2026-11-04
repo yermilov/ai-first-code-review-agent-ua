@@ -54,12 +54,6 @@ Skill(review:gather-changes)
     if the diff is fully filtered → APPROVE and
       exit the pipeline cleanly`;
 
-const STYLES = `
-  @keyframes everythingPanelIn {
-    from { opacity: 0; transform: translateX(18px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-`;
 
 function EverythingIsSkillContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const BULLETS = tr(lang, BULLETS_UK, BULLETS_EN);
@@ -68,7 +62,6 @@ function EverythingIsSkillContent({ revealStage, lang }: { revealStage: number; 
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div
         style={{

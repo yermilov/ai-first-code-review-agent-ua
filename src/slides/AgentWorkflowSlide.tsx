@@ -71,83 +71,12 @@ function panelFor(revealStage: number): PanelVariant | null {
   return null;
 }
 
-const STYLES = `
-  @keyframes agentWorkflowPanelIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-  }
-
-  .agent-workflow-body {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-lg);
-    min-height: 0;
-    text-align: left;
-  }
-
-  .agent-workflow-bullets {
-    flex: 0 0 44%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-sm);
-    min-width: 0;
-  }
-
-  .agent-workflow-panel {
-    flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent);
-    font-family: var(--font-mono);
-    animation: agentWorkflowPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .agent-workflow-panel__viewport {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-  }
-
-  .agent-workflow-panel__viewport .code-block {
-    flex: 1 1 auto;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  .agent-workflow-panel__viewport .code-block-header { display: none; }
-  .agent-workflow-panel__viewport .code-block pre {
-    flex: 1 1 auto;
-    margin: 0 !important;
-    height: 100%;
-  }
-`;
 
 function AgentWorkflowContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const panel = panelFor(revealStage);
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div className="agent-workflow-body">
         {/* Left column: bullets accumulate across reveal stages */}

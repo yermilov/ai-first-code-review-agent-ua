@@ -583,125 +583,12 @@ const CONCLUSIONS: Conclusion[] = [
   },
 ];
 
-const STYLES = `
-  @keyframes conclusionPanelIn {
-    from { opacity: 0; transform: translateY(8px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)   scale(1); }
-  }
-  @keyframes conclusionTextIn {
-    from { opacity: 0; transform: translateX(-16px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  .conclusions-stage {
-    display: flex;
-    flex-direction: column;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-md);
-    width: 100%;
-  }
-
-  .conclusions-title {
-    text-align: left;
-    margin: 0;
-  }
-
-  /* Two-column row: text left, TBD-graph right. When hasGraph is false the
-     text column expands to full width. */
-  .conclusions-row {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 2rem;
-  }
-
-  .conclusions-row--solo .conclusions-text {
-    flex: 1 1 100%;
-    justify-content: center;
-    text-align: center;
-    font-size: var(--font-size-body);
-    padding: 0 var(--space-xl);
-  }
-
-  .conclusions-text {
-    flex: 0 0 40%;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    font-size: var(--slide-text-normal);
-    animation: conclusionTextIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .conclusions-graph {
-    flex: 1 1 60%;
-    min-width: 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
-    overflow: hidden;
-    border-radius: 14px;
-    background:
-      repeating-linear-gradient(
-        45deg,
-        color-mix(in srgb, var(--terminal-green) 3%, transparent) 0 8px,
-        color-mix(in srgb, var(--terminal-bg) 60%, transparent) 8px 16px
-      );
-    border: 1px dashed color-mix(in srgb, var(--terminal-green) 45%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 40%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-green) 6%, transparent);
-    padding: var(--space-md);
-    animation: conclusionPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  .conclusions-graph__label {
-    font-family: var(--font-mono);
-    font-size: var(--slide-text-compact);
-    color: var(--terminal-orange);
-    letter-spacing: 0.08em;
-    text-shadow: 0 0 8px color-mix(in srgb, var(--terminal-orange) 35%, transparent);
-  }
-
-  .conclusions-graph__caption {
-    font-family: var(--font-mono);
-    font-size: var(--slide-text-dense);
-    color: color-mix(in srgb, var(--terminal-white) 50%, transparent);
-    text-align: center;
-    max-width: 80%;
-  }
-
-  /* Once a real chart is attached, drop the diagonal TBD hatching so the
-     SVG sits on a clean dark background, and let it consume vertical space. */
-  .conclusions-graph--rendered {
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border-style: solid;
-    border-color: color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    justify-content: stretch;
-    padding: var(--space-md);
-  }
-  .conclusions-graph__chart {
-    flex: 1 1 auto;
-    min-height: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
 function ConclusionsContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const idx = Math.min(revealStage, CONCLUSIONS.length - 1);
   const c = CONCLUSIONS[idx];
 
   return (
     <>
-      <style>{STYLES}</style>
-
       <div className="conclusions-stage">
         <h2 className="conclusions-title">
           <span className="text-dim">&gt;</span>{' '}

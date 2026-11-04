@@ -24,21 +24,6 @@ const BULLETS_EN: ReactNode[] = [
   <>but of course we{' '}<Emphasis color="green">can do better</Emphasis></>,
 ];
 
-const STYLES = `
-  @keyframes startHereLoadingDot {
-    0%, 80%, 100% { opacity: 0; }
-    40%           { opacity: 1; }
-  }
-  /* Scroll animation is driven programmatically via Web Animations API in
-     JS once the content has rendered (see StartHereContent). This lets us
-     scroll the full content_height − viewport_height distance in pixels
-     with a fast-start / decelerating curve, stopping flush at the bottom
-     of the file rather than looping. */
-  @keyframes startHereRevealPanel {
-    from { opacity: 0; transform: translateX(18px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-`;
 
 function StartHereContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const [content, setContent] = useState<string | null>(null);
@@ -95,7 +80,6 @@ function StartHereContent({ revealStage, lang }: { revealStage: number; lang: La
 
   return (
     <>
-      <style>{STYLES}</style>
 
       <div style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'stretch', height: '100%', minHeight: 0 }}>
 

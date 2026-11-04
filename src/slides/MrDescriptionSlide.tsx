@@ -147,102 +147,12 @@ Append at the end of the description:
   },
 ];
 
-const STYLES = `
-  @keyframes mrDescPanelIn {
-    from { opacity: 0; transform: translateY(12px) scale(0.99); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-  }
-  @keyframes mrDescBulletIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  /* Stage container — explicit height (NOT min-height) so descendant
-     "max-height: 100%" resolves, which prevents tall images from
-     overflowing past the visible area. */
-  .mr-desc-stage {
-    display: flex;
-    flex-direction: column;
-    height: calc(var(--vh-full) - 220px);
-    gap: var(--space-md);
-    width: 100%;
-  }
-
-  .mr-desc-title {
-    text-align: left;
-    margin: 0;
-  }
-
-  /* Bullet sits as a single-row "step header". Hugs natural height so the
-     panel below gets every remaining pixel of vertical room. */
-  .mr-desc-bullet {
-    flex: 0 0 auto;
-    text-align: left;
-    animation: mrDescBulletIn 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  /* Panel — full width, fills remaining height. overflow: hidden contains
-     the image variant; text variant overrides to overflow-y: auto if its
-     content is ever taller than the slot. */
-  .mr-desc-panel {
-    width: 100%;
-    flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
-    overflow: hidden;
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
-    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
-    box-shadow:
-      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--terminal-green) 8%, transparent);
-    font-family: var(--font-mono);
-    animation: mrDescPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
-  }
-
-  /* Text variant — prompt excerpt at body font, wraps to full panel width */
-  .mr-desc-panel--prompt {
-    padding: var(--space-md) var(--space-lg);
-    color: color-mix(in srgb, var(--terminal-white) 94%, transparent);
-    text-align: left;
-    white-space: pre-wrap;
-    line-height: 1.45;
-    font-size: var(--slide-text-normal);
-    overflow-y: auto;
-  }
-
-  /* Image variant — panel hugs the image so the frame never floats with
-     dead horizontal space around small portrait-ish screenshots. */
-  .mr-desc-panel--image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-md);
-    align-self: center;
-    width: fit-content;
-    max-width: 100%;
-  }
-
-  .mr-desc-panel--image img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    border-radius: 6px;
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--terminal-black) 50%, transparent);
-  }
-`;
-
 function MrDescriptionContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const idx = Math.min(revealStage, PRACTICES.length - 1);
   const practice = PRACTICES[idx];
 
   return (
     <>
-      <style>{STYLES}</style>
-
       <div className="mr-desc-stage">
         <h2 className="mr-desc-title">
           <span className="text-dim">&gt;</span>{' '}
