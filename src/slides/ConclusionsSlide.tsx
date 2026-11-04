@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, Code } from '../components/SlideElements';
+import { tr, useLang, type Lang } from '../context/LanguageContext';
 
 // One reveal at a time. Stages 0..3 are two-column (text left, graph
 // panel right). Stage 4 (final) is text-only, full width — that's the
@@ -8,6 +9,8 @@ import { SlideItem, Emphasis, Code } from '../components/SlideElements';
 type Conclusion = {
   key: string;
   text: ReactNode;
+  /** English counterpart of `text`. */
+  textEn: ReactNode;
   hasGraph: boolean;
   /** Optional short caption shown inside the graph placeholder panel. */
   graphCaption?: string;
@@ -29,6 +32,8 @@ const COLOR_GRID = 'color-mix(in srgb, var(--terminal-white) 8%, transparent)';
  * cohort with/without agent_hacker_mango comments.
  */
 export function TimeShiftChart() {
+  // EN: own translation (chart labels below)
+  const lang = useLang();
   const X_TICKS = ['p50', 'p80', 'p90', 'p95'];
 
   // p50, p80, p90, p95 — hours
@@ -98,9 +103,9 @@ export function TimeShiftChart() {
   }: { x: number; y: number; agentColor: string }) => (
     <g fontFamily="var(--font-mono)" fontSize="12">{/* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */}
       <circle cx={x} cy={y} r={4} fill={COLOR_DIM} />
-      <text x={x + 10} y={y + 4} fill={COLOR_DIM} textAnchor="start">без агента</text>
+      <text x={x + 10} y={y + 4} fill={COLOR_DIM} textAnchor="start">{tr(lang, 'без агента', 'without agent')}</text>
       <circle cx={x} cy={y + 18} r={4} fill={agentColor} />
-      <text x={x + 10} y={y + 22} fill={agentColor} textAnchor="start">з агентом</text>
+      <text x={x + 10} y={y + 22} fill={agentColor} textAnchor="start">{tr(lang, 'з агентом', 'with agent')}</text>
     </g>
   );
 
@@ -117,7 +122,7 @@ export function TimeShiftChart() {
       <text x={(PANEL_LEFT.x0 + PANEL_LEFT.x1) / 2} y={28} fontSize="16" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_GREEN}
             textAnchor="middle" fontWeight="600">
-        час до першого рев'ю
+        {tr(lang, "час до першого рев'ю", 'time to first review')}
       </text>
 
       {Y_TICKS.map((v) => (
@@ -150,7 +155,7 @@ export function TimeShiftChart() {
       <text x={(PANEL_RIGHT.x0 + PANEL_RIGHT.x1) / 2} y={28} fontSize="16" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_ORANGE}
             textAnchor="middle" fontWeight="600">
-        час до мержу
+        {tr(lang, 'час до мержу', 'time to merge')}
       </text>
 
       {Y_TICKS.map((v) => (
@@ -190,6 +195,8 @@ export function TimeShiftChart() {
  * below the bar.
  */
 function SatisfactionChart() {
+  // EN: own translation (chart labels below)
+  const lang = useLang();
   // Spectrum from very-satisfied → very-dissatisfied. Bright accents bracket
   // the extremes; muted greens/oranges fill the inner satisfied/dissat
   // tiers; dim white for neutral.
@@ -250,7 +257,7 @@ function SatisfactionChart() {
       </text>
       <text x={40} y={158} fontSize="22" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_GREEN}>
-        задоволені
+        {tr(lang, 'задоволені', 'satisfied')}
       </text>
 
       <text x={400} y={120} fontSize="44" fontWeight="600" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
@@ -259,7 +266,7 @@ function SatisfactionChart() {
       </text>
       <text x={400} y={150} fontSize="18" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill="color-mix(in srgb, var(--terminal-white) 60%, transparent)">
-        нейтрально
+        {tr(lang, 'нейтрально', 'neutral')}
       </text>
 
       <text x={760} y={120} fontSize="60" fontWeight="700" textAnchor="end" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
@@ -268,7 +275,7 @@ function SatisfactionChart() {
       </text>
       <text x={760} y={150} fontSize="20" textAnchor="end" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_ORANGE}>
-        незадоволені
+        {tr(lang, 'незадоволені', 'dissatisfied')}
       </text>
 
       {/* === Stacked segmented bar === */}
@@ -313,6 +320,8 @@ function SatisfactionChart() {
  *   • наш — усі рев'ю PR         — ≈$6.5 average (mid green dot)
  */
 function CostsChart() {
+  // EN: own translation (chart labels below)
+  const lang = useLang();
   type Row =
     | { kind: 'range'; label: string; labelColor: string; min: number; max: number; color: string }
     | { kind: 'point'; label: string; labelColor: string; value: number; color: string };
@@ -327,14 +336,14 @@ function CostsChart() {
     },
     {
       kind: 'point',
-      label: "наш — одне рев'ю",
+      label: tr(lang, "наш — одне рев'ю", 'ours — one review'),
       labelColor: '#7ee787',
       value: 3.8,
       color: '#7ee787',
     },
     {
       kind: 'point',
-      label: "наш — рев'ю одного PR",
+      label: tr(lang, "наш — рев'ю одного PR", 'ours — a whole PR'),
       labelColor: COLOR_GREEN,
       value: 6.9,
       color: '#56c267',
@@ -449,7 +458,7 @@ function CostsChart() {
                   fontSize="12" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fill={row.color} textAnchor="start" opacity={0.7}
                 >
-                  у середньому
+                  {tr(lang, 'у середньому', 'on average')}
                 </text>
               </>
             )}
@@ -471,6 +480,15 @@ const CONCLUSIONS: Conclusion[] = [
         — <Emphasis color="orange">росте</Emphasis>
       </>
     ),
+    // EN: own translation
+    textEn: (
+      <>
+        time to <Emphasis color="green">first review</Emphasis>{' '}
+        <Emphasis color="green">drops</Emphasis>,
+        {' '}while time to <Emphasis color="orange">finish the review</Emphasis>{' '}
+        — <Emphasis color="orange">grows</Emphasis>
+      </>
+    ),
     hasGraph: true,
     chart: <TimeShiftChart />,
   },
@@ -480,6 +498,12 @@ const CONCLUSIONS: Conclusion[] = [
       <>
         <Emphasis color="green">психологія очікування</Emphasis>:
         {' '}30 хвилин очікування рев'ю від людини й від агента сприймаються по-різному
+      </>
+    ),
+    textEn: (
+      <>
+        <Emphasis color="green">the psychology of waiting</Emphasis>:
+        {' '}30 minutes waiting for a human review and for an agent's feel very different
       </>
     ),
     hasGraph: true,
@@ -494,6 +518,13 @@ const CONCLUSIONS: Conclusion[] = [
         {' '}ніж будь-які евал-сети, але для цього потрібно миттєво реагувати на фідбек
       </>
     ),
+    textEn: (
+      <>
+        <Emphasis color="green">vibes</Emphasis>{' '}
+        — <Emphasis color="orange">far better metrics</Emphasis>
+        {' '}than any eval set, but only if you react to feedback right away
+      </>
+    ),
     hasGraph: true,
     chart: <SatisfactionChart />,
   },
@@ -504,6 +535,13 @@ const CONCLUSIONS: Conclusion[] = [
         <Emphasis color="orange">рев'ю</Emphasis>{' '}
         — <Emphasis color="orange">це дорого</Emphasis>;
         {' '}рішення - оптимізації + запуск тільки на запит
+      </>
+    ),
+    textEn: (
+      <>
+        <Emphasis color="orange">reviews</Emphasis>{' '}
+        — <Emphasis color="orange">are expensive</Emphasis>;
+        {' '}the fix — optimizations + running only on request
       </>
     ),
     hasGraph: true,
@@ -518,6 +556,13 @@ const CONCLUSIONS: Conclusion[] = [
         якого або яку ми підсилюємо АІ агентом
       </>
     ),
+    textEn: (
+      <>
+        the <Emphasis color="green">human</Emphasis>{' '}
+        stays the <Emphasis color="green">main approver</Emphasis>,{' '}
+        amplified by an AI agent
+      </>
+    ),
     hasGraph: false,
   },
   {
@@ -526,6 +571,12 @@ const CONCLUSIONS: Conclusion[] = [
       <>
         але, можливо, нам потрібен{' '}
         <Emphasis color="orange">абсолютно новий процес?</Emphasis>
+      </>
+    ),
+    textEn: (
+      <>
+        but maybe we need{' '}
+        <Emphasis color="orange">a completely new process?</Emphasis>
       </>
     ),
     hasGraph: false,
@@ -643,7 +694,7 @@ const STYLES = `
   }
 `;
 
-function ConclusionsContent({ revealStage }: { revealStage: number }) {
+function ConclusionsContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const idx = Math.min(revealStage, CONCLUSIONS.length - 1);
   const c = CONCLUSIONS[idx];
 
@@ -654,15 +705,15 @@ function ConclusionsContent({ revealStage }: { revealStage: number }) {
       <div className="conclusions-stage">
         <h2 className="conclusions-title">
           <span className="text-dim">&gt;</span>{' '}
-          <span className="text-green">деякі</span>{' '}
-          <span className="text-orange">висновки</span>
+          <span className="text-green">{tr(lang, 'деякі', 'some')}</span>{' '}
+          <span className="text-orange">{tr(lang, 'висновки', 'conclusions')}</span>
         </h2>
 
         <div
           className={`conclusions-row ${c.hasGraph ? '' : 'conclusions-row--solo'}`}
         >
           <div key={`text-${c.key}`} className="conclusions-text">
-            <SlideItem>{c.text}</SlideItem>
+            <SlideItem>{tr(lang, c.text, c.textEn)}</SlideItem>
           </div>
 
           {c.hasGraph && (
@@ -682,7 +733,7 @@ function ConclusionsContent({ revealStage }: { revealStage: number }) {
               ) : (
                 <>
                   <div className="conclusions-graph__label">
-                    <Code>TBD</Code> графік
+                    <Code>TBD</Code> {tr(lang, 'графік', 'chart')}
                   </div>
                   {c.graphCaption && (
                     <div className="conclusions-graph__caption">
@@ -704,8 +755,8 @@ export const ConclusionsSlide: SlideDefinition = {
   // 5 reveal stages (0..4) → maxRevealStages = 4
   maxRevealStages: CONCLUSIONS.length - 1,
   initialRevealStage: 0,
-  content: ({ revealStage }: SlideContentProps) => (
-    <ConclusionsContent revealStage={revealStage} />
+  content: ({ revealStage, lang }: SlideContentProps) => (
+    <ConclusionsContent revealStage={revealStage} lang={lang} />
   ),
   notes:
     'Висновки секції про код-рев\'ю агента. One-reveal-at-a-time: попередні булети ховаємо, щоб поточний дихав. Reveal 1: time-to-first-review падає, time-to-merge росте. 2: психологія часу — людина чекає боляче, агент ні. 3: вайби — найкраща метрика, ніяких 47 KPI. 4: кости — велика проблема, $ за MR ростуть з деку. 5 (фінальний, без графіка, повна ширина): людина — головний апрувер, але, можливо, потрібен абсолютно новий процес? Графіки на стейджах 1-4 — TBD placeholder з диагональними штрихами і dashed border, додати реальні дані пізніше.',

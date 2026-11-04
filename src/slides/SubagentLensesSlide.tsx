@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, Code } from '../components/SlideElements';
+import { tr, type Lang } from '../context/LanguageContext';
 import prTestAnalyzerImg from '../assets/subagent-comments/pr-test-analyzer.png?url';
 import accessibilityReviewerImg from '../assets/subagent-comments/accessibility-reviewer.png?url';
 import designSystemReviewerImg from '../assets/subagent-comments/design-system-reviewer.png?url';
@@ -9,12 +10,15 @@ import claudeMetaReviewerImg from '../assets/subagent-comments/claude-meta-revie
 import skillReviewerJavaHttpImg from '../assets/subagent-comments/skill-reviewer-java-http-client.png?url';
 import codexImg from '../assets/subagent-comments/codex.png?url';
 
+// EN: own translation (bulletEn)
 // One entry per reveal stage. Bullet = short "what this lens looks for".
 // Panel = screenshot of the real GitLab/GitHub comment that this sub-agent
 // surfaced on a Grammarly MR/PR (matched by file+line in the mango session log).
 type Lens = {
   key: string;
   bullet: ReactNode;
+  /** English bullet — EN: own translation */
+  bulletEn: ReactNode;
   src: string;
   alt: string;
 };
@@ -29,6 +33,13 @@ const LENSES: Lens[] = [
         {' '}гілки, які ніхто не покрив, missing assertions, fragile стаби
       </>
     ),
+    bulletEn: (
+      <>
+        <Code>pr-test-analyzer</Code>{' '}
+        — <Emphasis color="green">gaps in test coverage</Emphasis>:
+        {' '}branches nobody covered, missing assertions, fragile stubs
+      </>
+    ),
     src: prTestAnalyzerImg,
     alt: 'pr-test-analyzer: classify() KMS error router has ~10 branches but only 4 are tested end-to-end',
   },
@@ -41,6 +52,13 @@ const LENSES: Lens[] = [
         {' '}aria-атрибути, фокус, ролі, контраст у <Code>.tsx</Code> / <Code>.css</Code>
       </>
     ),
+    bulletEn: (
+      <>
+        <Code>accessibility-reviewer</Code>{' '}
+        — <Emphasis color="green">WCAG 2.2 AA</Emphasis> violations:
+        {' '}aria attributes, focus, roles, contrast in <Code>.tsx</Code> / <Code>.css</Code>
+      </>
+    ),
     src: accessibilityReviewerImg,
     alt: 'accessibility-reviewer: raw aria-* on IconButton bypasses Origin prop validation, WCAG 4.1.2',
   },
@@ -51,6 +69,13 @@ const LENSES: Lens[] = [
         <Code>design-system-reviewer</Code>{' '}
         — відповідність <Emphasis color="green">нашій дизайн системі</Emphasis>:
         {' '}нативні елементи замість компонентів, захардкоджені токени
+      </>
+    ),
+    bulletEn: (
+      <>
+        <Code>design-system-reviewer</Code>{' '}
+        — compliance with <Emphasis color="green">our design system</Emphasis>:
+        {' '}native elements instead of components, hardcoded tokens
       </>
     ),
     src: designSystemReviewerImg,
@@ -66,6 +91,14 @@ const LENSES: Lens[] = [
         {' '}правила, які насправді не працюють, або застаріли
       </>
     ),
+    bulletEn: (
+      <>
+        <Code>claude-md-reviewer</Code>{' '}
+        — <Emphasis color="green">quality</Emphasis> of{' '}
+        <Code>CLAUDE.md</Code> / <Code>AGENTS.md</Code>:
+        {' '}rules that don't actually work, or went stale
+      </>
+    ),
     src: claudeMdReviewerImg,
     alt: 'claude-md-reviewer: AGENTS.md DON\'T rule uses incorrect Maven groupId',
   },
@@ -76,6 +109,13 @@ const LENSES: Lens[] = [
         <Code>claude-meta-reviewer</Code>{' '}
         — якість <Emphasis color="green">SKILL.md / commands / hooks / agents</Emphasis>
         {' '}відповідно до мета скілу
+      </>
+    ),
+    bulletEn: (
+      <>
+        <Code>claude-meta-reviewer</Code>{' '}
+        — quality of <Emphasis color="green">SKILL.md / commands / hooks / agents</Emphasis>
+        {' '}against the meta skill
       </>
     ),
     src: claudeMetaReviewerImg,
@@ -90,6 +130,13 @@ const LENSES: Lens[] = [
         {' '}таймаути, retry, circuit-breaker, версії
       </>
     ),
+    bulletEn: (
+      <>
+        <Code>skill-reviewer(java-http-client)</Code>{' '}
+        — config of our standard <Emphasis color="green">HTTP client</Emphasis>:
+        {' '}timeouts, retries, circuit breaker, versions
+      </>
+    ),
     src: skillReviewerJavaHttpImg,
     alt: 'skill-reviewer: SNAPSHOT dependency on grammarly:http-client in a published library POM',
   },
@@ -100,6 +147,13 @@ const LENSES: Lens[] = [
         окремо <Code>codex</Code>{' '}
         — для <Emphasis color="orange">стороннього погляду</Emphasis>
         {' '}на найскладніші рев'ю
+      </>
+    ),
+    bulletEn: (
+      <>
+        and separately <Code>codex</Code>{' '}
+        — for <Emphasis color="orange">an outside view</Emphasis>
+        {' '}on the hardest reviews
       </>
     ),
     src: codexImg,
@@ -180,7 +234,7 @@ const STYLES = `
   }
 `;
 
-function SubagentLensesContent({ revealStage }: { revealStage: number }) {
+function SubagentLensesContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const lens = LENSES[Math.min(revealStage, LENSES.length - 1)];
 
   return (
@@ -190,13 +244,13 @@ function SubagentLensesContent({ revealStage }: { revealStage: number }) {
       <div className="subagent-lens-stage">
         <h2 className="subagent-lens-title">
           <span className="text-dim">&gt;</span>{' '}
-          <span className="text-green">скілові</span>{' '}
-          <span className="text-orange">рев'ювери</span>
+          <span className="text-green">{tr(lang, 'скілові', 'skill')}</span>{' '}
+          <span className="text-orange">{tr(lang, "рев'ювери", 'reviewers')}</span>
         </h2>
 
         <div className="subagent-lens-row">
           <div key={`bullet-${lens.key}`} className="subagent-lens-bullet">
-            <SlideItem>{lens.bullet}</SlideItem>
+            <SlideItem>{tr(lang, lens.bullet, lens.bulletEn)}</SlideItem>
           </div>
 
           <div key={`panel-${lens.key}`} className="subagent-lens-panel">
@@ -213,8 +267,8 @@ export const SubagentLensesSlide: SlideDefinition = {
   // One reveal per lens (0..LENSES.length-1). maxRevealStages is N-1.
   maxRevealStages: LENSES.length - 1,
   initialRevealStage: 0,
-  content: ({ revealStage }: SlideContentProps) => (
-    <SubagentLensesContent revealStage={revealStage} />
+  content: ({ revealStage, lang }: SlideContentProps) => (
+    <SubagentLensesContent revealStage={revealStage} lang={lang} />
   ),
   notes:
     'Спеціалізовані лінзи код-рев\'ю агента. Layout: текст ліворуч (40%), реальний скріншот коментаря праворуч (60%). По одному субагенту за reveal: pr-test-analyzer → accessibility → design-system → claude-md → claude-meta → skill-reviewer(java-http-client) → codex. Консолідатор (як review-consolidator зводить усі знахідки разом) винесений у окремий слайд.',

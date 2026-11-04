@@ -1,4 +1,5 @@
 import { SlideDefinition } from '../types/slides';
+import { T } from '../context/LanguageContext';
 import terminalFighter from '../assets/terminal-fighter.png?url';
 import ideFighter from '../assets/ide-fighter.png?url';
 
@@ -78,28 +79,29 @@ export const DisclaimerSlide: SlideDefinition = {
       <div className="vs-center-content">
         <div className="vs-badge">VS</div>
         <div className="vs-disclaimer-content">
+          {/* EN: own translation (every en= in this block) */}
           <DisclaimerItem level="high">
-            особисто мені найкраще зайшов флоу, коли працюю з{' '}
+            <T uk="особисто мені найкраще зайшов флоу, коли працюю з" en="personally, the flow that works best for me is" />{' '}
             <em style={{ color: 'var(--terminal-orange)', fontStyle: 'normal', fontWeight: 600 }}>
-              Claude Code повністю в терміналі
+              <T uk="Claude Code повністю в терміналі" en="Claude Code entirely in the terminal" />
             </em>
           </DisclaimerItem>
 
           <DisclaimerItem level="medium">
-            але можу відкрити IDE (зазвичай{' '}
-            <span style={{ color: 'var(--terminal-cyan)' }}>VS Code</span>) для невеликих
-            точкових правок, які хочеться зробити руками
+            <T uk="але можу відкрити IDE (зазвичай" en="but I may open an IDE (usually" />{' '}
+            <span style={{ color: 'var(--terminal-cyan)' }}>VS Code</span>)
+            {' '}<T uk="для невеликих точкових правок, які хочеться зробити руками" en="for small, targeted edits I'd rather make by hand" />
           </DisclaimerItem>
 
           <DisclaimerItem level="medium">
-            Термінал швидше відучує від старої ментальної моделі{' '}
-            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}>«я редагую текст»</em>
-            {' '}і вчить нової:{' '}
-            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}>«я ставлю задачі агенту»</em>
+            <T uk="Термінал швидше відучує від старої ментальної моделі" en="the terminal unteaches the old mental model faster —" />{' '}
+            <em style={{ color: 'var(--terminal-white-dim)', fontStyle: 'normal' }}><T uk="«я редагую текст»" en="“I edit text”" /></em>
+            {' '}<T uk="і вчить нової:" en="— and teaches the new one:" />{' '}
+            <em style={{ color: 'var(--terminal-green)', fontStyle: 'normal', fontWeight: 600 }}><T uk="«я ставлю задачі агенту»" en="“I give an agent tasks”" /></em>
           </DisclaimerItem>
 
           <DisclaimerItem level="low">
-            якщо в терміналі некомфортно — є плагіни:{' '}
+            <T uk="якщо в терміналі некомфортно — є плагіни:" en="not comfortable in the terminal? there are plugins:" />{' '}
             <a
               href="https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code"
               target="_blank"
@@ -108,7 +110,7 @@ export const DisclaimerSlide: SlideDefinition = {
             >
               VS Code
             </a>
-            {' '}або{' '}
+            {' '}<T uk="або" en="or" />{' '}
             <a
               href="https://plugins.jetbrains.com/plugin/27310-claude-code-beta-"
               target="_blank"

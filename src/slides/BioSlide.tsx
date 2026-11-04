@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { SlideDefinition } from '../types/slides';
+import { tr } from '../context/LanguageContext';
 import yarikBadges from '../assets/yarik-badges.jpg?url';
 
 type Level = 'high' | 'medium' | 'low';
@@ -35,30 +36,43 @@ function BioItem({ level, children }: { level: Level; children: React.ReactNode 
   );
 }
 
-const BIO_ITEMS: { level: Level; content: ReactNode }[] = [
+const BIO_ITEMS_UK: { level: Level; content: ReactNode }[] = [
   { level: 'low',    content: <>починав як Java backend-інженер</> },
   { level: 'medium', content: <>потім: техлідив продуктові фічі</> },
   { level: 'medium', content: <>потім: техлід платформної організації</> },
   { level: 'high',   content: <>зараз: AI-first розробка</> },
 ];
 
+// EN: own translation
+const BIO_ITEMS_EN: { level: Level; content: ReactNode }[] = [
+  { level: 'low',    content: <>started as a Java backend engineer</> },
+  { level: 'medium', content: <>then: tech lead on product features</> },
+  { level: 'medium', content: <>then: tech lead of a platform org</> },
+  { level: 'high',   content: <>now: AI-first development</> },
+];
+
 export const BioSlide: SlideDefinition = {
   id: 'bio',
-  title: (
+  title: ({ lang }) => (
     <>
-      <span className="text-dim">&gt;</span> хто я
+      <span className="text-dim">&gt;</span> {tr(lang, 'хто я', 'whoami')}
     </>
   ),
-  maxRevealStages: BIO_ITEMS.length - 1,
-  content: ({ revealStage }) => (
+  maxRevealStages: BIO_ITEMS_UK.length - 1,
+  content: ({ revealStage, lang }) => (
     <div className="bio-slide">
       <div className="bio-slide-content">
         <p className="bio-subtitle">
-          9 років у компанії Superhuman (раніше відомої як Grammarly)
+          {tr(
+            lang,
+            '9 років у компанії Superhuman (раніше відомої як Grammarly)',
+            // EN: own translation
+            '9 years at Superhuman (formerly known as Grammarly)',
+          )}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {BIO_ITEMS.map((item, i) =>
+          {tr(lang, BIO_ITEMS_UK, BIO_ITEMS_EN).map((item, i) =>
             revealStage >= i ? (
               <BioItem key={i} level={item.level}>{item.content}</BioItem>
             ) : null,

@@ -24,6 +24,8 @@ export interface SectionData {
   image: string;
   alt: string;
   desc: string;
+  /** English `desc` (the deck's alternate language). */
+  descEn: string;
   slideId: string;
   subsections?: SubsectionData[];
 }
@@ -34,6 +36,8 @@ export const SECTIONS: SectionData[] = [
     image: agendaEngineerImage,
     alt: 'AI-First Engineer',
     desc: 'декілька порад щодо персональної продуктивності',
+    // EN: own translation
+    descEn: 'a few tips on personal productivity',
     slideId: 'agenda-engineer',
   },
   {
@@ -41,6 +45,7 @@ export const SECTIONS: SectionData[] = [
     image: agendaTeamImage,
     alt: 'AI-First Team',
     desc: '// ai-first команда',
+    descEn: '// ai-first team',
     slideId: 'agenda-team',
     subsections: [
       {
@@ -62,6 +67,7 @@ export const SECTIONS: SectionData[] = [
     image: agendaOrgImage,
     alt: 'AI-First Organization',
     desc: '// ai-first організація',
+    descEn: '// ai-first organization',
     slideId: 'agenda-org',
   },
 ];

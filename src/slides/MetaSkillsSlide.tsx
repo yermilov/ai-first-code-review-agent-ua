@@ -2,6 +2,7 @@ import { ReactNode, useState, useEffect } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, SlideLink } from '../components/SlideElements';
 import { exportRegistry } from '../components/exportRegistry';
+import { tr, type Lang } from '../context/LanguageContext';
 import skillMdFallback from '../assets/skill-creator-skill.md?raw';
 
 const SLIDE_ID = 'meta-skills';
@@ -11,7 +12,7 @@ const SKILL_MD_URL =
 // Two-phase reveal (same idiom as AiCodeReviewSlide):
 // FIRST_SET = the meta-skill thesis (full-width bullets, no panel).
 // SECOND_SET = prebuilt-vs-custom counterpoint with the live SKILL.md panel.
-const FIRST_SET: ReactNode[] = [
+const FIRST_SET_UK: ReactNode[] = [
   <>найважливіший скіл у вашому маркетплейсі — це{' '}
     <Emphasis color="orange">скіл, що створює скіли</Emphasis></>,
   <>від його якості залежить якість{' '}
@@ -23,7 +24,7 @@ const FIRST_SET: ReactNode[] = [
     як відправну точку</>,
 ];
 
-const SECOND_SET: ReactNode[] = [
+const SECOND_SET_UK: ReactNode[] = [
   <>або просто візьміть <Emphasis color="green">готовий</Emphasis> skill-creator
     від Anthropic:{' '}
     <SlideLink href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator">
@@ -33,6 +34,32 @@ const SECOND_SET: ReactNode[] = [
     <Emphasis color="green">готовим</Emphasis> скілом, на який не треба витрачати
     час і зусилля, та <Emphasis color="orange">кастомним</Emphasis> скілом,
     який може врахувати всю вашу in-house специфіку</>,
+];
+
+// EN: own translation
+const FIRST_SET_EN: ReactNode[] = [
+  <>the most important skill in your marketplace is the{' '}
+    <Emphasis color="orange">skill that creates skills</Emphasis></>,
+  <>its quality sets the quality of{' '}
+    <Emphasis color="orange">every</Emphasis> skill in your marketplace</>,
+  <>make Claude read{' '}
+    <SlideLink href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices">
+      platform.claude.com/docs/.../agent-skills/best-practices
+    </SlideLink>{' '}
+    as the starting point</>,
+];
+
+// EN: own translation
+const SECOND_SET_EN: ReactNode[] = [
+  <>or just take the <Emphasis color="green">ready-made</Emphasis> skill-creator
+    from Anthropic:{' '}
+    <SlideLink href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator">
+      github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator
+    </SlideLink></>,
+  <>your next problem is the balance between a{' '}
+    <Emphasis color="green">ready-made</Emphasis> skill that costs you no time or effort
+    and a <Emphasis color="orange">custom</Emphasis> one that can capture
+    all your in-house specifics</>,
 ];
 
 const STYLES = `
@@ -49,7 +76,9 @@ const STYLES = `
   }
 `;
 
-function MetaSkillsContent({ revealStage }: { revealStage: number }) {
+function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
+  const FIRST_SET = tr(lang, FIRST_SET_UK, FIRST_SET_EN);
+  const SECOND_SET = tr(lang, SECOND_SET_UK, SECOND_SET_EN);
   // Render the bundled snapshot immediately so the panel never flashes empty
   // on a flaky network; swap to the live SKILL.md as soon as fetch resolves.
   const [content, setContent] = useState<string>(skillMdFallback);
@@ -207,16 +236,16 @@ export const MetaSkillsSlide: SlideDefinition = {
   id: SLIDE_ID,
   // 5 reveal stages: 0..2 walk through FIRST_SET (full-width thesis),
   // 3..4 walk through SECOND_SET alongside the SKILL.md panel.
-  maxRevealStages: FIRST_SET.length + SECOND_SET.length - 1,
+  maxRevealStages: FIRST_SET_UK.length + SECOND_SET_UK.length - 1,
   asyncSettle: true,
-  title: (
+  title: ({ lang }: SlideContentProps) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">мета</span>{' '}
-      <span className="text-orange">скіл</span>
+      <span className="text-green">{tr(lang, 'мета', 'meta')}</span>{' '}
+      <span className="text-orange">{tr(lang, 'скіл', 'skill')}</span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => <MetaSkillsContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <MetaSkillsContent revealStage={revealStage} lang={lang} />,
   notes:
     'Мета-скіли — найвища точка важеля. Stage 0–2 (full-width): чому скіл-що-створює-скіли є найважливішим, як його будувати з best practices. Stage 3–4 (з SKILL.md панеллю): або візьміть готовий skill-creator від Anthropic; далі — баланс між готовими та кастомними скілами.',
 };

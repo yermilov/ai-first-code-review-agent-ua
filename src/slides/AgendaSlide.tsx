@@ -1,6 +1,7 @@
 import { SECTIONS } from '../data/sections';
 import { SlideDefinition } from '../types/slides';
 import { useNavigation } from '../context/NavigationContext';
+import { tr, useLang } from '../context/LanguageContext';
 
 const PART_ORDINAL_UK: Record<number, string> = {
   1: 'перша',
@@ -8,8 +9,15 @@ const PART_ORDINAL_UK: Record<number, string> = {
   3: 'третя',
 };
 
+const PART_ORDINAL_EN: Record<number, string> = {
+  1: 'one',
+  2: 'two',
+  3: 'three',
+};
+
 function AgendaSlideContent() {
   const { goToSlideById } = useNavigation();
+  const lang = useLang();
   const subsections = SECTIONS.flatMap(s => s.subsections ?? []);
 
   return (
@@ -168,12 +176,18 @@ function AgendaSlideContent() {
           >
             <div className="agenda-card-command">
               <span className="text-dim">&gt;</span>{' '}
-              <span className="text-green">частина {PART_ORDINAL_UK[section.part] ?? section.part}</span>
+              <span className="text-green">
+                {tr(
+                  lang,
+                  `частина ${PART_ORDINAL_UK[section.part] ?? section.part}`,
+                  `part ${PART_ORDINAL_EN[section.part] ?? section.part}`,
+                )}
+              </span>
             </div>
             <div className="agenda-img-wrap">
               <img src={section.image} alt={section.alt} loading="lazy" className="agenda-card-image" />
             </div>
-            <div className="agenda-card-desc text-muted">{section.desc}</div>
+            <div className="agenda-card-desc text-muted">{tr(lang, section.desc, section.descEn)}</div>
           </div>
         ))}
       </div>
@@ -182,7 +196,9 @@ function AgendaSlideContent() {
       {subsections.length > 0 && (
         <div className="agenda-connector">
           <div className="agenda-connector-line" />
-          <span className="agenda-connector-label">// кейс створення code review агента</span>
+          <span className="agenda-connector-label">
+            {tr(lang, '// кейс створення code review агента', '// case study: building a code review agent')}
+          </span>
           <div className="agenda-connector-line" />
         </div>
       )}
@@ -228,10 +244,11 @@ function AgendaSlideContent() {
 
 export const AgendaSlide: SlideDefinition = {
   id: 'agenda',
-  title: (
+  title: ({ lang }) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">про що сьогодні говоримо</span>
+      {/* EN: own translation */}
+      <span className="text-green">{tr(lang, 'про що сьогодні говоримо', "what we'll talk about today")}</span>
     </>
   ),
   content: <AgendaSlideContent />,

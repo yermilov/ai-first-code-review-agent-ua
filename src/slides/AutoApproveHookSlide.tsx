@@ -1,6 +1,7 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
+import { Lang, T, tr } from '../context/LanguageContext';
 
 const TIER_CODE = `# Tier 1: MCP annotations (~0ms)
 if tool.readOnlyHint    → approve
@@ -119,7 +120,7 @@ const STYLES = `
   }
 `;
 
-function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
+function AutoApproveHookContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const panel = panelFor(revealStage);
 
   return (
@@ -131,20 +132,43 @@ function AutoApproveHookContent({ revealStage }: { revealStage: number }) {
         <div className="auto-approve-bullets">
           {revealStage === 1 && (
             <SlideItem delay={0.05}>
-              <Emphasis color="green">хук для класифікації операцій</Emphasis>:
-              {' '}LLM-as-a-judge класифікує дії Клода
-              {' '}як <Emphasis color="green">SAFE</Emphasis> (read-only, тести) чи{' '}
-              <Emphasis color="orange">UNSAFE</Emphasis> (деструктивне, credentials, інфра),
-              {' '}повна заборона на коментування, апруви, і т.д.;
-              {' '}кешуємо всі рішення для швидкості
+              {tr(lang,
+                <>
+                  <Emphasis color="green">хук для класифікації операцій</Emphasis>:
+                  {' '}LLM-as-a-judge класифікує дії Клода
+                  {' '}як <Emphasis color="green">SAFE</Emphasis> (read-only, тести) чи{' '}
+                  <Emphasis color="orange">UNSAFE</Emphasis> (деструктивне, credentials, інфра),
+                  {' '}повна заборона на коментування, апруви, і т.д.;
+                  {' '}кешуємо всі рішення для швидкості
+                </>,
+                // EN: own translation
+                <>
+                  <Emphasis color="green">a hook that classifies operations</Emphasis>:
+                  {' '}an LLM-as-a-judge labels Claude's actions
+                  {' '}<Emphasis color="green">SAFE</Emphasis> (read-only, tests) or{' '}
+                  <Emphasis color="orange">UNSAFE</Emphasis> (destructive, credentials, infra),
+                  {' '}commenting, approvals etc. are banned outright;
+                  {' '}every decision is cached for speed
+                </>,
+              )}
             </SlideItem>
           )}
 
           {revealStage === 2 && (
             <SlideItem delay={0} reveal>
-              Anthropic зашипили <Emphasis color="green">--permission-mode auto</Emphasis>
-              {' '}— фоновий Sonnet-класифікатор із тією самою філософією: дозволяй
-              {' '}безпечні локальні дії, блокуй деструктивні, fail-safe → ручне підтвердження у разі невпевненості
+              {tr(lang,
+                <>
+                  Anthropic зашипили <Emphasis color="green">--permission-mode auto</Emphasis>
+                  {' '}— фоновий Sonnet-класифікатор із тією самою філософією: дозволяй
+                  {' '}безпечні локальні дії, блокуй деструктивні, fail-safe → ручне підтвердження у разі невпевненості
+                </>,
+                // EN: own translation
+                <>
+                  then Anthropic shipped <Emphasis color="green">--permission-mode auto</Emphasis>
+                  {' '}— a background Sonnet classifier with the same philosophy: allow
+                  {' '}safe local actions, block destructive ones, fail-safe → ask the human when unsure
+                </>,
+              )}
             </SlideItem>
           )}
         </div>
@@ -168,11 +192,12 @@ export const AutoApproveHookSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">Клод</span>{' '}
-      <span className="text-orange">буде намагатися коментувати безпосередньо в коді</span>
+      {/* EN: own translation */}
+      <span className="text-green"><T uk="Клод" en="Claude" /></span>{' '}
+      <span className="text-orange"><T uk="буде намагатися коментувати безпосередньо в коді" en="will try to comment straight in the code" /></span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => <AutoApproveHookContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <AutoApproveHookContent revealStage={revealStage} lang={lang} />,
   notes:
     'Stage 0: наш 3-рівневий плагін авто-підтвердження (MCP-анотації → SHA-кеш → LLM-як-суддя з SAFE/UNSAFE класифікацією, fail-safe на помилці). Stage 1: Anthropic зашипили офіційну версію --permission-mode auto — та сама філософія, підтримка на рівні платформи.',
 };

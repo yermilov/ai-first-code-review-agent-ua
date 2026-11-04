@@ -1,18 +1,31 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
+import { tr, type Lang } from '../context/LanguageContext';
 
 // Three bullets that accumulate. The framed panel on the right is only
 // meaningful from stage 1 onward (when bullet 2 introduces "наприклад").
-const BULLETS: ReactNode[] = [
+const BULLETS_UK: ReactNode[] = [
   <>створюємо <Emphasis color="green">code-review скіл</Emphasis>,
     {' '}який використовує і агент, і люди можуть самі запускати,
     {' '}щоб перевірити свій або чужий код</>,
   <>ще краще — цей скіл <Emphasis color="orange">покроково делегує</Emphasis>
-    {' '}меншим,  cфокусованим скілам, наприклад:</>,
+    {' '}меншим, сфокусованим скілам, наприклад:</>,
   <>але найголовніше — AI рев'ювер може брати скіли, які інженери писали
     {' '}для себе, і використовувати їх як{' '}
     <Emphasis color="green">гайдлайни для код-рев'ю</Emphasis></>,
+];
+
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>we build a <Emphasis color="green">code-review skill</Emphasis>
+    {' '}that the agent uses — and people can run it themselves
+    {' '}to check their own code or someone else's</>,
+  <>even better — that skill <Emphasis color="orange">delegates step by step</Emphasis>
+    {' '}to smaller, focused skills, for example:</>,
+  <>but the main thing — the AI reviewer can take the skills engineers wrote
+    {' '}for themselves and use them as{' '}
+    <Emphasis color="green">code-review guidelines</Emphasis></>,
 ];
 
 // Prompt-shaped distillations of each SKILL.md so the audience sees what
@@ -48,7 +61,8 @@ const STYLES = `
   }
 `;
 
-function EverythingIsSkillContent({ revealStage }: { revealStage: number }) {
+function EverythingIsSkillContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
+  const BULLETS = tr(lang, BULLETS_UK, BULLETS_EN);
   const visibleCount = revealStage + 1;
   const showPanel = revealStage >= 1;
 
@@ -120,16 +134,16 @@ function EverythingIsSkillContent({ revealStage }: { revealStage: number }) {
 
 export const EverythingIsSkillSlide: SlideDefinition = {
   id: 'everything-is-skill',
-  maxRevealStages: BULLETS.length - 1,
-  title: (
+  maxRevealStages: BULLETS_UK.length - 1,
+  title: ({ lang }: SlideContentProps) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">з цього моменту все</span>{' '}
-      <span className="text-orange">скіл</span>
+      <span className="text-green">{tr(lang, 'з цього моменту все', 'from now on, everything is a')}</span>{' '}
+      <span className="text-orange">{tr(lang, 'скіл', 'skill')}</span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => (
-    <EverythingIsSkillContent revealStage={revealStage} />
+  content: ({ revealStage, lang }: SlideContentProps) => (
+    <EverythingIsSkillContent revealStage={revealStage} lang={lang} />
   ),
   notes:
     'Code-review агент сам збудований зі скілів — і виробляє нові скіли як побічний продукт. Stage 0: робимо code-review скіл який і агент, і люди запускають вручну. Stage 1: цей скіл делегує меншим скілам (приклад: 1 environment setup, 2 gather changes, 4 project guidelines — step 3 ми вже показали раніше на TeachClaudeCommunicate). Stage 2: інженери пишуть свої скіли, і AI рев\'ювер їх підхоплює як гайдлайни.',

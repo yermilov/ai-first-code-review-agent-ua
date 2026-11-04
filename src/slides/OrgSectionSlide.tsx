@@ -1,13 +1,15 @@
 import agendaOrgImage from '../assets/agenda-org.png?url';
 import { SlideDefinition } from '../types/slides';
+import { tr } from '../context/LanguageContext';
 
 export const OrgSectionSlide: SlideDefinition = {
   id: 'agenda-org',
-  title: (
+  title: ({ lang }) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">частина третя</span>
-      <span className="slide-title-meta text-muted">// ai-first організація</span>
+      {/* EN: own translation */}
+      <span className="text-green">{tr(lang, 'частина третя', 'part three')}</span>
+      <span className="slide-title-meta text-muted">{tr(lang, '// ai-first організація', '// ai-first organization')}</span>
     </>
   ),
   content: (

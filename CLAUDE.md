@@ -143,6 +143,7 @@ Type in the input box (letters only act on an EMPTY box; anything else just clea
 - `<N>` → step N (the same N as `#slide-N` in the URL) · `-<N>` → N steps from the end
 - `first` / `start` / `home`, `last` / `end`
 - `light` / `dark` → theme (persisted)
+- `english` / `ukrainian` → slide language (persisted, mirrored in `?lang=en|uk`)
 
 Keys (outside the box): → ↓ Space PageDown Enter advance, ← ↑ PageUp Backspace go back,
 Home/End. PageDown/PageUp always work (clicker). Swipes on touch.
@@ -155,6 +156,27 @@ The timer starts when you leave the title slide, resets when you return to it, s
 and discards a start older than 4 hours. The talk length is `TALK_SECONDS` in `Timer.tsx` (60
 min). The progress bar ("context left until auto-compact") weights every reveal equally and
 appears past the half-way point.
+
+## Two languages (UA ↔ EN)
+
+The deck is bilingual at runtime (mechanism from `dou-days-2026` via `pragmatic-vibe-clauding-en`):
+**Ukrainian is the home language** — the talk was given in Ukrainian — English the alternate.
+`src/context/LanguageContext.tsx` gives `tr(lang, uk, en)` and `<T uk="…" en="…" />`;
+render-function slides read `lang` from their props; `background` may be a function of `lang`.
+
+- Bullet arrays come in pairs, `X_UK` / `X_EN`, **same length, same order** — reveal counts are
+  derived from one of them. A new or edited bullet must be changed in both.
+- The Ukrainian copy is the proofread original. English strings marked `// EN: own translation`
+  were written for this switch (rewritten, not translated literally) and are worth a read by Yarik.
+- Stays as-is in both: what is typed to or shown by a tool (prompts, commands, code), product
+  names, the terminal chrome (placeholder, `context left until auto-compact`), speaker notes
+  (Ukrainian) and `index.html` meta (Ukrainian).
+- Generated images with Ukrainian labels have no English variant yet — see the follow-ups in the
+  alignment report; an English variant is `<name>-en.png` + its own `src/prompts/*.json`.
+- `?lang=en` makes a shareable English link; `LANG_DECK=en bun run pdf` exports
+  `dist/ai-first-code-review-agent-ua-en.pdf`.
+- Verify a changed slide in BOTH languages — Ukrainian runs longer; fix overflow by rephrasing
+  shorter, never by shrinking type.
 
 ## Verifying a change
 

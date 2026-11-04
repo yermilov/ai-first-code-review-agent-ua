@@ -2,12 +2,27 @@ import { useState, useEffect, useRef } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, SlideLink } from '../components/SlideElements';
 import { exportRegistry } from '../components/exportRegistry';
+import { Lang, T, tr } from '../context/LanguageContext';
+import { ReactNode } from 'react';
 
 const SLIDE_ID = 'start-here';
 const YAML_URL =
   'https://raw.githubusercontent.com/anthropics/claude-code-action/main/examples/pr-review-comprehensive.yml';
 const YAML_DISPLAY_URL =
   'github.com/anthropics/claude-code-action/blob/main/examples/pr-review-comprehensive.yml';
+
+const BULLETS_UK: ReactNode[] = [
+  <>Як не дивно, це вже{' '}<Emphasis color="green">робочий код рев'ювер</Emphasis></>,
+  <>десь так і побудовані всі стартапи у сфері{' '}<Emphasis color="orange">AI code review</Emphasis></>,
+  <>але ми звичайно{' '}<Emphasis color="green">можемо краще</Emphasis></>,
+];
+
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>surprisingly, this is already a{' '}<Emphasis color="green">working code reviewer</Emphasis></>,
+  <>roughly how every{' '}<Emphasis color="orange">AI code review</Emphasis> startup is built</>,
+  <>but of course we{' '}<Emphasis color="green">can do better</Emphasis></>,
+];
 
 const STYLES = `
   @keyframes startHereLoadingDot {
@@ -25,7 +40,7 @@ const STYLES = `
   }
 `;
 
-function StartHereContent({ revealStage }: { revealStage: number }) {
+function StartHereContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const [content, setContent] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,55 +93,38 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
     return () => cancelAnimationFrame(id);
   }, [content]);
 
-  const colHeight = 'calc(var(--vh-full) - 260px)';
-
   return (
     <>
       <style>{STYLES}</style>
 
-      <div style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-lg)', alignItems: 'stretch', height: '100%', minHeight: 0 }}>
 
         {/* ── Left column: link + progressive bullets ── */}
-        <div style={{ flex: '0 0 44%', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+        <div style={{ flex: '0 0 44%', alignSelf: 'flex-start', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
           <SlideItem delay={0.08}>
             <SlideLink href={`https://${YAML_DISPLAY_URL}`}>
               {YAML_DISPLAY_URL}
             </SlideLink>
           </SlideItem>
 
-          {revealStage >= 1 && (
-            <SlideItem delay={0} reveal>
-              Як не дивно, це вже{' '}
-              <Emphasis color="green">робочий код рев'ювер</Emphasis>
+          {tr(lang, BULLETS_UK, BULLETS_EN).map((bullet, i) => (
+            <SlideItem key={i} delay={0} reveal hidden={revealStage < i + 1}>
+              {bullet}
             </SlideItem>
-          )}
-
-          {revealStage >= 2 && (
-            <SlideItem delay={0} reveal>
-              десь так і побудовані всі стартапи у сфері{' '}
-              <Emphasis color="orange">AI code review</Emphasis>
-            </SlideItem>
-          )}
-
-          {revealStage >= 3 && (
-            <SlideItem delay={0} reveal>
-              але ми звичайно{' '}
-              <Emphasis color="green">можемо краще</Emphasis>
-            </SlideItem>
-          )}
+          ))}
         </div>
 
         {/* ── Right column: scrolling YAML panel ── */}
         <div
           style={{
             flex: 1,
-            height: colHeight,
+            height: '100%',
             background: 'color-mix(in srgb, var(--terminal-black) 60%, transparent)',
             border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
             borderRadius: '4px',
             position: 'relative',
             overflow: 'hidden',
-            fontFamily: 'JetBrains Mono, monospace',
+            fontFamily: 'var(--font-mono)',
             fontSize: 'var(--font-size-code)',
             color: 'color-mix(in srgb, var(--terminal-green) 85%, transparent)',
             display: 'flex',
@@ -207,16 +205,17 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
 
 export const StartHereSlide: SlideDefinition = {
   id: SLIDE_ID,
-  maxRevealStages: 3,
+  maxRevealStages: BULLETS_UK.length,
   asyncSettle: true,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">з чого</span>{' '}
-      <span className="text-orange">почнемо?</span>
+      {/* EN: own translation */}
+      <span className="text-green"><T uk="з чого" en="where do" /></span>{' '}
+      <span className="text-orange"><T uk="почнемо?" en="we start?" /></span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => <StartHereContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <StartHereContent revealStage={revealStage} lang={lang} />,
   notes:
     'Starting point for building your own AI code review: the official anthropics/claude-code-action pr-review-comprehensive.yml example. Stage 0: official example + link. Stage 1: copy-paste-add-API-key gets a working reviewer. Stage 2: customize prompt, allowedTools, add own skills. Right panel scrolls the live YAML content fetched from raw.githubusercontent.com.',
 };

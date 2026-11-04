@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 import { SlideDefinition } from '../types/slides';
 import { Emphasis, SlideItem } from '../components/SlideElements';
+import { tr } from '../context/LanguageContext';
 import { PacManCanvas } from '../components/pacman/PacManCanvas';
 
-const BULLETS: ReactNode[] = [
+const BULLETS_UK: ReactNode[] = [
   <>
     Claude Code збільшує <Emphasis>об&apos;єм</Emphasis> роботи, не{' '}
     <Emphasis color="orange">швидкість</Emphasis>
@@ -25,16 +26,40 @@ const BULLETS: ReactNode[] = [
   </>,
 ];
 
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>
+    Claude Code increases the <Emphasis>volume</Emphasis> of work, not the{' '}
+    <Emphasis color="orange">speed</Emphasis>
+  </>,
+  <>
+    on your own you'll write the code either <Emphasis color="orange">better</Emphasis>{' '}
+    or <Emphasis color="orange">faster</Emphasis>
+  </>,
+  <>
+    watching Claude work in the terminal is a{' '}
+    <Emphasis color="orange">loss of productivity and money</Emphasis>
+  </>,
+  <>
+    find 2–3 tasks you can trust Claude with under minimal supervision, and{' '}
+    <Emphasis color="orange">switch yourself to the one that needs your full attention</Emphasis>
+  </>,
+  <>
+    or just start Claude and <Emphasis>go take a break</Emphasis>
+  </>,
+];
+
 export const ImportantSlide: SlideDefinition = {
   id: 'important',
-  title: (
+  title: ({ lang }) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">ще одна</span>{' '}
-      <span className="text-orange">порада</span>
+      <span className="text-green">{tr(lang, 'ще одна', 'one more')}</span>{' '}
+      <span className="text-orange">{tr(lang, 'порада', 'tip')}</span>
     </>
   ),
-  content: ({ revealStage }) => {
+  content: ({ revealStage, lang }) => {
+    const BULLETS = tr(lang, BULLETS_UK, BULLETS_EN);
     const idx = Math.min(revealStage, BULLETS.length - 1);
     return (
     <div
@@ -77,7 +102,7 @@ export const ImportantSlide: SlideDefinition = {
     </div>
     );
   },
-  maxRevealStages: 4,
+  maxRevealStages: BULLETS_UK.length - 1,
   notes:
     "Перевірка реальності з 8-bit Pac-Man анімацією. 5 reveal-стадій: 0 — Claude дає об'єм, не швидкість; 1 — самостійно ефективніше; 2 — дивитися = втрата продуктивності; 3 — делегуйте 2-3, фокусуйтесь на одній; 4 — запустіть і йдіть відпочити.",
 };

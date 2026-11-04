@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
+import { tr } from '../context/LanguageContext';
 
-const BULLETS: ReactNode[] = [
+const BULLETS_UK: ReactNode[] = [
   <>попри весь AI-хайп, люди залишаються <Emphasis color="orange">найбільшою цінністю</Emphasis> — зберігайте емпатію, будьте етичними та чесними</>,
   <>запровадити AI-кодинг наказом по організації <Emphasis color="green">"усі тепер використовують AI"</Emphasis> не вийде: інвестуйте в регулярні тренінги, взаємне менторство та діліться історіями успіхів і помилок</>,
   <>якщо ви менеджер — покажіть на власному прикладі й <Emphasis color="orange">створіть фічу за допомогою Claude Code</Emphasis></>,
@@ -10,15 +11,24 @@ const BULLETS: ReactNode[] = [
   <>стежте за AI-FOMO і вигоранням: AI зміщує ботлнеки з механічних задач на <Emphasis color="orange">думання головою</Emphasis></>
 ];
 
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>for all the AI hype, people are still <Emphasis color="orange">the biggest asset</Emphasis> — keep the empathy, be ethical and honest</>,
+  <>you can't roll out AI coding by decree — <Emphasis color="green">"everyone uses AI now"</Emphasis> won't work: invest in regular trainings, peer mentoring, and sharing wins and failures</>,
+  <>if you're a manager — lead by example and <Emphasis color="orange">ship a feature with Claude Code</Emphasis></>,
+  <>want people to switch to the new way — <Emphasis color="green">relax deadline expectations for a while</Emphasis> to make room for learning</>,
+  <>watch for AI-FOMO and burnout: AI moves the bottleneck from mechanical tasks to <Emphasis color="orange">actual thinking</Emphasis></>
+];
+
 export const HumanAiEngSlide: SlideDefinition = {
   id: 'human-ai-eng',
-  maxRevealStages: BULLETS.length - 1,
-  content: ({ revealStage }: SlideContentProps) => (
+  maxRevealStages: BULLETS_UK.length - 1,
+  content: ({ revealStage, lang }: SlideContentProps) => (
     <>
       <h2>
         <span className="text-dim">//</span>{' '}
-        <span className="text-green">людино</span>
-        <span className="text-orange">центричність</span>
+        <span className="text-green">{tr(lang, 'людино', 'human')}</span>
+        <span className="text-orange">{tr(lang, 'центричність', '-centric')}</span>
       </h2>
 
       <div
@@ -29,7 +39,7 @@ export const HumanAiEngSlide: SlideDefinition = {
           margin: '0 auto',
         }}
       >
-        {BULLETS.map((bullet, i) =>
+        {tr(lang, BULLETS_UK, BULLETS_EN).map((bullet, i) =>
           revealStage >= i ? (
             <SlideItem key={i} delay={i === 0 ? 0.06 : 0}>{bullet}</SlideItem>
           ) : null,

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
+import { tr } from '../context/LanguageContext';
 import claudeReviewImage from '../assets/ai-code-review-claude.png?url';
 import copilotReviewImage from '../assets/ai-code-review-copilot.png?url';
 import codexReviewImage from '../assets/ai-code-review-codex.png?url';
@@ -18,7 +19,7 @@ const TOOL_SCREENSHOTS: (string | null)[] = [
 // FIRST_SET shows three bullets full-width as one column; once they're all
 // out, SECOND_SET swaps to a half-width bullet + the in-house AI code review
 // agent screenshot on the right.
-const FIRST_SET: ReactNode[] = [
+const FIRST_SET_UK: ReactNode[] = [
   <>
     завдяки <Emphasis color="green">AI асистентам</Emphasis> люди більше і впевненіше
     {' '}контриб'ютять навіть у <Emphasis color="orange">незнайомі кодбази</Emphasis>
@@ -36,7 +37,7 @@ const FIRST_SET: ReactNode[] = [
   </>,
 ];
 
-const SECOND_SET: ReactNode[] = [
+const SECOND_SET_UK: ReactNode[] = [
   <>
     ми зробили <Emphasis color="green">власного код рев'ю агента</Emphasis>
     {' '}на базі Claude Code (плюс частково Codex) —
@@ -56,11 +57,51 @@ const SECOND_SET: ReactNode[] = [
   </>,
 ];
 
+// EN: own translation
+const FIRST_SET_EN: ReactNode[] = [
+  <>
+    thanks to <Emphasis color="green">AI assistants</Emphasis> people contribute more,
+    {' '}and more confidently, even to <Emphasis color="orange">unfamiliar codebases</Emphasis>
+  </>,
+  <>
+    reviewers feel it's <Emphasis color="green">unfair</Emphasis>
+    {' '}— the time invested is wildly lopsided
+    {' '}— human reviews turn into <Emphasis color="orange">rubber stamps</Emphasis>,
+    {' '}and AI agents get stigmatised
+  </>,
+  <>
+    AI review <Emphasis color="green">frees</Emphasis> the human to focus
+    {' '}on the hard questions (why? how?), while the agent checks
+    {' '}the code itself far more thoroughly
+  </>,
+];
+
+// EN: own translation
+const SECOND_SET_EN: ReactNode[] = [
+  <>
+    we built <Emphasis color="green">our own code review agent</Emphasis>
+    {' '}on top of Claude Code (plus a bit of Codex) —
+    {' '}<Emphasis color="orange">why not take something off the shelf?</Emphasis>
+  </>,
+  <>
+    <Emphasis color="green">Claude</Emphasis>
+    {' '} — <Emphasis color="orange">expensive</Emphasis> (and it didn't exist yet when we started)
+  </>,
+  <>
+    <Emphasis color="green">Copilot</Emphasis>
+    {' '} — <Emphasis color="orange">bad</Emphasis>
+  </>,
+  <>
+    <Emphasis color="green">Codex</Emphasis>, <Emphasis color="green">Code Rabbit</Emphasis>
+    {' '} — not that bad, but GitHub-<Emphasis color="orange">only</Emphasis>
+  </>,
+];
+
 export const AiCodeReviewSlide: SlideDefinition = {
   id: 'ai-code-review',
   // Stages 0..2 walk through FIRST_SET bullets one-by-one; stage 3 swaps to
   // the SECOND_SET single bullet alongside the in-house agent screenshot.
-  maxRevealStages: FIRST_SET.length + SECOND_SET.length - 1,
+  maxRevealStages: FIRST_SET_UK.length + SECOND_SET_UK.length - 1,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
@@ -68,7 +109,9 @@ export const AiCodeReviewSlide: SlideDefinition = {
       <span className="text-orange">with fire</span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => {
+  content: ({ revealStage, lang }: SlideContentProps) => {
+    const FIRST_SET = tr(lang, FIRST_SET_UK, FIRST_SET_EN);
+    const SECOND_SET = tr(lang, SECOND_SET_UK, SECOND_SET_EN);
     const setIndex = revealStage < FIRST_SET.length ? 0 : 1;
     const currentSet = setIndex === 0 ? FIRST_SET : SECOND_SET;
     const visibleCount =

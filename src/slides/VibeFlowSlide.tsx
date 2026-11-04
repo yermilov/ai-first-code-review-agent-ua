@@ -1,21 +1,50 @@
+import { ReactNode } from 'react';
 import { SlideDefinition } from '../types/slides';
-import { Code, SlideItem } from '../components/SlideElements';
+import { Code, SlideItem, revealWindow } from '../components/SlideElements';
+import { tr } from '../context/LanguageContext';
 
 // Command styling (orange code)
 function Command({ children }: { children: string }) {
   return <code className="code-inline code-inline--orange">{children}</code>;
 }
 
+const GLOW_STYLE = { textShadow: '0 0 8px color-mix(in srgb, var(--terminal-orange) 90%, transparent), 0 0 20px color-mix(in srgb, var(--terminal-orange) 60%, transparent), 0 0 40px color-mix(in srgb, var(--terminal-orange) 30%, transparent)' };
+
+const STEPS_UK: ReactNode[] = [
+  <><Command>/clear</Command> чистимо сесію</>,
+  <>переходимо у <Code>plan mode</Code></>,
+  <>описуємо фічу / баг, <span className="text-orange" style={GLOW_STYLE}>формуємо контекст</span></>,
+  <>ітеруємося по плану</>,
+  <><Code>Yes, and use auto mode</Code></>,
+  <><Command>/commit-push-pr</Command></>,
+  <><Command>/clear</Command></>,
+  <><Command>/simplify</Command> або <Command>/review</Command></>,
+];
+
+// EN: own translation
+const STEPS_EN: ReactNode[] = [
+  <><Command>/clear</Command> to start a fresh session</>,
+  <>switch to <Code>plan mode</Code></>,
+  <>describe the feature / bug, <span className="text-orange" style={GLOW_STYLE}>build the context</span></>,
+  <>iterate on the plan</>,
+  <><Code>Yes, and use auto mode</Code></>,
+  <><Command>/commit-push-pr</Command></>,
+  <><Command>/clear</Command></>,
+  <><Command>/simplify</Command> or <Command>/review</Command></>,
+];
+
 export const VibeFlowSlide: SlideDefinition = {
   id: 'vibe-flow',
-  title: (
+  title: ({ lang }) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">вайб</span>{' '}
+      <span className="text-green">{tr(lang, 'вайб', 'vibe')}</span>{' '}
       <span className="text-orange">flow</span>
     </>
   ),
-  content: ({ revealStage }) => (
+  // Every step is laid out from stage 0 and hidden until revealed, so a
+  // reveal never moves what is already on screen.
+  content: ({ revealStage, lang }) => (
     <>
       <div
         style={{
@@ -25,53 +54,15 @@ export const VibeFlowSlide: SlideDefinition = {
           margin: '0 auto',
         }}
       >
-        <SlideItem delay={0.05}>
-          <Command>/clear</Command> чистимо сесію
-        </SlideItem>
-
-        {revealStage >= 1 && (
-          <SlideItem delay={0}>
-            переходимо у <Code>plan mode</Code>
+        {revealWindow(tr(lang, STEPS_UK, STEPS_EN), revealStage + 1).map(({ item, index, hidden }) => (
+          <SlideItem key={index} delay={index === 0 ? 0.05 : 0} hidden={hidden}>
+            {item}
           </SlideItem>
-        )}
-
-        {revealStage >= 2 && (
-          <SlideItem delay={0}>описуємо фічу / баг, <span className="text-orange" style={{ textShadow: '0 0 8px color-mix(in srgb, var(--terminal-orange) 90%, transparent), 0 0 20px color-mix(in srgb, var(--terminal-orange) 60%, transparent), 0 0 40px color-mix(in srgb, var(--terminal-orange) 30%, transparent)' }}>формуємо контекст</span></SlideItem>
-        )}
-
-        {revealStage >= 3 && (
-          <SlideItem delay={0}>
-            ітеруємося по плану
-          </SlideItem>
-        )}
-
-        {revealStage >= 4 && (
-          <SlideItem delay={0}>
-            <Code>Yes, and use auto mode</Code>
-          </SlideItem>
-        )}
-
-        {revealStage >= 5 && (
-          <SlideItem delay={0}>
-            <Command>/commit-push-pr</Command>
-          </SlideItem>
-        )}
-
-        {revealStage >= 6 && (
-          <SlideItem delay={0}>
-            <Command>/clear</Command>
-          </SlideItem>
-        )}
-
-        {revealStage >= 7 && (
-          <SlideItem delay={0}>
-            <Command>/simplify</Command> або <Command>/review</Command>
-          </SlideItem>
-        )}
+        ))}
       </div>
     </>
   ),
-  maxRevealStages: 7,
+  maxRevealStages: STEPS_UK.length - 1,
   notes:
     'Воркфлоу: очистити сесію, plan mode, описати проблему, ітерувати по плану, auto-accept, коміт',
 };

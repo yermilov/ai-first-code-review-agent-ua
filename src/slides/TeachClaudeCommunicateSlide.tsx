@@ -1,5 +1,6 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { CodeBlock } from '../components/CodeBlock';
+import { T } from '../context/LanguageContext';
 import conversationImg from '../assets/mango-conversation-inkwell.png?url';
 
 // Simplified prompt snippets distilled from the real skills/steps —
@@ -179,8 +180,9 @@ export const TeachClaudeCommunicateSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">вчимо</span>{' '}
-      <span className="text-orange">Клода спілкуватися</span>
+      {/* EN: own translation */}
+      <span className="text-green"><T uk="вчимо" en="teaching" /></span>{' '}
+      <span className="text-orange"><T uk="Клода спілкуватися" en="Claude to talk" /></span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <TeachClaudeCommunicateContent revealStage={revealStage} />,

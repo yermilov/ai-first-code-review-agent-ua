@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
+import { T } from '../context/LanguageContext';
 
 import pov01 from '../assets/pov-screenshots/pov-01-gitlab-remote-claude-code-121.png?url';
 import pov02 from '../assets/pov-screenshots/pov-02-gitlab-cicd-components-389.png?url';
@@ -313,9 +314,10 @@ export const PovTeammatesSlide: SlideDefinition = {
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-orange">пов</span>
+      {/* EN: own translation */}
+      <span className="text-orange"><T uk="пов" en="pov" /></span>
       <span className="text-dim">:</span>{' '}
-      <span className="text-green">ваші тім-мейти успішно адоптять claude code</span>
+      <span className="text-green"><T uk="ваші тім-мейти успішно адоптять claude code" en="your teammates have successfully adopted claude code" /></span>
     </>
   ),
   content: ({ revealStage }: SlideContentProps) => <PovTeammatesContent revealStage={revealStage} />,

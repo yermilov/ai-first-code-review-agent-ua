@@ -1,4 +1,5 @@
 import { SlideDefinition, SlideContentProps } from '../types/slides';
+import { tr, type Lang } from '../context/LanguageContext';
 
 // DOU palette — JS constants are the design-system-sanctioned exception
 // for SVG fill/stroke. Mirror --dou-magenta/--dou-mint/--dou-cyan/--dou-violet
@@ -12,8 +13,12 @@ type Zone = {
   key: string;
   color: string;
   label: string;
+  labelEn?: string;
   sub?: string;
+  subEn?: string;
   bullets: string[];
+  /** Same length and order as `bullets`. */
+  bulletsEn: string[];
   /** Mystery zone shows a glowing "????" placeholder in lieu of bullets. */
   mystery?: boolean;
 };
@@ -21,13 +26,16 @@ type Zone = {
 // Left → right, in narrative order. Stage 0 is the "majority" (rightmost);
 // each reveal sweeps left, finishing at the "Anthropic всередині / ????"
 // mystery zone.
+// EN: own translation (labelEn / subEn / bulletsEn)
 const ZONES: Zone[] = [
   {
     key: 'anthropic-inside',
     color: DOU_MAGENTA,
     label: 'Anthropic',
     sub: 'всередині',
+    subEn: 'internally',
     bullets: [],
+    bulletsEn: [],
     mystery: true,
   },
   {
@@ -35,25 +43,36 @@ const ZONES: Zone[] = [
     color: DOU_MINT,
     label: 'AI-first',
     sub: 'команди',
+    subEn: 'teams',
     bullets: ['активатор скілів', 'збереження сесій'],
+    bulletsEn: ['skills activator', 'saving sessions'],
   },
   {
     key: 'anthropic-public',
     color: DOU_CYAN,
     label: 'Anthropic',
     sub: 'публічно',
+    subEn: 'publicly',
     bullets: [
       'маркетплейс плагінів',
       'мета-скіли',
       'автопідтвердження',
       'AI код-ревʼю',
     ],
+    bulletsEn: [
+      'plugin marketplace',
+      'meta-skills',
+      'auto-approval',
+      'AI code review',
+    ],
   },
   {
     key: 'majority',
     color: DOU_VIOLET,
     label: 'більшість',
+    labelEn: 'the majority',
     bullets: [],
+    bulletsEn: [],
   },
 ];
 
@@ -98,11 +117,14 @@ const STYLES = `
 
   /* ── Stage container ────────────────────────────────────────────────── */
   /* Explicit height (not min-height) so the corridor below can reliably
-     resolve percentage-based heights and the SVG overlay never overflows. */
+     resolve percentage-based heights and the SVG overlay never overflows.
+     100% of .slide (which has an explicit height) rather than a viewport
+     calc tied to one chrome height. */
   .ainnovator-curve-stage {
     display: flex;
     flex-direction: column;
-    height: calc(var(--vh-full) - 220px);
+    height: 100%;
+    min-height: 0;
     gap: var(--space-md);
     width: 100%;
   }
@@ -258,7 +280,7 @@ const STYLES = `
   }
 `;
 
-function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
+function AIInnovatorCurveContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   // Reveal sweeps right → left: stage 0 = majority (rightmost), stage 3 =
   // mystery (leftmost).
   const activeIdx = ZONES.length - 1 - revealStage;
@@ -269,8 +291,8 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
 
       <h2 className="ainnovator-curve-title">
         <span className="text-dim">&gt;</span>{' '}
-        <span className="text-green">знайдіть своє</span>{' '}
-        <span className="text-orange">місце</span>
+        <span className="text-green">{tr(lang, 'знайдіть своє', 'find your')}</span>{' '}
+        <span className="text-orange">{tr(lang, 'місце', 'place')}</span>
       </h2>
 
       <div className="ainnovator-curve-corridor">
@@ -394,9 +416,9 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
                 className="ainnovator-curve-zone__cap"
                 style={{ ...colorVar, gridColumn: i + 1, gridRow: 1 }}
               >
-                <div className="ainnovator-curve-zone__label">{zone.label}</div>
+                <div className="ainnovator-curve-zone__label">{tr(lang, zone.label, zone.labelEn ?? zone.label)}</div>
                 {zone.sub && (
-                  <div className="ainnovator-curve-zone__sub">{zone.sub}</div>
+                  <div className="ainnovator-curve-zone__sub">{tr(lang, zone.sub, zone.subEn ?? zone.sub)}</div>
                 )}
               </div>
 
@@ -407,7 +429,7 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
                 {zone.mystery && (
                   <div className="ainnovator-curve-zone__mystery">????</div>
                 )}
-                {zone.bullets.map((b) => (
+                {tr(lang, zone.bullets, zone.bulletsEn).map((b) => (
                   <div key={b} className="ainnovator-curve-zone__bullet">
                     {b}
                   </div>
@@ -424,8 +446,8 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
 export const AIInnovatorCurveSlide: SlideDefinition = {
   id: 'ai-innovator-curve',
   maxRevealStages: 3,
-  content: ({ revealStage }: SlideContentProps) => (
-    <AIInnovatorCurveContent revealStage={revealStage} />
+  content: ({ revealStage, lang }: SlideContentProps) => (
+    <AIInnovatorCurveContent revealStage={revealStage} lang={lang} />
   ),
   notes:
     'Крива адопції Роджерса, прикладена до AI. Корідор із 4 зон зліва направо: Anthropic всередині (????), AI-first команди, Anthropic публічно, більшість. Кожна зона має лейбл згори, кольорову заливку під кривою посередині, булети знизу. Reveal-зчитування справа наліво (stage 0 → більшість, stage 3 → ????). Активна зона світиться у повну непрозорість + soft radial halo; неактивні дімаються до 0.22.',

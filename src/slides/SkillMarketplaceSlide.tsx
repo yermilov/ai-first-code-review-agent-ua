@@ -1,30 +1,41 @@
 import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
+import { T, tr } from '../context/LanguageContext';
 import superhumanAidevImage from '../assets/superhuman-aidev.png?url';
 
 // Ported from dou-days-2026 #slide-13, second half only — the DIY/symlink
 // pre-marketplace bullets were dropped; we keep just the four Anthropic-
 // marketplace bullets and the Superhuman AI Dev screenshot on the right.
-const BULLETS: ReactNode[] = [
+const BULLETS_UK: ReactNode[] = [
   <>Anthropic має <Emphasis color="green">marketplaces</Emphasis> — гіт репозиторії, які Claude Code регулярно завантажує і лінкує</>,
   <>створіть ОДИН центральний внутрішній <Emphasis color="orange">marketplace</Emphasis> у вашій організації</>,
   <>використовуйте плагіни для <Emphasis color="orange">неймспейсингу</Emphasis> — кожен користувач сам обирає, які плагіни встановити</>,
   <>якщо є можливість — використовуйте <Emphasis color="green">Claude Enterprise</Emphasis>, щоб примусово встановити marketplace і певні плагіни всім в організації</>,
 ];
 
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>Anthropic has <Emphasis color="green">marketplaces</Emphasis> — git repos that Claude Code pulls and links on a schedule</>,
+  <>create ONE central internal <Emphasis color="orange">marketplace</Emphasis> for your organisation</>,
+  <>use plugins for <Emphasis color="orange">namespacing</Emphasis> — every user picks which plugins to install</>,
+  <>if you can — use <Emphasis color="green">Claude Enterprise</Emphasis> to force-install the marketplace and selected plugins for the whole organisation</>,
+];
+
 export const SkillMarketplaceSlide: SlideDefinition = {
   id: 'skill-marketplace',
   // 4 bullets across reveal stages 0..3.
-  maxRevealStages: BULLETS.length - 1,
+  maxRevealStages: BULLETS_UK.length - 1,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">як шарити між</span>{' '}
-      <span className="text-orange">агентами і людьми?</span>
+      {/* EN: own translation */}
+      <span className="text-green"><T uk="як шарити між" en="how to share between" /></span>{' '}
+      <span className="text-orange"><T uk="агентами і людьми?" en="agents and humans?" /></span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => {
+  content: ({ revealStage, lang }: SlideContentProps) => {
+    const BULLETS = tr(lang, BULLETS_UK, BULLETS_EN);
     const visibleCount = revealStage + 1;
 
     return (

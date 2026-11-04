@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
 import yakImage from '../assets/yak.jpg?url';
+import { tr, type Lang } from '../context/LanguageContext';
 
 // "25th frame" subliminal gag — wild yak (Bos mutus) flashes for ~120ms on
 // the forward 0→1 reveal transition. The Ukrainian "як?" / English "yak"
@@ -85,6 +86,73 @@ function panelFor(revealStage: number): PanelVariant | null {
   return null;
 }
 
+const PROBLEM_UK: ReactNode = (
+  <>
+    як вибрати 
+    {' '}<Emphasis color="orange">потрібні скіли</Emphasis>
+    {' '}для рев'ю?
+  </>
+);
+
+// EN: own translation
+const PROBLEM_EN: ReactNode = (
+  <>
+    how do you pick{' '}<Emphasis color="orange">the right skills</Emphasis>
+    {' '}for a review?
+  </>
+);
+
+const SOLUTIONS_UK: ReactNode[] = [
+  <>
+    ми зробили <Emphasis color="green">skills-activator</Emphasis> — у{' '}
+    <Emphasis color="orange">SKILL.md</Emphasis> описуємо правила активації:
+    {' '}ключові слова, патерни tool-викликів, директорії
+  </>,
+  <>
+    Claude Code <Emphasis color="green">хуки</Emphasis> перехоплюють події сесії
+    {' '}і <Emphasis color="green">аналізують</Emphasis>{' '}
+    промпти, bash-команди, виклики інструментів та їхні{' '}
+    <Emphasis color="orange">аутпути</Emphasis>
+  </>,
+  <>
+    якщо хук бачить, що потрібний скіл не завантажений —
+    {' '}<Emphasis color="green">підказує</Emphasis> Клоду,
+    {' '}інжектуючи контекст у промпт через{' '}
+    <Emphasis color="green">additionalContext</Emphasis>
+  </>,
+  <>
+    а для критичних випадків — <Emphasis color="orange">блокує</Emphasis>
+    {' '}виклик через <Emphasis color="orange">exit 2</Emphasis> + stderr
+    {' '}з інструкцією, який скіл завантажити
+  </>,
+];
+
+// EN: own translation
+const SOLUTIONS_EN: ReactNode[] = [
+  <>
+    we built <Emphasis color="green">skills-activator</Emphasis> — each{' '}
+    <Emphasis color="orange">SKILL.md</Emphasis> declares its activation rules:
+    {' '}keywords, tool-call patterns, directories
+  </>,
+  <>
+    Claude Code <Emphasis color="green">hooks</Emphasis> intercept session events
+    {' '}and <Emphasis color="green">analyse</Emphasis>{' '}
+    prompts, bash commands, tool calls and their{' '}
+    <Emphasis color="orange">outputs</Emphasis>
+  </>,
+  <>
+    if a hook sees a needed skill isn't loaded —
+    {' '}it <Emphasis color="green">nudges</Emphasis> Claude
+    {' '}by injecting context into the prompt via{' '}
+    <Emphasis color="green">additionalContext</Emphasis>
+  </>,
+  <>
+    and for critical cases it <Emphasis color="orange">blocks</Emphasis>
+    {' '}the call with <Emphasis color="orange">exit 2</Emphasis> + stderr
+    {' '}saying which skill to load
+  </>,
+];
+
 const STYLES = `
   @keyframes skillsActivatorPanelIn {
     from { opacity: 0; transform: translateY(12px) scale(0.99); }
@@ -156,7 +224,7 @@ const STYLES = `
   }
 `;
 
-function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
+function SkillsActivatorContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const panel = panelFor(revealStage);
 
   // Sliding window for solution bullets (stages 1..4): keep only the most
@@ -193,45 +261,13 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
             swapped out at stage 1); stages 1..4 = solution bullets accumulate. */}
         <div className="skills-activator-bullets">
           {revealStage === 0 && (
-            <SlideItem delay={0.05}>
-              як вибрати 
-              {' '}<Emphasis color="orange">потрібні скіли</Emphasis>
-              {' '}для рев'ю?
-            </SlideItem>
+            <SlideItem delay={0.05}>{tr(lang, PROBLEM_UK, PROBLEM_EN)}</SlideItem>
           )}
 
-          {isSolutionVisible(0) && (
-            <SlideItem delay={0} reveal>
-              ми зробили <Emphasis color="green">skills-activator</Emphasis> — у{' '}
-              <Emphasis color="orange">SKILL.md</Emphasis> описуємо правила активації:
-              {' '}ключові слова, патерни tool-викликів, директорії
-            </SlideItem>
-          )}
-
-          {isSolutionVisible(1) && (
-            <SlideItem delay={0} reveal>
-              Claude Code <Emphasis color="green">хуки</Emphasis> перехоплюють події сесії
-              {' '}і <Emphasis color="green">аналізують</Emphasis>{' '}
-              промпти, bash-команди, виклики інструментів та їхні{' '}
-              <Emphasis color="orange">аутпути</Emphasis>
-            </SlideItem>
-          )}
-
-          {isSolutionVisible(2) && (
-            <SlideItem delay={0} reveal>
-              якщо хук бачить, що потрібний скіл не завантажений —
-              {' '}<Emphasis color="green">підказує</Emphasis> Клоду,
-              {' '}інжектуючи контекст у промпт через{' '}
-              <Emphasis color="green">additionalContext</Emphasis>
-            </SlideItem>
-          )}
-
-          {isSolutionVisible(3) && (
-            <SlideItem delay={0} reveal>
-              а для критичних випадків — <Emphasis color="orange">блокує</Emphasis>
-              {' '}виклик через <Emphasis color="orange">exit 2</Emphasis> + stderr
-              {' '}з інструкцією, який скіл завантажити
-            </SlideItem>
+          {tr(lang, SOLUTIONS_UK, SOLUTIONS_EN).map((bullet, i) =>
+            isSolutionVisible(i) ? (
+              <SlideItem key={i} delay={0} reveal>{bullet}</SlideItem>
+            ) : null,
           )}
         </div>
 
@@ -276,14 +312,16 @@ function SkillsActivatorContent({ revealStage }: { revealStage: number }) {
 
 export const SkillsActivatorSlide: SlideDefinition = {
   id: 'skills-activator',
-  maxRevealStages: 4,
-  title: (
+  maxRevealStages: SOLUTIONS_UK.length,
+  // EN: own translation — the "як? / yak" homophone behind the 25th-frame
+  // gag only works in Ukrainian; in English the yak is just a yak.
+  title: ({ lang }: SlideContentProps) => (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">як?</span>
+      <span className="text-green">{tr(lang, 'як?', 'how?')}</span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => <SkillsActivatorContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <SkillsActivatorContent revealStage={revealStage} lang={lang} />,
   notes:
     'Skills discovery — last-mile проблема. Stage 0: проблема (Клод ненадійно завантажує потрібні скіли). Stage 1: SKILL.md активаційні правила (keywords / tools / directories) + 25th-frame yak (на 0→1 forward only). Stage 2: ~/.claude/hooks.json — повний набір з 6 хуків (SessionStart → SessionEnd), які аналізують промпти, bash-команди, tool-виклики та їхні аутпути. Stage 3: suggest — інʼєкція в промпт через additionalContext, exit 0. Stage 4: block — stderr + exit 2 для критичних випадків.',
 };

@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis, SlideLink, Code } from '../components/SlideElements';
 import { CodeBlock } from '../components/CodeBlock';
+import { tr, type Lang } from '../context/LanguageContext';
 
 const TRACER_CODE = `export async function uploadSession(
   sessionId: string,
@@ -19,7 +20,7 @@ const TRACER_CODE = `export async function uploadSession(
   });
 }`;
 
-const FIRST_BULLET: ReactNode = (
+const FIRST_BULLET_UK: ReactNode = (
   <>
     завантажуйте <Code>.jsonl</Code>-лог кожної сесії агента
     {' '}в <Emphasis color="green">S3</Emphasis>
@@ -27,7 +28,7 @@ const FIRST_BULLET: ReactNode = (
   </>
 );
 
-const SECOND_SET: ReactNode[] = [
+const SECOND_SET_UK: ReactNode[] = [
   <>
     <Emphasis color="orange">СТОП, ПОПАЛИСЬ!</Emphasis>
     {' '}не робіть нічого вручну: напишіть <Emphasis color="green">скіл</Emphasis>,
@@ -47,7 +48,39 @@ const SECOND_SET: ReactNode[] = [
   </>,
 ];
 
-function AgentTracesContent({ revealStage }: { revealStage: number }) {
+// EN: own translation
+const FIRST_BULLET_EN: ReactNode = (
+  <>
+    upload every agent session's <Code>.jsonl</Code> log
+    {' '}to <Emphasis color="green">S3</Emphasis>
+    {' '}— and <Emphasis color="orange">you can debug</Emphasis> exactly how it works and what to improve
+  </>
+);
+
+// EN: own translation
+const SECOND_SET_EN: ReactNode[] = [
+  <>
+    <Emphasis color="orange">STOP, GOTCHA!</Emphasis>
+    {' '}don't do any of it by hand: write a <Emphasis color="green">skill</Emphasis>
+    {' '}that pulls session samples, analyses them and suggests improvements
+    {' '}to your skills and agent instructions
+  </>,
+  <>
+    people sharing their sessions is worth even more — it lays the ground for{' '}
+    <Emphasis color="orange">team memory</Emphasis>;
+    {' '}reuse the same infrastructure or try{' '}
+    <SlideLink href="https://entire.io">entire.io</SlideLink>
+  </>,
+  <>
+    now agents can <Emphasis color="green">review people's sessions</Emphasis>,
+    {' '}and semi-automatically create or update skills
+    {' '}based on what they find
+  </>,
+];
+
+function AgentTracesContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
+  const FIRST_BULLET = tr(lang, FIRST_BULLET_UK, FIRST_BULLET_EN);
+  const SECOND_SET = tr(lang, SECOND_SET_UK, SECOND_SET_EN);
   const setIndex = revealStage === 0 ? 0 : 1;
   const visibleCount = setIndex === 1 ? revealStage : 0;
 
@@ -61,8 +94,8 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
     >
       <h2 style={{ textAlign: 'left', margin: 0 }}>
         <span className="text-dim">&gt;</span>{' '}
-        <span className="text-green">зберігайте</span>{' '}
-        <span className="text-orange">квитанції</span>
+        <span className="text-green">{tr(lang, 'зберігайте', 'keep the')}</span>{' '}
+        <span className="text-orange">{tr(lang, 'квитанції', 'receipts')}</span>
       </h2>
 
       <div
@@ -110,9 +143,9 @@ function AgentTracesContent({ revealStage }: { revealStage: number }) {
 
 export const AgentTracesSlide: SlideDefinition = {
   id: 'agent-traces',
-  maxRevealStages: SECOND_SET.length,
+  maxRevealStages: SECOND_SET_UK.length,
   initialRevealStage: 0,
-  content: ({ revealStage }: SlideContentProps) => <AgentTracesContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <AgentTracesContent revealStage={revealStage} lang={lang} />,
   notes:
     'Треси агентів — observability для автономної роботи. Phase 0: теза "завантажуйте .jsonl кожної сесії на S3" + uploadSession TS-сніпет. Phase 1 (по одному булету): "СТОП, ПОПАЛИСЬ — напишіть скіл-аналізатор" → "людям шарити свої сесії ще цінніше — entire.io" → "агенти рев\'юють людські сесії і напів-автоматично оновлюють скіли".',
 };

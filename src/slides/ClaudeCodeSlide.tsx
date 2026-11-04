@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { T } from '../context/LanguageContext';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem } from '../components/SlideElements';
 
@@ -106,7 +107,7 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <h2 style={{ textAlign: 'left', margin: 0 }}>
           <span className="text-dim">&gt;</span>{' '}
-          <span className="text-green">ну наприклад</span>
+          <span className="text-green"><T uk="ну наприклад" en="for example" /></span>
         </h2>
 
         <div style={{ flex: 1, display: 'flex', gap: '1.5rem', alignItems: 'center', minHeight: 0 }}>
@@ -115,7 +116,8 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
             style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: '0.4rem', textAlign: 'left' }}
           >
             <SlideItem delay={0.05}>
-              цю презентацію повністю створено у Claude Code
+              {/* EN: own translation */}
+              <T uk="цю презентацію повністю створено у Claude Code" en="this whole deck was built in Claude Code" />
             </SlideItem>
 
             <div
@@ -150,8 +152,9 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
               <QRCodeSVG
                 value={REPO_URL}
                 size={520}
+                className="explore-qr"
                 bgColor="var(--terminal-bg)"
-                fgColor="#7ee787"
+                fgColor="var(--terminal-green)"
                 level="M"
                 style={{
                   borderRadius: 'var(--input-border-radius)',

@@ -3,6 +3,7 @@ import { SlideDefinition, SlideContentProps } from '../types/slides';
 import { SlideItem, Emphasis } from '../components/SlideElements';
 import mrDescriptionImage from '../assets/mr-description-session-links.png?url';
 import mrDescriptionResultImage from '../assets/mr-description-result.png?url';
+import { tr, type Lang } from '../context/LanguageContext';
 
 // One pair per reveal stage. Stage 0 keeps the original lead bullet paired
 // with the merged-PR screenshot; subsequent stages each show one good
@@ -13,15 +14,19 @@ type Practice = {
   /** Step-header bullet. Omit on stages where the evidence speaks for itself
    *  (e.g. the final "результат" image gets the whole canvas). */
   bullet?: ReactNode;
+  /** English bullet — EN: own translation */
+  bulletEn?: ReactNode;
   panel:
     | { kind: 'screenshot'; src: string; alt: string }
     | { kind: 'prompt'; text: string };
 };
 
+// EN: own translation (bulletEn)
 const PRACTICES: Practice[] = [
   {
     key: 'session-links',
     bullet: <>додаємо посилання на сесію</>,
+    bulletEn: <>we add links to the session</>,
     panel: {
       kind: 'screenshot',
       src: mrDescriptionImage,
@@ -34,6 +39,12 @@ const PRACTICES: Practice[] = [
       <>
         intent з кожного коміту <Emphasis color="orange">витягуємо</Emphasis>,
         {' '}а не вигадуємо
+      </>
+    ),
+    bulletEn: (
+      <>
+        the intent of every commit is <Emphasis color="orange">extracted</Emphasis>,
+        {' '}not made up
       </>
     ),
     panel: {
@@ -55,6 +66,12 @@ For each commit:
         {' '}≤72 chars, без adjective-soup
       </>
     ),
+    bulletEn: (
+      <>
+        title — <Emphasis color="green">specific and imperative</Emphasis>,
+        {' '}≤72 chars, no adjective soup
+      </>
+    ),
     panel: {
       kind: 'prompt',
       text: `Discover title conventions, in priority order:
@@ -72,6 +89,12 @@ Generate a title that follows the discovered convention, stays under 72 characte
       <>
         description = <Emphasis color="green">Why? / How?</Emphasis>,
         {' '}без переліку файлів і вигаданих risks
+      </>
+    ),
+    bulletEn: (
+      <>
+        description = <Emphasis color="green">Why? / How?</Emphasis>,
+        {' '}no file lists, no made-up risks
       </>
     ),
     panel: {
@@ -92,6 +115,12 @@ The high-level approach in 1-2 sentences. Do NOT list files (the diff shows them
       <>
         плани із сесії приклеюємо як <Emphasis color="green">collapsible details</Emphasis>
         {' '}— команда бачить, як ми думали
+      </>
+    ),
+    bulletEn: (
+      <>
+        plans from the session go in as <Emphasis color="green">collapsible details</Emphasis>
+        {' '}— the team sees how we thought
       </>
     ),
     panel: {
@@ -206,7 +235,7 @@ const STYLES = `
   }
 `;
 
-function MrDescriptionContent({ revealStage }: { revealStage: number }) {
+function MrDescriptionContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   const idx = Math.min(revealStage, PRACTICES.length - 1);
   const practice = PRACTICES[idx];
 
@@ -217,8 +246,8 @@ function MrDescriptionContent({ revealStage }: { revealStage: number }) {
       <div className="mr-desc-stage">
         <h2 className="mr-desc-title">
           <span className="text-dim">&gt;</span>{' '}
-          <span className="text-green">тепер попрацюємо над</span>{' '}
-          <span className="text-orange">дескріпшином</span>
+          <span className="text-green">{tr(lang, 'тепер попрацюємо над', "now let's work on the")}</span>{' '}
+          <span className="text-orange">{tr(lang, 'дескріпшином', 'description')}</span>
         </h2>
 
         {/* Bullet — single-row "step header" above the evidence panel.
@@ -228,7 +257,7 @@ function MrDescriptionContent({ revealStage }: { revealStage: number }) {
             full canvas. */}
         {practice.bullet && (
           <div key={`bullet-${practice.key}`} className="mr-desc-bullet">
-            <SlideItem delay={0.05}>{practice.bullet}</SlideItem>
+            <SlideItem delay={0.05}>{tr(lang, practice.bullet, practice.bulletEn)}</SlideItem>
           </div>
         )}
 
@@ -262,7 +291,7 @@ export const MrDescriptionSlide: SlideDefinition = {
   id: 'mr-description',
   maxRevealStages: PRACTICES.length - 1,
   initialRevealStage: 0,
-  content: ({ revealStage }: SlideContentProps) => <MrDescriptionContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <MrDescriptionContent revealStage={revealStage} lang={lang} />,
   notes:
     'Reveal-swap, vertical layout. Each stage: title → bullet (step header) → evidence panel. 0) "додаємо посилання на сесію" + скріншот merged PR з Note-блоком і session links. 1) intent extraction — never fabricate. 2) title — imperative, ≤72 chars, no adjective-soup. 3) description — Why? / How?. 4) implementation plan — collapsible details from ~/.claude/plans/<slug>.md. 5) bullet прибраний — фінальний скріншот рендеру MR description займає весь канвас.',
 };

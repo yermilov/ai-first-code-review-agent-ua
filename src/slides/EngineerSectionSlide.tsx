@@ -1,14 +1,16 @@
 import agendaEngineerImage from '../assets/agenda-engineer.png?url';
 import { SlideDefinition } from '../types/slides';
+import { T } from '../context/LanguageContext';
 
 export const EngineerSectionSlide: SlideDefinition = {
   id: 'agenda-engineer',
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">частина перша</span>
+      <span className="text-green"><T uk="частина перша" en="part one" /></span>
       <span className="slide-title-meta text-muted">
-        // декілька порад щодо персональної продуктивності
+        {/* EN: own translation */}
+        <T uk="// декілька порад щодо персональної продуктивності" en="// a few tips on personal productivity" />
       </span>
     </>
   ),

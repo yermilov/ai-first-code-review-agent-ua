@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { SlideDefinition, SlideContentProps } from '../types/slides';
-import { SlideItem, Emphasis } from '../components/SlideElements';
+import { ReactNode } from 'react';
+import { SlideItem, Emphasis, revealWindow } from '../components/SlideElements';
+import { Lang, T, tr } from '../context/LanguageContext';
 import warcraftComplete from '../assets/warcraft-complete.wav?url';
 import warcraftYes from '../assets/warcraft-yes.wav?url';
 import warcraftWhat from '../assets/warcraft-what.wav?url';
@@ -15,6 +17,45 @@ Use curl with a browser User-Agent header and download files sequentially with s
 Then add two hooks to the global ~/.claude/settings.json: a Notification hook that plays a random "What?" sound when Claude waits for permission, and a Stop hook that plays a random ready/yes/complete sound when the session ends. Both with afplay -v 1.5.
 
 Use @claude-code-guide (agent) to confirm hook format.`;
+
+// One bullet per stage from stage 1; a window of two, so the opening
+// question drops once the third bullet arrives.
+const BULLETS_UK: ReactNode[] = [
+  <>
+    бувало у вас таке, що запускаєте Клода з великим завданням, повертаєтеся через{' '}
+    <Emphasis color="orange">30 хвилин</Emphasis> — а він увесь цей час
+    чекав на дозвіл виконати <Emphasis color="green">grep</Emphasis> у
+    вашому коді?
+  </>,
+  <>
+    ось промпт який вмикатиме{' '}
+    <Emphasis color="orange">звук юніта з Warcraft</Emphasis> щоразу, коли Клод зупиняється
+  </>,
+  <>
+    якщо вчасно не встановити всім <Emphasis color="orange">хук для класифікації операцій</Emphasis>
+    {' '}— готуйтеся до того, що ваш офіс звучатиме як{' '}
+    <Emphasis color="green">комп'ютерний клуб 2000-х</Emphasis>
+  </>,
+];
+
+// EN: own translation
+const BULLETS_EN: ReactNode[] = [
+  <>
+    ever kicked off Claude on a big task, come back{' '}
+    <Emphasis color="orange">30 minutes</Emphasis> later — and it's been
+    waiting the whole time for permission to run <Emphasis color="green">grep</Emphasis> on
+    your code?
+  </>,
+  <>
+    here's a prompt that plays a{' '}
+    <Emphasis color="orange">Warcraft unit sound</Emphasis> every time Claude stops
+  </>,
+  <>
+    roll out the <Emphasis color="orange">operation-classifying hook</Emphasis> to everyone in time
+    {' '}— or get ready for your office to sound like a{' '}
+    <Emphasis color="green">2000s computer club</Emphasis>
+  </>,
+];
 
 const STYLES = `
   @keyframes warcraftPanelIn {
@@ -89,7 +130,7 @@ const STYLES = `
     font-family: var(--font-mono);
     font-size: var(--font-size-code);
     line-height: var(--line-height-relaxed);
-    color: #e2e8f0;
+    color: var(--terminal-white);
     white-space: pre-wrap;
     word-break: normal;
     overflow-wrap: anywhere;
@@ -97,7 +138,7 @@ const STYLES = `
   }
 `;
 
-function WarcraftFunContent({ revealStage }: { revealStage: number }) {
+function WarcraftFunContent({ revealStage, lang }: { revealStage: number; lang: Lang }) {
   // Track which stages have already triggered audio so re-renders within the
   // same stage don't replay the cascade.
   const triggeredRef = useRef<Set<number>>(new Set());
@@ -149,29 +190,11 @@ function WarcraftFunContent({ revealStage }: { revealStage: number }) {
       <div className="warcraft-fun-body">
         {/* Left column — bullets accumulate across reveal stages. */}
         <div className="warcraft-fun-bullets">
-          {revealStage >= 1 && revealStage < 3 && (
-            <SlideItem delay={0.05}>
-              бувало у вас таке, що запускаєте Клода з великим завданням, повертаєтеся через{' '}
-              <Emphasis color="orange">30 хвилин</Emphasis> — а він увесь цей час
-              чекав на дозвіл виконати <Emphasis color="green">grep</Emphasis> у
-              вашому коді?
+          {revealWindow(tr(lang, BULLETS_UK, BULLETS_EN), revealStage, 2).map(({ item, index, hidden }) => (
+            <SlideItem key={index} delay={index === 0 ? 0.05 : 0} reveal={index > 0} hidden={hidden}>
+              {item}
             </SlideItem>
-          )}
-
-          {revealStage >= 2 && (
-            <SlideItem delay={0} reveal>
-              ось промпт який вмикатиме{' '}
-              <Emphasis color="orange">звук юніта з Warcraft</Emphasis> щоразу, коли Клод зупиняється
-            </SlideItem>
-          )}
-
-          {revealStage >= 3 && (
-            <SlideItem delay={0} reveal>
-              якщо вчасно не встановити всім <Emphasis color="orange">хук для класифікації операцій</Emphasis>
-              {' '}— готуйтеся до того, що ваш офіс звучатиме як{' '}
-              <Emphasis color="green">комп'ютерний клуб 2000-х</Emphasis>
-            </SlideItem>
-          )}
+          ))}
         </div>
 
         {/* Right column — image at stage 1, framed prompt panel at stage 2+. */}
@@ -197,14 +220,15 @@ function WarcraftFunContent({ revealStage }: { revealStage: number }) {
 
 export const WarcraftFunSlide: SlideDefinition = {
   id: 'warcraft-fun',
-  maxRevealStages: 3,
+  maxRevealStages: BULLETS_UK.length,
   title: (
     <>
       <span className="text-dim">&gt;</span>{' '}
-      <span className="text-green">людям це теж стане в пригоді</span>
+      {/* EN: own translation */}
+      <span className="text-green"><T uk="людям це теж стане в пригоді" en="humans will find it handy too" /></span>
     </>
   ),
-  content: ({ revealStage }: SlideContentProps) => <WarcraftFunContent revealStage={revealStage} />,
+  content: ({ revealStage, lang }: SlideContentProps) => <WarcraftFunContent revealStage={revealStage} lang={lang} />,
   notes:
     'Stage 0: тільки заголовок-питання. Stage 1: знайомий біль (зупинка на grep) + peasant face. Stage 2: рішення — скіл зі звуком на Stop хук + промпт + один "work complete". Stage 3: маркетплейс-наслідок + каскад звуків як у комп\'ютерному клубі 2000-х.',
 };

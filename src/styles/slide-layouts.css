@@ -1453,6 +1453,30 @@
 
 .final-slide__contact .final-slide__qr {
   max-width: 100%;
+  /* the QR must leave room for the contact line under it on a 720px laptop */
+  max-height: calc(var(--vh-full) * 0.5);
+  width: auto;
+  align-self: center;
+}
+
+/* explore-and-have-fun: the generated QR shrinks with the stage height */
+.explore-qr {
+  width: min(520px, 100%, calc(var(--vh-full) * 0.5));
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* Landscape phones: QR codes, prompt/code panels and the curve's zone bullets
+ * step aside (slide-layouts, height breakpoints) — the spoken bullet stays. */
+@media (max-height: 500px) {
+  /* .slide prefix: beats the same selectors in the slides' own <style> tags */
+  .slide .explore-qr,
+  .slide .final-slide__qr,
+  .slide .mr-desc-panel--prompt,
+  .slide .agent-traces-panel,
+  .slide .ainnovator-curve-zone__bullets {
+    display: none;
+  }
 }
 
 .final-slide__arrow {
