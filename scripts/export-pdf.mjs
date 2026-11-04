@@ -95,7 +95,11 @@ for (let i = 0; i < slideCount; i++) {
           probe.src = url;
         }));
       }),
-    ...document.getAnimations().map(a => a.finished.catch(() => undefined)),
+    // Only FINITE animations can finish: an infinite one (a glow pulse, the
+    // astronauts' drift) would hold the capture forever.
+    ...document.getAnimations()
+      .filter(a => Number.isFinite(a.effect?.getComputedTiming().endTime ?? Infinity))
+      .map(a => a.finished.catch(() => undefined)),
   ]), id);
 
   const png = join(tmp, `slide-${String(i + 1).padStart(3, '0')}.png`);

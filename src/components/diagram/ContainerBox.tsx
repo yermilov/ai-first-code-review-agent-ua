@@ -49,7 +49,7 @@ export function ContainerBox({
         x={x + 18} y={y + 0.5}
         dominantBaseline="middle"
         fill={color}
-        fontSize="10"
+        fontSize="10" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
         fontFamily="'JetBrains Mono', monospace"
         fontWeight="600"
         letterSpacing="0.06em"

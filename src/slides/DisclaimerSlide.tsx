@@ -8,7 +8,7 @@ const levelStyles = {
   high: {
     prefix: '>>',
     prefixColor: 'var(--terminal-orange)',
-    labelGlow: '0 0 20px rgba(240, 136, 62, 0.3)',
+    labelGlow: '0 0 20px color-mix(in srgb, var(--terminal-orange) 30%, transparent)',
     opacity: 1,
   },
   medium: {

@@ -9,9 +9,9 @@ import rightAstronaut from '../assets/skill-always-been.png?url';
 // gradient sits ABOVE the image (CSS draws backgrounds top→bottom).
 const SLIDE_BG = `
   linear-gradient(180deg,
-    rgba(10, 14, 20, 0.62) 0%,
-    rgba(10, 14, 20, 0.38) 45%,
-    rgba(10, 14, 20, 0.62) 100%
+    color-mix(in srgb, var(--terminal-bg) 62%, transparent) 0%,
+    color-mix(in srgb, var(--terminal-bg) 38%, transparent) 45%,
+    color-mix(in srgb, var(--terminal-bg) 62%, transparent) 100%
   ),
   url(${spaceBg}) center/cover no-repeat
 `;
@@ -51,7 +51,7 @@ export const WhatIsSkillSlide: SlideDefinition = {
             object-fit: contain;
             object-position: center;
             mix-blend-mode: screen;
-            filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.55));
+            filter: drop-shadow(0 8px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent));
             pointer-events: none;
           }
         `}</style>
@@ -87,13 +87,13 @@ export const WhatIsSkillSlide: SlideDefinition = {
               textAlign: 'left',
               padding: 'var(--space-md) var(--space-lg)',
               background:
-                'linear-gradient(135deg, rgba(10, 14, 20, 0.72) 0%, rgba(20, 12, 36, 0.62) 100%)',
-              border: '1px solid rgba(126, 231, 135, 0.18)',
+                'linear-gradient(135deg, color-mix(in srgb, var(--terminal-bg) 72%, transparent) 0%, color-mix(in srgb, color-mix(in srgb, var(--terminal-purple) 10%, var(--terminal-black)) 62%, transparent) 100%)',
+              border: '1px solid color-mix(in srgb, var(--terminal-green) 18%, transparent)',
               borderRadius: '6px',
               backdropFilter: 'blur(8px) saturate(140%)',
               WebkitBackdropFilter: 'blur(8px) saturate(140%)',
               boxShadow:
-                '0 24px 64px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+                '0 24px 64px color-mix(in srgb, var(--terminal-black) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent)',
             }}
           >
             {isVisible(0) && (

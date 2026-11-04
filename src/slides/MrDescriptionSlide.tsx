@@ -83,10 +83,7 @@ The problem being solved — taken verbatim from the intent we extracted above. 
 
 ### How?
 The high-level approach in 1-2 sentences. Do NOT list files (the diff shows them), do NOT narrate the code change, do NOT speculate on risks unless the user explicitly mentioned them.
-
-Optional sections, only if discussed: ### Decisions, ### Risks.
-
-Size limits: small MR (≤5 files) max 1500 chars, large MR max 2000 chars. Avoid #NUMBER in prose — it auto-links to issue #N.`,
+…`,
     },
   },
   {
@@ -165,11 +162,11 @@ const STYLES = `
     min-width: 0;
     overflow: hidden;
     border-radius: 14px;
-    background: rgba(10, 14, 20, 0.6);
-    border: 1px solid rgba(126, 231, 135, 0.35);
+    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
+    border: 1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent);
     box-shadow:
-      0 18px 48px rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 rgba(126, 231, 135, 0.08);
+      0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--terminal-green) 8%, transparent);
     font-family: var(--font-mono);
     animation: mrDescPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
   }
@@ -177,7 +174,7 @@ const STYLES = `
   /* Text variant — prompt excerpt at body font, wraps to full panel width */
   .mr-desc-panel--prompt {
     padding: var(--space-md) var(--space-lg);
-    color: rgba(226, 232, 240, 0.94);
+    color: color-mix(in srgb, var(--terminal-white) 94%, transparent);
     text-align: left;
     white-space: pre-wrap;
     line-height: 1.45;
@@ -205,7 +202,7 @@ const STYLES = `
     object-fit: contain;
     display: block;
     border-radius: 6px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--terminal-black) 50%, transparent);
   }
 `;
 

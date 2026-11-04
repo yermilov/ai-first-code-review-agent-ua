@@ -1,0 +1,8 @@
+#!/bin/sh
+# .githooks/pre-commit — `bun install` runs `prepare`, which points git at it.
+# The checks read the WORKING TREE while git commits the INDEX, so refuse any unstaged change:
+# otherwise a bad staged line "fixed" only in the unstaged copy (or a looser unstaged config —
+# lint, tsconfig, package.json) would pass and the bad version would be committed.
+git diff --quiet && [ -z "$(git ls-files --others --exclude-standard -- src scripts deck-lint.config.json)" ] ||
+  { echo "pre-commit: unstaged or untracked changes the checks would read — stage or stash them first"; exit 1; }
+exec bun run check

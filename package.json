@@ -7,11 +7,14 @@
   "scripts": {
     "dev": "vite",
     "check:async-slides": "bun run scripts/check-async-slides.ts",
-    "build": "bun run check:async-slides && tsc && vite build",
+    "lint:deck": "bun run scripts/deck-lint.ts",
+    "check": "bun run lint:deck && bun run check:async-slides && tsc --noEmit",
+    "build": "bun run lint:deck && bun run check:async-slides && tsc && vite build",
     "preview": "vite preview",
     "pdf": "scripts/export-pdf.sh",
     "predeploy": "bun run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "qrcode.react": "^4.2.0",
@@ -21,7 +24,6 @@
     "roughjs": "^4.6.6"
   },
   "devDependencies": {
-    "@google/genai": "^1.34.0",
     "@types/minimatch": "^6.0.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

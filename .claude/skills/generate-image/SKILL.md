@@ -1,65 +1,79 @@
 ---
 name: generate-image
-description: Generates images using Google Gemini 3 Pro API. Use when asked to create, generate, or design images for slides, presentations, or visual content.
-allowed-tools: Bash(bun:*), Read, Write
+description: Generates images for slides via the media:generate-image skill (browser-driven Gemini/ChatGPT) and records the prompt to src/prompts/ for later regeneration. Use when asked to create, generate, or design images for slides, presentations, or visual content.
+allowed-tools: Skill, Read, Write, Bash(cp:*), Bash(mv:*), Bash(ls:*)
 ---
 
-# Image Generation with Gemini 3 Pro
+# Image Generation for Slides
 
-Generate images for slides and presentations using Google's Gemini 3 Pro image generation API.
+Generate slide visuals using the shared **`media:generate-image`** skill, which
+drives Gemini or ChatGPT through a real browser (Claude in Chrome) using the user's
+existing logged-in session — no API key required.
 
-## Prerequisites
+This repo adds one convention on top: **every generated image's prompt is saved to a
+JSON file in `src/prompts/`** so images can be referenced and regenerated later with
+the same (or a tweaked) prompt.
 
-Ensure `.env.local` exists with your Gemini API key:
-```
-GEMINI_API_KEY=your-api-key-here
-```
+## Workflow
 
-## Usage
+1. **Generate the image** by invoking the shared skill:
 
-Run the generation script:
-```bash
-bun --env-file=.env.local .claude/skills/generate-image/scripts/generate.ts --prompt "your image description" --ratio "16:9" --output "output.png"
-```
+   ```
+   Skill(media:generate-image)
+   ```
 
-### Parameters
+   Follow its workflow — pick the model (Gemini is a strong default for the
+   text-heavy, label-rich diagrams in this deck), craft the prompt, show it to the
+   user, generate, review, and iterate. For this deck's terminal aesthetic, keep the
+   palette on dark `#0a0e14` with white `#e2e8f0`, orange `#f0883e`, and green
+   `#7ee787`. This deck is bilingual (Ukrainian home, English alternate): an image with
+   text labels needs one file per language — `<name>.png` with Ukrainian labels and
+   `<name>-en.png` with English ones, each with its own `src/prompts/*.json` — and the slide
+   picks the file with `tr(lang, uk, en)`.
 
-| Parameter | Required | Default | Description |
-|-----------|----------|---------|-------------|
-| `--prompt` | Yes | - | Image description |
-| `--ratio` | No | 16:9 | Aspect ratio: 16:9, 4:3, 1:1, 4:5 |
-| `--output` | No | Auto-generated | Output filename |
+2. **Place the image in `src/assets/`** (preloaded and hashed; use `public/` only for a file that
+   needs a stable URL, like the OG card). The shared skill delivers the file to the
+   browser's Downloads folder (or you can use its JS canvas-extraction download).
+   Move/copy it into `src/assets/` with the final filename, e.g.:
 
-### Examples
+   ```bash
+   cp ~/Downloads/output.png src/assets/agenda-team.png
+   ```
 
-```bash
-# Widescreen slide background
-bun --env-file=.env.local .claude/skills/generate-image/scripts/generate.ts \
-  --prompt "Abstract dark terminal with glowing code, cyberpunk aesthetic" \
-  --ratio "16:9"
+   In slide components, import it relatively with the `?url` suffix (required for GitHub Pages):
+   `import img from '../assets/agenda-team.png?url';`
 
-# Square icon
-bun --env-file=.env.local .claude/skills/generate-image/scripts/generate.ts \
-  --prompt "Minimalist code icon, orange and green on dark background" \
-  --ratio "1:1" \
-  --output "code-icon.png"
-```
+3. **Save the prompt to `src/prompts/<name>.json`** (same base name as the image).
+   This is the key convention to preserve. The record format:
 
-## Output
+   ```json
+   {
+     "filename": "agenda-team.png",
+     "prompt": "<the exact prompt that was sent>",
+     "ratio": "16:9",
+     "timestamp": "2026-05-29T12:00:00.000Z",
+     "model": "gemini (via media:generate-image, browser)"
+   }
+   ```
 
-**Images** are saved to `public/` with auto-generated timestamps if no filename specified.
+   - `filename` — output image filename in `src/assets/`
+   - `prompt` — the exact prompt used (so the image can be regenerated)
+   - `ratio` — aspect ratio (16:9, 4:3, 1:1, 4:5)
+   - `timestamp` — ISO timestamp of generation
+   - `model` — which model/route produced it (e.g. `gemini` or `chatgpt` via
+     `media:generate-image`)
 
-**Prompts** are automatically logged to `src/prompts/` as JSON files containing:
-- `filename`: Output image filename
-- `prompt`: The prompt used to generate the image
-- `ratio`: Aspect ratio used
-- `timestamp`: Generation timestamp (ISO format)
-- `model`: Gemini model used
+   If you're updating an existing image, overwrite its existing
+   `src/prompts/<name>.json` so there's one source of truth per image.
 
-This allows you to reference and regenerate images later using the same prompts.
+## Regenerating an existing image
 
-## Troubleshooting
+1. Read the existing `src/prompts/<name>.json` for the previous prompt.
+2. Tweak the prompt as needed (e.g. translate labels to English for the `-en` variant).
+3. Run the workflow above, overwrite `src/assets/<name>` and update
+   `src/prompts/<name>.json` with the new prompt and timestamp.
 
-- **API key not found**: Ensure `.env.local` exists with `GEMINI_API_KEY`
-- **Generation failed**: Check API key validity and quota
-- **Model error**: The script uses `gemini-3-pro-image-preview` model
+## Notes
+
+- Build-time PNG/JPEG compression is handled automatically by
+  `vite-plugin-imagemin`, so no manual compression is needed.

@@ -2,390 +2,190 @@
 
 ## Project Overview
 
-A custom terminal-themed presentation site built with React and TypeScript. Features a Claude Code-inspired aesthetic with command-based navigation. Hosted on GitHub Pages at https://yermilov.github.io/ai-first-code-review-agent-ua
+**AI-first розробка на практиці: кейс створення code review агента** — Yarik's talk at the
+AI-First Meetup (May 2026), a terminal-themed React site with Claude Code-style command
+navigation. Hosted on GitHub Pages at https://yermilov.github.io/ai-first-code-review-agent-ua
+
+## Skills — read these before touching the deck
+
+The deck follows the **presentation-dev** plugin (enabled in `.claude/settings.json`). Load the
+one that matches the task:
+
+| Task | Skill |
+|---|---|
+| repo, stack, assets, deploy, publishing | `presentation-dev:presentation-stack` |
+| tokens, type scale, colour, lint, light theme | `presentation-dev:deck-design-system` |
+| choosing a layout, density caps, overflow | `presentation-dev:slide-layouts` |
+| `SlideDefinition`, reveals, navigation, timer, PDF export | `presentation-dev:deck-engine` |
+| what goes on a slide, bullets, notes, factual claims | `presentation-dev:slide-content` |
+| images, video, diagrams | `presentation-dev:deck-visuals` |
+| UA ↔ EN parity | `presentation-dev:deck-translation` |
+
+Project-local skills: `design-system` (this deck's tokens and primitives — read it when styling)
+and `generate-image` (slide images + saved prompts).
 
 ## Tech Stack
 
-- **Runtime**: Bun
-- **Framework**: React 18 + TypeScript
-- **Bundler**: Vite
-- **Syntax Highlighting**: react-syntax-highlighter
-- **Hosting**: GitHub Pages (auto-deployed via GitHub Actions)
+Bun · Vite 5 · React 18 · TypeScript strict · react-syntax-highlighter · qrcode.react ·
+roughjs · vite-plugin-imagemin · Playwright (dev, PDF export) · GitHub Pages via Actions.
 
 ## Commands
 
 ```bash
-bun install      # Install dependencies (REQUIRED before first `bun run dev`)
-bun run dev      # Start dev server (http://localhost:5173/ai-first-code-review-agent-ua/)
-bun run build    # Build for production
-bun run preview  # Preview production build
-bun run deploy   # Manual deploy to GitHub Pages
+bun install      # REQUIRED before the first `bun run dev`; also wires the pre-commit hook
+bun run dev      # http://localhost:5173/ai-first-code-review-agent-ua/
+bun run check    # deck-lint + async-slide gate + typecheck (what the pre-commit hook runs)
+bun run lint:deck
+bun run build    # lint:deck → check:async-slides → tsc → vite build
+bun run preview
+bun run pdf      # 1920×1080 PDF of every slide at max reveal → dist/ai-first-code-review-agent-ua.pdf
 ```
 
 ## Project Structure
 
 ```
 src/
-├── App.tsx                    # Slide array — imports and orders all slides
-├── main.tsx                   # React entry point
-├── index.css                  # Global styles & font import
-├── vite-env.d.ts              # Vite type declarations
-├── types/
-│   └── slides.ts              # TypeScript interfaces
+├── App.tsx                  # <Presentation slides={slides} />
 ├── slides/
-│   ├── index.ts               # Re-exports all slide components
-│   ├── TitleSlide.tsx         # Individual slide components (35 total)
-│   └── ...
-├── prompts/
-│   └── *.json                 # Structured data for animated/complex slides
-├── hooks/
-│   ├── useSlideNavigation.ts  # Navigation state & command parsing
-│   └── useTouchNavigation.ts  # Swipe gesture support
+│   ├── index.ts             # THE RUNNING ORDER — the `slides` array
+│   ├── exportContract.ts    # async-slide classification for the PDF exporter
+│   └── *Slide.tsx           # one SlideDefinition per file (36 in the talk)
 ├── components/
-│   ├── Presentation.tsx       # Main container — timer, tool activation, routing
-│   ├── Slide.tsx              # Fullscreen slide wrapper
-│   ├── TerminalInput.tsx      # Command input box
-│   ├── CodeBlock.tsx          # Syntax-highlighted code
-│   ├── SlideProgress.tsx      # Slide counter
-│   ├── OnboardingTooltip.tsx  # Navigation help tooltip
-│   ├── PointerTooltip.tsx     # Contextual pointer hints
-│   ├── SlideElements.tsx      # Reusable slide building blocks
-│   └── Timer.tsx              # Presentation timer component
-├── design-system/            # Reusable design layer (see .claude/skills/design-system)
-│   ├── tokens.css             # CSS variables (colors, type scale, spacing, motion)
-│   ├── base.css               # .presentation, .slide, headings, lists, links
-│   ├── patterns.css           # Color/glow utilities, slide-item, animations, CRT
-│   ├── components.css         # Bottom bar, tooltips, code block, rotate hint
-│   └── index.css              # @imports the above in layer order
-└── styles/
-    └── slide-layouts.css      # Per-slide layouts (bio, timeline, VS battle, etc.)
+│   ├── Presentation.tsx     # timer, theme, language, progress, export API
+│   ├── Slide.tsx            # .slide wrapper; titled slides get .slide-title + .slide-body
+│   ├── SlideElements.tsx    # SlideItem, LevelItem, Reveal, revealWindow, Code, Quote, Emphasis, SlideLink, SectionHeader
+│   ├── AgendaPreviews.tsx   # live mini-slides on the agenda cards
+│   ├── diagram/             # SVG diagram kit (DiagramCanvas, StageNode, FlowArrow, …)
+│   ├── TerminalInput.tsx · Timer.tsx · SlideProgress.tsx · CodeBlock.tsx · exportRegistry.ts
+│   └── pacman/              # the Pac-Man easter egg engine
+├── data/sections.tsx        # the three talk sections (engineer / team / org) shared by agenda + section slides
+├── hooks/useSlideNavigation.ts   # step-path navigation (utils/traversal.ts)
+├── utils/traversal.ts       # deckPath(): the talk as one line of (slide, reveal) steps
+├── utils/preloadAssets.ts   # warms every src/assets/** image, audio, mp4
+├── design-system/           # tokens.css · base.css · patterns.css · components.css
+├── styles/slide-layouts.css # one block per slide
+├── assets/                  # auto-preloaded media (put later-slide media here)
+└── prompts/*.json           # prompts of generated images
+scripts/deck-lint.ts         # the design-system linter (from the deck-design-system skill)
+.githooks/pre-commit         # runs `bun run check`
 ```
 
-For the deck's design conventions (type scale, palette, bullet style, glow rules),
-read `.claude/skills/design-system/SKILL.md` or invoke it via the skill tool when
-creating or editing slides.
+## Adding a slide
 
-## Adding Slides
-
-Each slide lives in its own file under `src/slides/`. To add a new slide:
-
-1. Create `src/slides/MySlide.tsx`
-2. Export it from `src/slides/index.ts`
-3. Import and add to the `slides` array in `src/App.tsx`
-
-Slide definition shape:
+1. Create `src/slides/MySlide.tsx` exporting a `SlideDefinition`.
+2. Import it in `src/slides/index.ts` and place it in the `slides` array (that array is the talk).
 
 ```tsx
-// src/slides/MySlide.tsx
-export function MySlide() {
-  return (
-    <>
-      <h2>Slide Title</h2>
-      <p>Slide content here</p>
-      <ul>
-        <li>List items with terminal-style bullets</li>
-      </ul>
-    </>
-  );
-}
+import { SlideDefinition } from '../types/slides';
+import { revealWindow, SlideItem } from '../components/SlideElements';
 
-// src/App.tsx — register it:
-{
-  id: 'unique-id',
-  content: <MySlide />,
-  notes: 'Optional speaker notes',
-}
-```
-
-For interactive slides (reveal stages, live input, tool activation), pass a render function instead of JSX:
-
-```tsx
-{
-  id: 'interactive-id',
-  content: ({ revealStage, inputText, activatedTools }) => <MySlide revealStage={revealStage} />,
-  maxRevealStages: 3,
-}
-```
-
-### Using Code Blocks
-
-```tsx
-<CodeBlock
-  language="typescript"
-  filename="example.ts"
-  showLineNumbers
-  code={`const hello = "world";`}
-/>
-```
-
-### Using Images
-
-Images in `public/` must be imported with `?url` suffix for GitHub Pages compatibility:
-
-```tsx
-import myImage from '/my-image.png?url';
-
-// In slide content (add loading="lazy" for non-first slides):
-<img src={myImage} alt="Description" loading="lazy" />
-```
-
-**Important:** Do NOT use direct paths like `src="/image.png"` — they break on GitHub Pages due to the base URL (`/ai-first-code-review-agent-ua`).
-
-**Build-time compression:** `vite-plugin-imagemin` is configured in `vite.config.ts` and automatically compresses PNGs/JPEGs at build time (71–86% size reduction). No manual compression needed.
-
-### Animated Content — Use MP4, Not GIF
-
-Large GIFs dramatically inflate bundle size. Convert to MP4:
-
-```bash
-ffmpeg -i input.gif -vf "fps=15,scale=trunc(iw/2)*2:trunc(ih/2)*2" \
-  -c:v libx264 -pix_fmt yuv420p -crf 28 output.mp4
-```
-
-Use `<video>` instead of `<img>` for the result:
-
-```tsx
-import myVideo from '/my-video.mp4?url';
-
-<video autoPlay loop muted playsInline src={myVideo} />
-```
-
-GIF vs MP4: `petermobile.gif` was 5 MB → `petermobile.mp4` is 306 KB.
-
-### Full-Screen Image Slides
-
-For slides that display a single image filling the available space:
-
-```tsx
-import myImage from '/my-image.png?url';
-
-{
-  id: 'image-slide-id',
-  content: (
-    <div className="image-slide">
-      <img src={myImage} alt="Description" />
-    </div>
-  ),
-}
-```
-
-The `.image-slide` class automatically:
-- Constrains image to viewport (accounts for timer/input bar)
-- Centers the image
-- Applies terminal-themed border and shadow
-- Uses `object-fit: contain` to preserve aspect ratio
-
-### Slide Height & Overflow
-
-The `.slide` container has `max-height: 100%; overflow: hidden` as a hard CSS guard. If content overflows the viewport and overlaps the input bar:
-
-- **Accumulating bullets that run out of room → use a sliding window, NOT a smaller font.** Bullets on a slide are spoken in order, so older points have already done their job by the time the next two are on screen. Drop them. Shrinking the font hurts projector legibility and is almost never the right answer.
-  ```tsx
-  const WINDOW = 3;
-  const firstVisible = Math.max(0, revealStage - WINDOW + 1);
-  const isVisible = (i: number) => revealStage >= i && i >= firstVisible;
-  // …
-  {isVisible(0) && <SlideItem>…</SlideItem>}
-  {isVisible(1) && <SlideItem>…</SlideItem>}
-  ```
-- For image/media containers, use `calc(var(--vh-full) - 220px)` (or similar offset) so they leave room for the timer and input bar.
-- The standard image-slide pattern already handles this via `.image-slide` height constraint.
-- Last-resort font tightening: `1.3–1.5rem` body text in genuinely dense reference slides where every bullet must stay visible at once.
-
-Example fix pattern for overflow:
-```css
-.my-slide-image {
-  max-height: calc(var(--vh-full) - 220px);
-  object-fit: contain;
-}
-```
-
-### Edge-to-edge backdrops (e.g. space, photo, fullbleed art)
-
-Don't wrap the backdrop in an inner rounded container — that frame will clip
-anything (like the astronauts on `WhatIsSkillSlide`) that wants to reach the
-slide edges. Set `SlideDefinition.background` to a layered CSS background
-instead; `Slide.tsx` applies it to the `.slide` element itself, and child
-content can then float freely over the full-bleed art.
-
-```tsx
-import bgImg from '../assets/bg.png?url';
-
-const SLIDE_BG = `
-  linear-gradient(180deg,
-    rgba(10,14,20,0.6) 0%,
-    rgba(10,14,20,0.35) 50%,
-    rgba(10,14,20,0.6) 100%),
-  url(${bgImg}) center/cover no-repeat
-`;
+const BULLETS = [<>перший пункт</>, <>другий пункт</>, <>третій пункт</>];
 
 export const MySlide: SlideDefinition = {
-  background: SLIDE_BG,
-  // …
+  id: 'my-slide',
+  title: (
+    <>
+      <span className="text-dim">&gt;</span> <span className="text-green">my</span>{' '}
+      <span className="text-orange">slide</span>
+    </>
+  ),
+  maxRevealStages: BULLETS.length,
+  content: ({ revealStage }) => (
+    <div className="my-slide">
+      {revealWindow(BULLETS, revealStage).map(({ item, index, hidden }) => (
+        <SlideItem key={index} delay={0} hidden={hidden}>{item}</SlideItem>
+      ))}
+    </div>
+  ),
+  notes: 'what you must not forget to say',
 };
 ```
 
-### Slide Content Classes
+Rules that matter (details in the skills):
 
-- `h1.hero` - Extra large hero heading
-- `.text-orange`, `.text-green`, `.text-blue` - Accent colors
-- `.text-dim`, `.text-muted` - Dimmed text
-- `.glow-orange`, `.glow-green` - Text glow effects
+- **Four font sizes**: 96 hero / 80 heading / 32 body / 24 code — tokens only. `bun run lint:deck`
+  fails on anything else. Never shrink type to fit: split the slide or use a sliding window
+  (`revealWindow(items, shown, size)`). deck-lint does not see CSS inside a slide's `<style>`
+  template string — check those slides by computed size.
+- **A reveal never moves what is on screen**: lay everything out from stage 0, hide what is not
+  yet revealed (`hidden` / `<Reveal show>`), don't unmount it.
+- **Titled slides**: content lives in `.slide-body`, which has an explicit height. Size media with
+  `max-height: 100%` — never `calc(var(--vh-full) - <px>)` in new code.
+- **Colours are tokens**; tints are `color-mix()` over a token. No raw hex outside `tokens.css`
+  (SVG/JS picture constants excepted).
+- **Per-slide CSS** goes in `src/styles/slide-layouts.css`; don't add new `<style>` tags. Shared
+  patterns (`.split`, `LevelItem`, …) live in `src/design-system/`.
+- **Async slides** (fetch etc.) set `asyncSettle: true`, call `exportRegistry.markSlideSettled`,
+  and are listed in `src/slides/exportContract.ts` — the build fails otherwise.
 
-## Navigation Commands
+## Assets
 
-Type in the input box:
-- `next` or `n` → Next slide
-- `prev`, `back`, `p`, `b` → Previous slide
-- Number (e.g., `3`) → Go to slide 3
-- `first`, `home` → First slide (`start` activates the timer, not navigation)
-- `last`, `end` → Last slide
-- `reveal` or `r` → Reveal next content stage
+- Import every asset; never hardcode a path. `public/` files: `import img from '/x.png?url'`;
+  `src/assets/` files: relative import. A literal `src="/x.png"` 404s on Pages (base path).
+- Media a later slide needs goes in `src/assets/` — it is preloaded while the title is up
+  (images, audio and `*.mp4`).
+- Animated content is **MP4, not GIF**:
+  ```bash
+  ffmpeg -i in.gif -vf "fps=15,scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -pix_fmt yuv420p -crf 28 out.mp4
+  ```
+  `<video autoPlay loop muted playsInline src={v} />`
+- PNG/JPEG compression happens at build time (`vite-plugin-imagemin`); `loading="lazy"` on
+  images after the first slide.
+- Full-bleed art: set `SlideDefinition.background` (applied to `.slide` itself) with a gradient
+  layered over the image, instead of an inner rounded frame that clips content.
 
-Timer commands:
-- `start` or `go` → Start timer
-- `pause` or `stop` → Pause timer
-- `reset` → Reset timer and clear IntroSlide tool selections
+## Navigation
 
-Keyboard (when not typing):
-- Arrow keys, Space, PageDown/Up → Navigate
-- Home/End → First/last slide
+Type in the input box (letters only act on an EMPTY box; anything else just clears it):
 
-## Terminal Theme Principles
+- `next` / `n` → next slide · `prev` / `back` / `p` / `b` → previous slide
+- `reveal` / `r` / `move` / `m` → next reveal step
+- `<N>` → step N (the same N as `#slide-N` in the URL) · `-<N>` → N steps from the end
+- `first` / `start` / `home`, `last` / `end`
+- `light` / `dark` → theme (persisted)
 
-### Colors (CSS Custom Properties)
+Keys (outside the box): → ↓ Space PageDown Enter advance, ← ↑ PageUp Backspace go back,
+Home/End. PageDown/PageUp always work (clicker). Swipes on touch.
 
-```css
---terminal-bg: #0a0e14          /* Deep black background */
---terminal-white: #e2e8f0       /* Primary text */
---terminal-orange: #f0883e      /* Headings, accents (h1) */
---terminal-green: #7ee787       /* Subheadings (h2), success */
---terminal-blue: #79c0ff        /* Links, tertiary headings */
---terminal-purple: #d2a8ff      /* Functions in code */
---terminal-cyan: #76e4f7        /* Inline code */
-```
+**`#slide-N` is a STEP of the talk, not a slide index** — every reveal is a step, detours are
+inlined (`utils/traversal.ts`). Adding a slide or a reveal shifts every later step id; say so when
+reporting a structural change.
 
-### Typography
+The timer starts when you leave the title slide, resets when you return to it, survives a reload,
+and discards a start older than 4 hours. The talk length is `TALK_SECONDS` in `Timer.tsx` (60
+min). The progress bar ("context left until auto-compact") weights every reveal equally and
+appears past the half-way point.
 
-- **Font**: JetBrains Mono (monospace)
-- **h1**: 4rem (5rem for `.hero`)
-- **h2**: 3rem
-- **h3**: 2.25rem
-- **Body**: 1.5rem
+## Verifying a change
 
-### Visual Effects
+Per the deck-engine skill: `bun run check`, then `bun run dev`, open the slide in Chrome, step
+through **every** reveal and screenshot the last one. Overflow is measured across 1920×1080,
+1728×850, 1280×720, 1024×768 and landscape phones (915×412, 844×390, 667×375) with a temporary
+Playwright script (delete it afterwards).
 
-- CRT scan lines overlay
-- Subtle noise texture
-- Phosphor text glow on headings
-- Orange focus glow on input
-- Fade-in slide transitions
+## Image generation
 
-## Development Guidelines
-
-### IMPORTANT: Use Frontend Design Skill
-
-**For ANY UI edits to this project, always use the `frontend-design` skill.**
-
-This ensures:
-- Consistent terminal aesthetic
-- High-quality, production-grade code
-- Proper use of design tokens
-- Distinctive, non-generic styling
-
-### IMPORTANT: Verify Changes in Browser
-
-**After ANY change to slides, styles, config, or URLs — verify visually using the Chrome extension.**
-
-Workflow:
-1. Make the change
-2. Confirm dev server is running (`bun run dev`)
-3. Use Chrome extension to navigate to `http://localhost:5173/ai-first-code-review-agent-ua/`
-4. Take a screenshot and confirm the change looks correct before declaring done
-
-### Code Style
-
-- TypeScript strict mode
-- Functional React components
-- CSS custom properties for theming
-- Semantic HTML in slides
-
-## Deployment
-
-Automatic deployment on push to `main` via GitHub Actions. The site deploys to the `gh-pages` branch.
-
-## Image Generation
-
-Use the `generate-image` skill for creating slide visuals with Google Gemini 3 Pro.
-
-### Setup
-
-1. Copy `.env.local.example` to `.env.local`
-2. Add your Gemini API key (get one at https://ai.google.dev/)
-3. Run `bun install` to get `@google/genai`
-
-### Usage
-
-Ask Claude to generate images for slides:
-- "Generate an image of a futuristic terminal interface"
-- "Create a minimalist diagram showing code compilation"
-- "Design an abstract background for the intro slide"
-
-### Manual Usage
-
-```bash
-bun --env-file=.env.local .claude/skills/generate-image/scripts/generate.ts \
-  --prompt "description" \
-  --ratio "16:9" \
-  --output "filename.png"
-```
-
-**Options:**
-- `--ratio`: 16:9 (default), 4:3, 1:1, 4:5
-- `--output`: custom filename (auto-generated if omitted)
-
-Generated images are saved to `public/`.
+Use the project `generate-image` skill: it delegates to `media:generate-image` (Gemini / ChatGPT in
+the logged-in browser, no API key), saves the image to `src/assets/` and the prompt to
+`src/prompts/<name>.json` (`filename`, `prompt`, `ratio`, `timestamp`, `model`) so it can be
+regenerated.
 
 ## Troubleshooting
 
-### `bun install` hangs at "Resolving..."
+**`bun install` hangs at "Resolving…"** — the lockfile points at a private registry. Diagnose
+with `grep -n "artifactory" bun.lock`; fix with
+`rm -rf bun.lock bun.lockb node_modules && bun install`. (Regenerated 2026-11-04 against the
+public registry; CI pins bun 1.4.2 to read it.)
 
-**Symptom:** `bun install` hangs indefinitely at "Resolving..." or "Resolved, downloaded and extracted [N]"
+**`pngquant-bin` postinstall fails / `bun run build` dies with `spawn Unknown system error -86`
+on Apple Silicon** — the downloaded `node_modules/pngquant-bin/vendor/pngquant` is an x86_64
+binary. Delete it: imagemin then logs an error per PNG and the build finishes (CI compresses
+normally on Linux).
 
-**Root cause:** The `bun.lock` file may contain URLs to a private registry (e.g., Artifactory) that's unreachable from your network.
+## Git
 
-**Fix:**
-```bash
-rm -rf bun.lock bun.lockb node_modules package-lock.json && bun install
-```
-
-This regenerates the lockfile using the public npm registry.
-
-**How to diagnose:** Check if `bun.lock` contains private registry URLs:
-```bash
-grep -n "artifactory\|private\|internal" bun.lock
-```
-
-## Git Conventions
-
-- Commit messages: `Add/Update/Fix/Remove [description]`
-- Include co-author footer for AI-assisted commits
-
-### Workflow
-
-Never commit directly to `main`. Always use a short-lived feature branch:
-
-```bash
-git checkout -b my-feature        # 1. Create feature branch
-# ... make changes ...
-git add <files>
-git commit -m "Add/Fix/Update X"  # 2. Commit
-git push -u origin my-feature     # 3. Push
-git checkout main
-git merge my-feature              # 4. Merge to main
-git push origin main              # 5. Push main
-git branch -d my-feature          # 6. Delete local branch
-git push origin --delete my-feature  # 7. Delete remote branch
-```
-
-Use the `/cicd:commit-and-push` skill to automate steps 1–3.
+Never commit directly to `main`: short-lived feature branch → commit (`Add/Update/Fix/Remove …`,
+AI co-author footer) → merge to `main` → push. The pre-commit hook runs `bun run check` and
+refuses unstaged changes it would read. Pushes need the personal `yermilov` account; switch to it
+ONLY for the git operation and back immediately: `gh auth switch --user yermilov`, push, then
+`gh auth switch --user yaroslav-yermilov`.

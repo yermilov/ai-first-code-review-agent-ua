@@ -16,10 +16,10 @@ type Conclusion = {
 };
 
 const COLOR_GREEN = '#7ee787';
-const COLOR_ORANGE = '#f0883e';
-const COLOR_DIM = 'rgba(226, 232, 240, 0.55)';
-const COLOR_AXIS = 'rgba(226, 232, 240, 0.5)';
-const COLOR_GRID = 'rgba(226, 232, 240, 0.08)';
+const COLOR_ORANGE = 'var(--terminal-orange)';
+const COLOR_DIM = 'color-mix(in srgb, var(--terminal-white) 55%, transparent)';
+const COLOR_AXIS = 'color-mix(in srgb, var(--terminal-white) 50%, transparent)';
+const COLOR_GRID = 'color-mix(in srgb, var(--terminal-white) 8%, transparent)';
 
 /**
  * Two side-by-side line charts across percentiles (p50/p80/p90/p95), each
@@ -96,7 +96,7 @@ export function TimeShiftChart() {
   const Legend = ({
     x, y, agentColor,
   }: { x: number; y: number; agentColor: string }) => (
-    <g fontFamily="var(--font-mono)" fontSize="12">
+    <g fontFamily="var(--font-mono)" fontSize="12">{/* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */}
       <circle cx={x} cy={y} r={4} fill={COLOR_DIM} />
       <text x={x + 10} y={y + 4} fill={COLOR_DIM} textAnchor="start">без агента</text>
       <circle cx={x} cy={y + 18} r={4} fill={agentColor} />
@@ -114,7 +114,7 @@ export function TimeShiftChart() {
       style={{ width: '100%', height: '100%', display: 'block' }}
     >
       {/* === Left panel: time to first review (log Y) === */}
-      <text x={(PANEL_LEFT.x0 + PANEL_LEFT.x1) / 2} y={28} fontSize="16"
+      <text x={(PANEL_LEFT.x0 + PANEL_LEFT.x1) / 2} y={28} fontSize="16" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_GREEN}
             textAnchor="middle" fontWeight="600">
         час до першого рев'ю
@@ -125,7 +125,7 @@ export function TimeShiftChart() {
           <line x1={PANEL_LEFT.x0} x2={PANEL_LEFT.x1}
                 y1={yLog(v)} y2={yLog(v)}
                 stroke={COLOR_GRID} strokeDasharray="2 6" />
-          <text x={PANEL_LEFT.axisX} y={yLog(v) + 4} fontSize="11"
+          <text x={PANEL_LEFT.axisX} y={yLog(v) + 4} fontSize="11" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                 fontFamily="var(--font-mono)" fill={COLOR_AXIS} textAnchor="end">
             {hourLabel(v)}
           </text>
@@ -140,14 +140,14 @@ export function TimeShiftChart() {
 
       {X_TICKS.map((tick, i) => (
         <text key={tick} x={xOf(PANEL_LEFT, i)} y={PLOT_BOTTOM + 22}
-              fontSize="12" fontFamily="var(--font-mono)"
+              fontSize="12" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
               fill={COLOR_AXIS} textAnchor="middle">
           {tick}
         </text>
       ))}
 
       {/* === Right panel: time to merge (linear Y) === */}
-      <text x={(PANEL_RIGHT.x0 + PANEL_RIGHT.x1) / 2} y={28} fontSize="16"
+      <text x={(PANEL_RIGHT.x0 + PANEL_RIGHT.x1) / 2} y={28} fontSize="16" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_ORANGE}
             textAnchor="middle" fontWeight="600">
         час до мержу
@@ -158,7 +158,7 @@ export function TimeShiftChart() {
           <line x1={PANEL_RIGHT.x0} x2={PANEL_RIGHT.x1}
                 y1={yLog(v)} y2={yLog(v)}
                 stroke={COLOR_GRID} strokeDasharray="2 6" />
-          <text x={PANEL_RIGHT.axisX} y={yLog(v) + 4} fontSize="11"
+          <text x={PANEL_RIGHT.axisX} y={yLog(v) + 4} fontSize="11" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                 fontFamily="var(--font-mono)" fill={COLOR_AXIS} textAnchor="end">
             {hourLabel(v)}
           </text>
@@ -173,7 +173,7 @@ export function TimeShiftChart() {
 
       {X_TICKS.map((tick, i) => (
         <text key={tick} x={xOf(PANEL_RIGHT, i)} y={PLOT_BOTTOM + 22}
-              fontSize="12" fontFamily="var(--font-mono)"
+              fontSize="12" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
               fill={COLOR_AXIS} textAnchor="middle">
           {tick}
         </text>
@@ -195,9 +195,9 @@ function SatisfactionChart() {
   // tiers; dim white for neutral.
   const SAT_BRIGHT  = '#7ee787';
   const SAT_MID     = '#56c267';
-  const NEUTRAL_MID = 'rgba(226, 232, 240, 0.45)';
+  const NEUTRAL_MID = 'color-mix(in srgb, var(--terminal-white) 45%, transparent)';
   const DISSAT_MID  = '#c47233';
-  const DISSAT_BRT  = '#f0883e';
+  const DISSAT_BRT  = 'var(--terminal-orange)';
 
   const SEGMENTS = [
     { count:  86, pct: 27, color: SAT_BRIGHT  },
@@ -244,29 +244,29 @@ function SatisfactionChart() {
       </defs>
 
       {/* === Big % callouts: positive | neutral | negative === */}
-      <text x={40} y={120} fontSize="92" fontWeight="700"
+      <text x={40} y={120} fontSize="92" fontWeight="700" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_GREEN}>
         75%
       </text>
-      <text x={40} y={158} fontSize="22"
+      <text x={40} y={158} fontSize="22" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_GREEN}>
         задоволені
       </text>
 
-      <text x={400} y={120} fontSize="44" fontWeight="600" textAnchor="middle"
-            fontFamily="var(--font-mono)" fill="rgba(226, 232, 240, 0.7)">
+      <text x={400} y={120} fontSize="44" fontWeight="600" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
+            fontFamily="var(--font-mono)" fill="color-mix(in srgb, var(--terminal-white) 70%, transparent)">
         20%
       </text>
-      <text x={400} y={150} fontSize="18" textAnchor="middle"
-            fontFamily="var(--font-mono)" fill="rgba(226, 232, 240, 0.6)">
+      <text x={400} y={150} fontSize="18" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
+            fontFamily="var(--font-mono)" fill="color-mix(in srgb, var(--terminal-white) 60%, transparent)">
         нейтрально
       </text>
 
-      <text x={760} y={120} fontSize="60" fontWeight="700" textAnchor="end"
+      <text x={760} y={120} fontSize="60" fontWeight="700" textAnchor="end" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_ORANGE}>
         5%
       </text>
-      <text x={760} y={150} fontSize="20" textAnchor="end"
+      <text x={760} y={150} fontSize="20" textAnchor="end" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
             fontFamily="var(--font-mono)" fill={COLOR_ORANGE}>
         незадоволені
       </text>
@@ -283,8 +283,8 @@ function SatisfactionChart() {
       {layout.map((seg, i) =>
         seg.w > 40 ? (
           <text key={i} x={seg.x + seg.w / 2} y={BAR_Y + BAR_H / 2 + 8}
-                fontSize="22" fontWeight="700" textAnchor="middle"
-                fontFamily="var(--font-mono)" fill="rgba(10, 14, 20, 0.82)">
+                fontSize="22" fontWeight="700" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
+                fontFamily="var(--font-mono)" fill="color-mix(in srgb, var(--terminal-bg) 82%, transparent)">
             {seg.count}
           </text>
         ) : (
@@ -293,7 +293,7 @@ function SatisfactionChart() {
                   y1={BAR_Y + BAR_H + 4} y2={BAR_Y + BAR_H + 16}
                   stroke={seg.color} strokeWidth={1.5} />
             <text x={seg.x + seg.w / 2} y={BAR_Y + BAR_H + 34}
-                  fontSize="15" fontWeight="700" textAnchor="middle"
+                  fontSize="15" fontWeight="700" textAnchor="middle" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fontFamily="var(--font-mono)" fill={seg.color}>
               {seg.count}
             </text>
@@ -323,7 +323,7 @@ function CostsChart() {
       label: 'Anthropic',
       labelColor: COLOR_ORANGE,
       min: 20, max: 25,
-      color: '#f0883e',
+      color: 'var(--terminal-orange)',
     },
     {
       kind: 'point',
@@ -383,7 +383,7 @@ function CostsChart() {
         <text
           key={v}
           x={xOf(v)} y={GRID_BOTTOM + 22}
-          fontSize="13" fontFamily="var(--font-mono)"
+          fontSize="13" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
           fill={COLOR_AXIS} textAnchor="middle"
         >
           ${v}
@@ -400,7 +400,7 @@ function CostsChart() {
             {/* Row label */}
             <text
               x={260} y={yMid + 6}
-              fontSize="17" fontFamily="var(--font-mono)"
+              fontSize="17" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
               fill={row.labelColor} textAnchor="end" fontWeight="600"
             >
               {row.label}
@@ -416,14 +416,14 @@ function CostsChart() {
                 />
                 <text
                   x={xOf(row.min) - 8} y={yMid + 6}
-                  fontSize="14" fontFamily="var(--font-mono)"
+                  fontSize="14" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fill={row.color} textAnchor="end" fontWeight="600"
                 >
                   ${row.min}
                 </text>
                 <text
                   x={xOf(row.max) + 8} y={yMid + 6}
-                  fontSize="14" fontFamily="var(--font-mono)"
+                  fontSize="14" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fill={row.color} textAnchor="start" fontWeight="600"
                 >
                   ${row.max}
@@ -439,14 +439,14 @@ function CostsChart() {
                 />
                 <text
                   x={xOf(row.value) + (BAR_H / 2) + 6} y={yMid + 6}
-                  fontSize="16" fontFamily="var(--font-mono)"
+                  fontSize="16" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fill={row.color} textAnchor="start" fontWeight="700"
                 >
                   ≈${row.value}
                 </text>
                 <text
                   x={xOf(row.value) + (BAR_H / 2) + 6} y={y + BAR_H + 20}
-                  fontSize="12" fontFamily="var(--font-mono)"
+                  fontSize="12" fontFamily="var(--font-mono)" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
                   fill={row.color} textAnchor="start" opacity={0.7}
                 >
                   у середньому
@@ -570,7 +570,7 @@ const STYLES = `
     flex: 1 1 100%;
     justify-content: center;
     text-align: center;
-    font-size: var(--slide-text-large, 2.2rem);
+    font-size: var(--font-size-body);
     padding: 0 var(--space-xl);
   }
 
@@ -597,13 +597,13 @@ const STYLES = `
     background:
       repeating-linear-gradient(
         45deg,
-        rgba(126, 231, 135, 0.03) 0 8px,
-        rgba(10, 14, 20, 0.6) 8px 16px
+        color-mix(in srgb, var(--terminal-green) 3%, transparent) 0 8px,
+        color-mix(in srgb, var(--terminal-bg) 60%, transparent) 8px 16px
       );
-    border: 1px dashed rgba(126, 231, 135, 0.45);
+    border: 1px dashed color-mix(in srgb, var(--terminal-green) 45%, transparent);
     box-shadow:
-      0 18px 48px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(126, 231, 135, 0.06);
+      0 18px 48px color-mix(in srgb, var(--terminal-black) 40%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--terminal-green) 6%, transparent);
     padding: var(--space-md);
     animation: conclusionPanelIn 480ms cubic-bezier(0.19, 1, 0.22, 1) both;
   }
@@ -613,13 +613,13 @@ const STYLES = `
     font-size: var(--slide-text-compact);
     color: var(--terminal-orange);
     letter-spacing: 0.08em;
-    text-shadow: 0 0 8px rgba(240, 136, 62, 0.35);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--terminal-orange) 35%, transparent);
   }
 
   .conclusions-graph__caption {
     font-family: var(--font-mono);
     font-size: var(--slide-text-dense);
-    color: rgba(226, 232, 240, 0.5);
+    color: color-mix(in srgb, var(--terminal-white) 50%, transparent);
     text-align: center;
     max-width: 80%;
   }
@@ -627,9 +627,9 @@ const STYLES = `
   /* Once a real chart is attached, drop the diagonal TBD hatching so the
      SVG sits on a clean dark background, and let it consume vertical space. */
   .conclusions-graph--rendered {
-    background: rgba(10, 14, 20, 0.6);
+    background: color-mix(in srgb, var(--terminal-bg) 60%, transparent);
     border-style: solid;
-    border-color: rgba(126, 231, 135, 0.35);
+    border-color: color-mix(in srgb, var(--terminal-green) 35%, transparent);
     justify-content: stretch;
     padding: var(--space-md);
   }

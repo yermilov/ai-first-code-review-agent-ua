@@ -114,14 +114,14 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
           <div
             style={{
               flex: 1,
-              background: 'rgba(0, 0, 0, 0.6)',
-              border: '1px solid rgba(126, 231, 135, 0.35)',
+              background: 'color-mix(in srgb, var(--terminal-black) 60%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
               borderRadius: '6px',
               position: 'relative',
               overflow: 'hidden',
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 'var(--font-size-small)',
-              color: 'rgba(126, 231, 135, 0.85)',
+              fontSize: 'var(--font-size-code)',
+              color: 'color-mix(in srgb, var(--terminal-green) 85%, transparent)',
               display: 'flex',
               flexDirection: 'column',
               animation: 'metaSkillsPanelIn 0.5s ease-out both',
@@ -136,7 +136,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
                 zIndex: 3,
                 pointerEvents: 'none',
                 backgroundImage:
-                  'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)',
+                  'repeating-linear-gradient(0deg, transparent, transparent 2px, color-mix(in srgb, var(--terminal-black) 8%, transparent) 2px, color-mix(in srgb, var(--terminal-black) 8%, transparent) 4px)',
               }}
             />
 
@@ -151,7 +151,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
                 zIndex: 4,
                 pointerEvents: 'none',
                 background:
-                  'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                  'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
               }}
             />
 
@@ -166,7 +166,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
                 zIndex: 4,
                 pointerEvents: 'none',
                 background:
-                  'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
+                  'linear-gradient(to top, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
               }}
             />
 
@@ -187,7 +187,7 @@ function MetaSkillsContent({ revealStage }: { revealStage: number }) {
                   <div
                     style={{
                       marginTop: '2em',
-                      borderTop: '1px solid rgba(126, 231, 135, 0.15)',
+                      borderTop: '1px solid color-mix(in srgb, var(--terminal-green) 15%, transparent)',
                       paddingTop: '2em',
                     }}
                   >

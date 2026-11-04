@@ -52,7 +52,7 @@ export function PacManCanvas({ revealStage }: PacManCanvasProps) {
         imageRendering: 'pixelated',
         borderRadius: 'var(--input-border-radius)',
         border: '1px solid var(--terminal-border)',
-        background: '#0a0e14',
+        background: 'var(--terminal-bg)',
       }}
     />
   );

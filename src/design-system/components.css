@@ -184,9 +184,9 @@
   background: var(--terminal-white-muted);
 }
 
-.code-block-dot--red { background: #ff5f56; }
-.code-block-dot--yellow { background: #ffbd2e; }
-.code-block-dot--green { background: #27c93f; }
+.code-block-dot--red { background: var(--chrome-dot-red); }
+.code-block-dot--yellow { background: var(--chrome-dot-yellow); }
+.code-block-dot--green { background: var(--chrome-dot-green); }
 
 .code-block-filename {
   flex: 1;
@@ -241,6 +241,8 @@
   padding: 0 !important;
   border: none !important;
   font-family: var(--font-mono) !important;
+  /* the code tier, not inline code's 0.88em */
+  font-size: inherit !important;
 }
 
 

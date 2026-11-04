@@ -1,6 +1,6 @@
 import { DiagramCanvas, StageNode, HumanActor, FlowArrow, SparkTrail } from '../components/diagram';
 
-const ORANGE = '#f0883e';
+const ORANGE = 'var(--terminal-orange)';
 const GREEN  = '#7ee787';
 const BLUE   = '#79c0ff';
 const YELLOW = '#ffd166';
@@ -48,7 +48,7 @@ export function ClaudeIcon({ cx, cy, size = 16 }: { cx: number; cy: number; size
   // Outer <g> handles positioning only (no CSS animation, so SVG transform is not overridden).
   // Inner <g> handles the pop animation with transform-box: fill-box so scale() works correctly.
   return (
-    <g transform={`translate(${cx}, ${cy})`} style={{ filter: 'drop-shadow(0 0 4px #f0883e)' }}>
+    <g transform={`translate(${cx}, ${cy})`} style={{ filter: 'drop-shadow(0 0 4px var(--terminal-orange))' }}>
       <g className="claude-icon-appear">
         <g transform={`translate(${-size / 2}, ${-size / 2}) scale(${s})`}>
           <circle cx={12} cy={12} r={13} fill="#1a1f26" stroke={ORANGE} strokeWidth={1.2} />
@@ -156,12 +156,12 @@ export function EngineerAspireDiagram({
         d="M 415 437 C 486 448, 556 432, 597 415" />
 
       {/* ── SDLC nodes ── */}
-      <StageNode cx={215} cy={265} r={55} label="IDEA"        color="#f0ece8"    strokeWidth={2.5} fontSize={13} />
-      <StageNode cx={375} cy={130} r={50} label="CODING"      color={nc('CODING')}    strokeWidth={2.2} fontSize={12} />
-      <StageNode cx={380} cy={395} r={45} label={"LOCAL\nDEV"} color={nc('LOCAL DEV')} strokeWidth={2.2} fontSize={11} />
-      <StageNode cx={510} cy={255} r={50} label="QA"          color={nc('QA')}        strokeWidth={2.2} fontSize={13} />
-      <StageNode cx={620} cy={130} r={45} label="COMMIT"      color={nc('COMMIT')}    strokeWidth={2.2} fontSize={11} />
-      <StageNode cx={635} cy={395} r={42} label="MONITOR"     color={nc('MONITOR')}   strokeWidth={2.2} fontSize={10} />
+      <StageNode cx={215} cy={265} r={55} label="IDEA"        color="#f0ece8"    strokeWidth={2.5} fontSize={13} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode cx={375} cy={130} r={50} label="CODING"      color={nc('CODING')}    strokeWidth={2.2} fontSize={12} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode cx={380} cy={395} r={45} label={"LOCAL\nDEV"} color={nc('LOCAL DEV')} strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode cx={510} cy={255} r={50} label="QA"          color={nc('QA')}        strokeWidth={2.2} fontSize={13} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode cx={620} cy={130} r={45} label="COMMIT"      color={nc('COMMIT')}    strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode cx={635} cy={395} r={42} label="MONITOR"     color={nc('MONITOR')}   strokeWidth={2.2} fontSize={10} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
 
       {/* ── Pulse rings on highlighted node ── */}
       {isHighlighted('CODING')    && <PulseRing cx={375} cy={130} r={50} />}

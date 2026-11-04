@@ -1,154 +1,91 @@
 ---
 name: design-system
-description: Apply the deck's terminal-CRT design system when creating or modifying slides — three-tier type scale (hero / heading / body), JetBrains Mono throughout, `>` bullet markers with phosphor glow, scan-line + noise CRT overlays, orange / green / cyan palette on deep black, bottom bar chrome wrapping Timer + Input + Progress. Tokens and reusable styles live in `src/design-system/`; per-slide layouts in `src/styles/slide-layouts.css`. TRIGGER when creating a new slide component under `src/slides/`, styling slide content, editing CSS, picking colors or fonts, adjusting spacing, modifying tokens in `src/design-system/`, when a hardcoded hex value or px font-size appears in a diff, or building UI chrome for the presentation. Also trigger when the user asks for the terminal aesthetic, says the deck doesn't feel cohesive, or asks why an accent color doesn't match the rest.
+description: This deck's terminal-CRT design system — the four-size type scale (96 / 80 / 32 / 24), JetBrains Mono, `>` markers with phosphor glow, scan lines + noise, amber / green / cyan / blue on deep black, the bottom bar, and the deck's own primitives (SlideItem, LevelItem, Reveal, revealWindow, `.split`). Tokens in `src/design-system/`, per-slide layouts in `src/styles/slide-layouts.css`, enforced by `bun run lint:deck`. TRIGGER when creating or restyling a slide under `src/slides/`, editing CSS or tokens, picking colours or font sizes, when a raw hex or px font-size shows up in a diff, or when building chrome. Defers to the presentation-dev plugin skills (deck-design-system, slide-layouts, deck-engine, slide-content) for the general rules; this file is what is specific to THIS deck.
 ---
 
-## Scope
+# Design system — ai-first-code-review-agent-ua
 
-This deck has a **terminal-CRT identity** — JetBrains Mono on deep black, warm orange / phosphor green / cyan accents, `>` markers, scan lines, subtle text-shadow glow. The aesthetic is **load-bearing**: removing the mono font, the glow, or the `>` markers breaks the look. Stay inside the system; reach for new tokens or new patterns only when nothing existing fits.
+The general rules live in the **presentation-dev** plugin — load them, they are the source of
+truth:
 
-The system is built for a **conference hall talk at 1920×1080+**: all text must be readable from the back row. Body text caps at 40px, heading at 80px. If a slide overflows, **split it** rather than shrinking text — that's the design system's first commandment.
-
-## Where things live
-
-| Concern | File |
+| Question | Skill |
 |---|---|
-| Design tokens (colors, type scale, spacing, motion) | `src/design-system/tokens.css` |
-| Base layout + headings + lists + links | `src/design-system/base.css` |
-| Reusable patterns (text utilities, glow, slide-item, animations) | `src/design-system/patterns.css` |
-| Chrome components (input bar, tooltips, code block, rotate hint) | `src/design-system/components.css` |
-| Per-slide layouts (one slide each — bio, timeline, VS battle, etc.) | `src/styles/slide-layouts.css` |
-| Slide-element React primitives (SlideItem, Emphasis, SlideLink, CodeBlock) | `src/components/SlideElements.tsx` + `src/components/CodeBlock.tsx` |
+| tokens, type scale, palette, light theme, lint | `presentation-dev:deck-design-system` |
+| which layout, density caps, overflow | `presentation-dev:slide-layouts` |
+| `SlideDefinition`, reveals, navigation, PDF export | `presentation-dev:deck-engine` |
+| what goes on a slide, bullets, notes | `presentation-dev:slide-content` |
 
-Always read `tokens.css` before you write a new style — the token you need probably exists. If you're adding a new token, add it to `tokens.css` with a comment explaining when to reach for it.
+Below is only what is specific to this deck.
 
-## Type scale — three tiers + hero exception
+## The type scale — four sizes, enforced
 
-Read `--font-size-*` in `tokens.css` for the canonical values. The deck uses **only four sizes**:
+`src/design-system/tokens.css` defines exactly four tiers; everything else aliases onto them.
 
-| Tier | Token | Use |
-|---|---|---|
-| **Hero** | `--font-size-hero` (~96px max) | Title slide only |
-| **Heading** | `--font-size-h1` / `--font-size-h2` (~80px max) | Section heading per slide. `h1` is the default; `h2` is the same size but green |
-| **Body** | `--font-size-body` (~40px max) | Paragraphs, list items, default text |
-| **Code** | `--font-size-code` (~24px max) | Inline code and code blocks |
+| Tier | Token | At 1920×1080 | Use |
+|---|---|---|---|
+| Hero | `--font-size-hero` | 96px | title slide's `h1.hero` only |
+| Heading | `--font-size-heading` | 80px | every slide title (`title:` on the SlideDefinition) |
+| Body | `--font-size-body` | 32px | bullets, paragraphs, labels, `// SECTION` headers |
+| Code | `--font-size-code` | 24px | code blocks and machine panels (system prompt, prompt panels, `[RULE.01]` tags) |
 
-`--font-size-h3` exists but is rarely used and not part of the canonical scale. If you want to write h3, ask whether you actually need a third heading tier — usually you can structure it as body with a `.section-header` label above.
+Each is `clamp(min, min(Xvw, Yvh), max)`: it scales with BOTH axes, so a short laptop window keeps
+the stage's proportions. `--slide-text-compact` / `dense`, `--font-size-h1/h2/h3` and the section
+header tokens are aliases — they shrink nothing. Inline `<code>` in prose is `0.88em`. Hierarchy
+inside a tier is weight, colour and capitals, never a fifth size.
 
-**Body variants** — `--slide-text-compact` and `--slide-text-dense` are escape hatches for legacy slides with too much content. **Do not reach for them.** If a slide needs them, split the slide instead. The hall-readable default is `--slide-text-normal` which equals `--font-size-body`.
+`bun run lint:deck` (`scripts/deck-lint.ts`, copied from the plugin) fails on a fifth size, a raw
+px/rem font-size, a literal JSX `fontSize`, a raw hex/rgb outside `tokens.css`, or a `•`. It runs
+in the pre-commit hook (`.githooks/pre-commit`, wired by `bun install` → `prepare`) and in
+`bun run build`. A legitimate exception carries `deck-lint-allow <rule>: <reason>` on that line.
 
-All sizes use `clamp(min, preferred, max)` so they scale smoothly from phone to 1920px without breakpoint cliffs.
+## Colour
 
-## Dark + light themes
+Four accents — `--terminal-orange`, `--terminal-green`, `--terminal-cyan`, `--terminal-blue` —
+plus neutrals. `--terminal-purple` / `--terminal-red` are for syntax highlighting only.
+Tints are `color-mix(in srgb, var(--token) N%, transparent)`, never `rgba()`. Drop shadows mix
+from `--terminal-shadow` (black on the CRT, warm umber on paper). Colours that belong to a
+*picture of something else* are tokens with a comment saying so: the macOS traffic lights
+(`--chrome-dot-*`); SVG diagram constants (the DOU palette on the AI-innovator curve, the
+status-page colours on industry-patterns, the mock GitHub/raw-HTML pages inside slide `<style>`
+tags) keep their own picture colours. Any new `:root` colour needs its `[data-theme="light"]`
+mirror unless it is such a fixed picture colour.
 
-The deck ships **two theme variants**:
+## Primitives (`src/components/SlideElements.tsx`)
 
-- **Dark (default)** — deep black CRT terminal with full phosphor glow, scan-line + noise overlays. The original identity.
-- **Light** — "paper terminal": warm cream `#f5efe6` background, darker amber / green / blue accents, glow text-shadow at reduced alpha, **scan lines and noise dropped entirely** (light mode is a paper metaphor, not a CRT).
-
-Switch at runtime with the `light` and `dark` terminal commands. The choice persists in `localStorage` under the key `theme`. The active variant lives on the root element as `<html data-theme="light">` (dark is the absence of the attribute).
-
-Light-theme overrides live in `tokens.css` under the `[data-theme="light"]` selector. Only tokens that need to differ for light are overridden — spacing, motion, type scale, radii are theme-agnostic. **If you add a new accent or background token to `:root`, mirror it under `[data-theme="light"]`.** Otherwise the light theme will inherit the dark value and the contrast will break.
-
-CRT effects are gated by the `--scanline-opacity` and `--noise-opacity` tokens, which are set to `0` in light theme. Don't hardcode CRT visuals — always go through these tokens so the theme switch works.
-
-## Color palette — four accents + neutrals
-
-Read `--terminal-*` in `tokens.css`. The accent palette is small:
-
-| Color | Token | Use |
-|---|---|---|
-| Orange (Claude amber) | `--terminal-orange` | h1, `>` markers, primary emphasis, input prompt, focus border |
-| Phosphor green | `--terminal-green` | h2, command names, success state, ordered-list counters |
-| Cyan | `--terminal-cyan` | Inline code, hyperlink hover, technical highlights |
-| Blue | `--terminal-blue` | h3, default link color, secondary technical accent |
-
-Plus `--terminal-purple` and `--terminal-red` exist for code-block syntax highlighting; do not use them as primary slide accents.
-
-**Backgrounds** are always `--terminal-bg` (deep black) or `--terminal-bg-elevated` (slightly lifted). No gradients, no patterns. The CRT scan-line + noise overlays in `.presentation::before` / `::after` provide all the texture.
-
-**Glow** is load-bearing. Headings, `>` markers, prompt `>`, and accent text use `text-shadow: var(--glow-text-*)`. Removing the glow makes the deck look like a generic web page. When you add new accent text, add the glow too.
-
-## Bullets and lists
-
-The deck's `ul` and `ol` are styled in `base.css`:
-
-- `ul` → `>` marker (orange, glowing, bold)
-- `ol` → numbered counter (green, glowing)
-
-This is **command-line aesthetic**. Don't switch to `•` bullets — that breaks the identity.
-
-For richer list items (icon prefix, inline emphasis, reveal animation), use the `<SlideItem>` React component from `src/components/SlideElements.tsx`. Its `prefix` prop accepts `>`, `>>`, `>>>`, `>>>>` for depth.
-
-## Code blocks
-
-The `<CodeBlock>` component renders a macOS-terminal-style window (three traffic-light dots, filename in the header, syntax highlighting). This is iconic; don't redesign it. Inline code uses `<code>` (styled in `base.css`) which renders cyan-bordered against `--terminal-bg-elevated`.
-
-For variants (orange / green inline code), use the `.code-inline--orange` / `.code-inline--green` utility classes from `patterns.css`.
-
-## Bottom bar
-
-Timer, terminal input, and slide progress live in a single `.input-bar` strip pinned to the bottom of `.presentation` (see `components.css`). They are **inline flex children**, not absolutely-positioned floating elements. If you add a new piece of chrome that should live next to the input, put it inside `.input-bar`; don't add another fixed-position element.
-
-The slide progress bar appears only after the deck is past 50% (`(currentSlide + 1) / slides.length > 0.5` in `Presentation.tsx`) — early slides don't show progress so the audience focuses on opening framing.
-
-## CRT effects
-
-Three layers create the CRT identity:
-
-1. **Scan lines** — `repeating-linear-gradient` on `.presentation::before`
-2. **Fractal noise** — SVG `feTurbulence` data URI on `.presentation::after`
-3. **Phosphor glow** — `text-shadow` on all accent text and markers
-
-The intensities are tokenized: `--scanline-opacity`, `--noise-opacity`. Tune these globally rather than overriding per-slide.
-
-On mobile (`max-width: 768px and (pointer: coarse)`), `patterns.css` reduces scan-line opacity and drops the noise overlay to reclaim frame budget. Honor this — phones can't paint the full effect smoothly.
-
-## Spacing, motion, radii
-
-Read `tokens.css`. There's one scale of each:
-
-- **Spacing** — `--space-xs` (4px) → `--space-3xl` (96px). Use these, never raw px.
-- **Radii** — `--radius-card` (8px) is the canonical card radius. Inputs, tooltips, code blocks all use it.
-- **Motion** — `--transition-fast` / `-normal` / `-slow` for duration; `--ease` for the single deck-wide easing curve.
-
-## Creating a new slide
-
-1. Create `src/slides/MyNewSlide.tsx` exporting a `SlideDefinition` (see existing slides for shape).
-2. Use the React primitives from `src/components/SlideElements.tsx`: `SlideItem` for bullets, `Emphasis` for inline coloured text, `SlideLink` for URLs.
-3. Use design tokens for any inline styles (`var(--terminal-orange)`, never `#f0883e`).
-4. If the slide needs a layout that doesn't exist (new flex/grid arrangement), add a class scoped to that slide in `src/styles/slide-layouts.css`. Don't add it to `design-system/` unless multiple slides will reuse it.
-5. Cap content at ~6 bullets or ~4 paragraphs per slide. If you need more, split.
-6. Run `bun run dev` and verify in the browser. Hard-refresh once after CSS changes so Vite picks up the new tokens.
-
-## Anti-patterns — do not
-
-| Don't | Reason |
+| Primitive | Use |
 |---|---|
-| Hardcode hex colours (`color: #f0883e`) | Use tokens; the palette is centrally tunable |
-| Hardcode px font sizes | Use `clamp()` tokens; they handle hall + phone |
-| Reach for `slide-text-compact` / `dense` to fit content | Split the slide instead — back-row readability matters |
-| Switch `>` to `•` for bullets | Breaks the command-line aesthetic |
-| Add `text-shadow: none` to a new accent heading | Glow is load-bearing for the CRT identity |
-| Put per-slide CSS in `design-system/` | DS is for cross-slide reuse; one-slide styles go in `slide-layouts.css` |
-| Float a new timer/progress/badge as `position: fixed` | Chrome lives inside `.input-bar` |
-| Introduce a serif or sans-serif body font | Mono everywhere is load-bearing |
-| Remove the scan-line / noise overlays for a "cleaner" look | They are the CRT identity |
-| Add a 5th accent colour | The palette is intentionally constrained |
-| Add a new accent token to `:root` without mirroring under `[data-theme="light"]` | Light theme will inherit the dark value and lose contrast |
-| Hardcode scan-line or noise visuals directly (instead of through `--scanline-opacity` / `--noise-opacity`) | Light theme can't disable them |
+| `SlideItem` | the `>` bullet. `hidden` keeps its slot while not yet revealed |
+| `LevelItem` | weighted bullet `>>` / `>` / `--` (available; not yet used by this deck); optional `aside` |
+| `Reveal` | any non-bullet block (chip, QR, panel) revealed in place |
+| `revealWindow(items, shown, size)` | slots for one-bullet-per-stage lists; a sliding window once `size` is reached |
+| `Code`, `Quote`, `Emphasis`, `SlideLink`, `SectionHeader` | inline pieces — don't re-declare local `Command` / `Prompt` helpers |
+
+**A reveal never moves what is already on screen**: every revealable element is laid out from
+stage 0 and hidden with `.is-unrevealed` (visibility: hidden, no animation). The only exemption
+is a sliding window, whose survivors move up a slot by design.
+
+## Layout
+
+- A titled slide renders `h2.slide-title` as an in-flow band and its content inside
+  `.slide-body`, which gets exactly the height the title leaves. Size media with
+  `max-height: 100%` / `height: 100%` against it — **never** `calc(var(--vh-full) - <chrome px>)`
+  in new code (some older layouts still use it; replace when you touch them).
+- `.split` (in `patterns.css`) is the shared two-column text + visual layout; three visible
+  bullets beside the visual. Visuals step aside below 900px wide or 500px tall.
+- One-slide layouts go in `src/styles/slide-layouts.css`, scoped to that slide's class. Several
+  older slides still carry a `<style>` tag (AI-innovator curve, agenda, conclusions, PoV
+  teammates, …) — deck-lint does NOT see CSS inside template strings, so check those by computed
+  size. Don't add new ones; move a slide's block into `slide-layouts.css` when you next touch it.
+- SVG diagrams (`src/components/diagram/`, conclusions charts, SDLC/aspire diagrams) draw labels
+  at the picture's own scale; each such `fontSize` carries a `deck-lint-allow` comment.
+- Keyframes that move something centred use the `translate` / `scale` properties, not
+  `transform`, so they don't clobber the centring.
 
 ## Validation
 
-After any change touching `src/design-system/` or `src/slides/`:
-
-1. `bunx tsc --noEmit` — typecheck must pass
-2. `bun run check:async-slides` — async-slide audit must pass
-3. `bun run dev` — start dev server
-4. Hard-refresh `http://localhost:5173/ai-first-code-review-agent-ua/` to clear Vite's CSS cache
-5. Eyeball at least three slides: title (hero), a content slide (heading + bullets), a code-block slide. Confirm: heading is huge and glowing, body text is back-row readable, `>` markers are orange, bottom bar is wired
-6. If touching token sizes, also resize the window to ~768px and confirm the layout still reads (no overflow, no chrome collision)
-
-## When to evolve the system
-
-The design system is **not frozen**. If you find yourself fighting it — needing a 5th color, a new bullet style, a different text scale — that's a signal to update `tokens.css` or `patterns.css` rather than work around it locally. But pause first and ask: is the friction telling me the slide is wrong, or is the system wrong? Usually it's the slide. Sometimes it's the system, and then change it deliberately, with a comment explaining why.
+1. `bun run check` — deck-lint + async-slide gate + typecheck
+2. `bun run dev`, hard-refresh `http://localhost:5173/ai-first-code-review-agent-ua/`
+3. Step through every reveal of each changed slide **in both languages** (`ukrainian` /
+   `english`, or `?lang=en`); screenshot the last reveal
+4. Overflow and computed sizes across 1920×1080, 1728×850, 1280×720, 1024×768 and landscape
+   phones — measured (deck-engine, *Verifying a change*), not eyeballed

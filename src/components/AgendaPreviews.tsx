@@ -30,7 +30,7 @@ export function PovSolitairePreview() {
           width: 100%;
           height: 100%;
           overflow: hidden;
-          background: #0a0e14;
+          background: var(--terminal-bg);
           border-radius: 4px;
           border: 1px solid var(--terminal-border);
         }
@@ -39,9 +39,9 @@ export function PovSolitairePreview() {
           width: 32%;
           aspect-ratio: 4 / 3;
           background: #fff;
-          border: 1px solid rgba(255, 255, 255, 0.18);
+          border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 18%, transparent);
           border-radius: 3px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+          box-shadow: 0 4px 12px color-mix(in srgb, var(--terminal-black) 55%, transparent);
           overflow: hidden;
           animation: pov-preview-drift 5s ease-in-out infinite;
         }
@@ -91,7 +91,7 @@ export function SkillAstronautsPreview() {
           width: 100%;
           height: 100%;
           overflow: hidden;
-          background-color: #0a0e14;
+          background-color: var(--terminal-bg);
           background-image: url(${spaceBg});
           background-position: center;
           background-size: cover;
@@ -104,9 +104,9 @@ export function SkillAstronautsPreview() {
           position: absolute;
           inset: 0;
           background: linear-gradient(180deg,
-            rgba(10, 14, 20, 0.45) 0%,
-            rgba(10, 14, 20, 0.25) 50%,
-            rgba(10, 14, 20, 0.55) 100%);
+            color-mix(in srgb, var(--terminal-bg) 45%, transparent) 0%,
+            color-mix(in srgb, var(--terminal-bg) 25%, transparent) 50%,
+            color-mix(in srgb, var(--terminal-bg) 55%, transparent) 100%);
           pointer-events: none;
         }
         .astro-preview__astro {
@@ -116,7 +116,7 @@ export function SkillAstronautsPreview() {
           width: auto;
           object-fit: contain;
           mix-blend-mode: screen;
-          filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.55));
+          filter: drop-shadow(0 4px 16px color-mix(in srgb, var(--terminal-black) 55%, transparent));
           pointer-events: none;
         }
         .astro-preview__astro--left {
@@ -156,7 +156,7 @@ export function TimeShiftPreview() {
           width: 100%;
           height: 100%;
           overflow: hidden;
-          background: #0a0e14;
+          background: var(--terminal-bg);
           border-radius: 4px;
           border: 1px solid var(--terminal-border);
           display: flex;

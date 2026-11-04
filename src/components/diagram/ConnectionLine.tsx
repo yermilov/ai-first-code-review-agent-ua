@@ -62,7 +62,7 @@ export function ConnectionLine({
           y={my - 8}
           textAnchor="middle"
           fill={color}
-          fontSize="11"
+          fontSize="11" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
           fontFamily="'JetBrains Mono', monospace"
           opacity="0.75"
         >

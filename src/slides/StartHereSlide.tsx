@@ -121,14 +121,14 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
           style={{
             flex: 1,
             height: colHeight,
-            background: 'rgba(0,0,0,0.6)',
-            border: '1px solid rgba(126,231,135,0.35)',
+            background: 'color-mix(in srgb, var(--terminal-black) 60%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
             borderRadius: '4px',
             position: 'relative',
             overflow: 'hidden',
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: 'var(--font-size-small)',
-            color: 'rgba(126,231,135,0.85)',
+            fontSize: 'var(--font-size-code)',
+            color: 'color-mix(in srgb, var(--terminal-green) 85%, transparent)',
             display: 'flex',
             flexDirection: 'column',
             animation: 'startHereRevealPanel 0.5s ease-out both',
@@ -137,26 +137,26 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
           {/* CRT scan lines */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none',
-            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)',
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, color-mix(in srgb, var(--terminal-black) 8%, transparent) 2px, color-mix(in srgb, var(--terminal-black) 8%, transparent) 4px)',
           }} />
 
           {/* Top fade */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '60px', zIndex: 4, pointerEvents: 'none',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)',
+            background: 'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
           }} />
 
           {/* Bottom fade */}
           <div style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', zIndex: 4, pointerEvents: 'none',
-            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
+            background: 'linear-gradient(to top, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
           }} />
 
           {/* Corner decorations */}
           {['top:4px;left:4px', 'top:4px;right:4px', 'bottom:4px;left:4px', 'bottom:4px;right:4px'].map((pos, i) => (
             <div key={i} style={{
               position: 'absolute', zIndex: 5, width: '6px', height: '6px',
-              borderColor: 'rgba(126,231,135,0.5)',
+              borderColor: 'color-mix(in srgb, var(--terminal-green) 50%, transparent)',
               borderStyle: 'solid',
               borderWidth: i === 0 ? '1px 0 0 1px' : i === 1 ? '1px 1px 0 0' : i === 2 ? '0 0 1px 1px' : '0 1px 1px 0',
               ...Object.fromEntries(pos.split(';').map(p => { const [k, v] = p.split(':'); return [k, v]; })),
@@ -166,7 +166,7 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
           {/* Scrollable content area */}
           <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
             {!content && !error && (
-              <div style={{ padding: 'var(--space-md)', color: 'rgba(126,231,135,0.5)' }}>
+              <div style={{ padding: 'var(--space-md)', color: 'color-mix(in srgb, var(--terminal-green) 50%, transparent)' }}>
                 {['', '', ''].map((_, i) => (
                   <span key={i} style={{ animation: `startHereLoadingDot 1.4s ${i * 0.2}s ease-in-out infinite` }}>●</span>
                 ))}
@@ -175,7 +175,7 @@ function StartHereContent({ revealStage }: { revealStage: number }) {
             )}
 
             {error && (
-              <div style={{ padding: 'var(--space-md)', color: 'rgba(240,136,62,0.7)' }}>
+              <div style={{ padding: 'var(--space-md)', color: 'color-mix(in srgb, var(--terminal-orange) 70%, transparent)' }}>
                 ✗ failed to fetch pr-review-comprehensive.yml
               </div>
             )}

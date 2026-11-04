@@ -189,7 +189,7 @@ const STYLES = `
     color: var(--zone-color);
     /* Sized so 4 bullets fit in a quarter-width column without forcing the
        longest one to wrap, and without overflowing past the slide bottom. */
-    font-size: clamp(0.85rem, 1.05vw, 1.3rem);
+    font-size: var(--font-size-code);
     line-height: 1.15;
   }
 
@@ -197,7 +197,7 @@ const STYLES = `
     color: ${DOU_MAGENTA};
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: var(--slide-text-h3, var(--font-size-h3));
+    font-size: var(--font-size-body);
     letter-spacing: 0.2em;
     animation: mysterGlow 2.4s ease-in-out infinite;
   }
@@ -248,8 +248,8 @@ const STYLES = `
     background: linear-gradient(
       to bottom,
       transparent,
-      rgba(255, 255, 255, 0.12) 12%,
-      rgba(255, 255, 255, 0.12) 88%,
+      color-mix(in srgb, var(--terminal-pure-white) 12%, transparent) 12%,
+      color-mix(in srgb, var(--terminal-pure-white) 12%, transparent) 88%,
       transparent
     );
     justify-self: end;
@@ -353,7 +353,7 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
           <path
             d={outlinePath}
             fill="none"
-            stroke="rgba(255, 255, 255, 0.78)"
+            stroke="color-mix(in srgb, var(--terminal-pure-white) 78%, transparent)"
             strokeWidth={1.5}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -365,7 +365,7 @@ function AIInnovatorCurveContent({ revealStage }: { revealStage: number }) {
             y1={CURVE_H}
             x2={CURVE_W}
             y2={CURVE_H}
-            stroke="rgba(255, 255, 255, 0.16)"
+            stroke="color-mix(in srgb, var(--terminal-pure-white) 16%, transparent)"
             strokeWidth={1}
             vectorEffect="non-scaling-stroke"
           />

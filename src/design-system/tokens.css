@@ -39,36 +39,56 @@
   --terminal-cyan-glow: rgba(118, 228, 247, 0.3);
   --terminal-yellow: #ffd166;
 
+  /* Neutrals for shadows and pictures. `--terminal-shadow` is the colour
+   * drop shadows are mixed from: black on the CRT, warm umber on paper.
+   * `--terminal-black` / `--terminal-pure-white` are fixed (photo scrims,
+   * text set on a picture) and need no light mirror. */
+  --terminal-shadow: #000;
+  --terminal-black: #000;
+  --terminal-pure-white: #fff;
+
+  /* macOS window traffic lights on code-block chrome (a picture of a window,
+   * so these stay their real colours in both themes). */
+  --chrome-dot-red: #ff5f56;
+  --chrome-dot-yellow: #ffbd2e;
+  --chrome-dot-green: #27c93f;
+
   /* Border colors */
   --terminal-border: #1e293b;
   --terminal-border-bright: #334155;
+  --terminal-border-hover: #475569;
   --terminal-border-focus: var(--terminal-orange);
 
   /* === TYPOGRAPHY === */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
 
-  /* Three-tier type scale tuned for back-row readability in a conference hall.
-   * Fluid clamp(min, preferred, max) so text scales smoothly from phone
-   * (~480px) up to desktop (~1920px) without breakpoint cliffs. Maxima
-   * sized for a projector at ~3–5m viewing distance.
+  /* FOUR font sizes, and only four — each with one job (deck-design-system).
+   * Values are the 1920×1080 maxima; the preferred term scales with BOTH
+   * axes (min of vw and vh) so a short laptop window keeps the proportions
+   * of the stage instead of overflowing.
    *
-   *   HERO    ~96px max — title slide only
-   *   HEADING ~80px max — h1 + h2 (same size; h1 is semantic, h2 is the
-   *                                content-slide section header)
-   *   BODY    ~40px max — paragraphs, list items, default text
-   *   CODE    ~24px max — inline code + code blocks
+   *   1 · HERO     96px — the title of the title slide, nothing else
+   *   2 · HEADING  80px — every other slide title
+   *   3 · BODY     32px — paragraphs, bullets, labels, captions
+   *   4 · CODE     24px — code blocks and machine panels
    *
-   * The compact/dense body variants exist as legacy escape hatches for
-   * dense slides. The design system prefers splitting a too-dense slide
-   * over shrinking text. */
-  --font-size-hero: clamp(2.5rem, 6vw, 6rem);
-  --font-size-h1: clamp(2rem, 4vw, 5rem);
-  --font-size-h2: clamp(2rem, 4vw, 5rem);
-  --font-size-h3: clamp(1.5rem, 3vw, 3rem);
-  --font-size-body: clamp(1rem, 1.6vw, 2rem);
-  --font-size-code: clamp(0.9rem, 1.3vw, 1.5rem);
+   * Hierarchy inside a tier comes from weight, colour and capitals — never
+   * from a fifth size. Inline <code> in prose is 0.88em (reads as the same
+   * size as the text around it). */
+  --font-size-hero: clamp(2.5rem, min(5vw, 8.889vh), 6rem);
+  --font-size-heading: clamp(2rem, min(4.1667vw, 7.4074vh), 5rem);
+  --font-size-body: clamp(1rem, min(1.6667vw, 2.963vh), 2rem);
+  --font-size-code: clamp(0.85rem, min(1.25vw, 2.2222vh), 1.5rem);
+
+  /* Chrome — not slide type (input box, captions under the progress track). */
   --font-size-input: clamp(0.95rem, 1vw, 1.25rem);
   --font-size-small: clamp(0.8rem, 0.8vw, 1rem);
+
+  /* Aliases onto the four tiers. They exist so older rules read naturally;
+   * none of them holds a value of its own. */
+  --font-size-h1: var(--font-size-heading);
+  --font-size-h2: var(--font-size-heading);
+  --font-size-h3: var(--font-size-body);
 
   --line-height-tight: 1.2;
   --line-height-normal: 1.6;
@@ -78,23 +98,20 @@
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.05em;
 
-  /* Body size variants. `normal` matches the hall-readable body size.
-   * Compact / dense are escape hatches for legacy slides. */
+  /* Body aliases. compact / dense do NOT shrink anything — an overflowing
+   * slide is split or gets a sliding window, never smaller type. */
   --slide-text-normal: var(--font-size-body);
-  --slide-text-compact: clamp(1.05rem, 1.6vw, 2rem);
-  --slide-text-dense: clamp(0.95rem, 1.4vw, 1.65rem);
+  --slide-text-compact: var(--font-size-body);
+  --slide-text-dense: var(--font-size-body);
 
   --slide-line-height-normal: 1.55;
   --slide-line-height-compact: 1.5;
   --slide-line-height-dense: 1.45;
 
-  /* Section headers (uppercase orange labels above body sections) */
-  --slide-section-header: clamp(1rem, 1.4vw, 1.5rem);
-  --slide-section-header-compact: clamp(0.9rem, 1.2vw, 1.25rem);
-  --slide-section-header-dense: clamp(0.8rem, 1vw, 1.1rem);
-
-  /* Inline code */
-  --slide-code-relative: 0.95em;
+  /* `// LABEL` section headers — body tier, set apart by caps + colour */
+  --slide-section-header: var(--font-size-body);
+  --slide-section-header-compact: var(--font-size-body);
+  --slide-section-header-dense: var(--font-size-body);
 
   /* === SPACING === */
   --space-xs: 0.25rem;
@@ -189,6 +206,10 @@
   /* Borders read darker against cream */
   --terminal-border: rgba(0, 0, 0, 0.12);
   --terminal-border-bright: rgba(0, 0, 0, 0.24);
+  --terminal-border-hover: rgba(0, 0, 0, 0.36);
+
+  /* Warm umber shadows read as paper, black ones as dirt */
+  --terminal-shadow: #784614;
 
   /* Drop the CRT atmosphere — light mode is a paper / notebook metaphor.
    * Glow text-shadow stays (defined above via --glow-text-* which use

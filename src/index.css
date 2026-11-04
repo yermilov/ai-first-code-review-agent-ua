@@ -11,6 +11,7 @@
 }
 
 html {
+  /* deck-lint-allow font-size: the rem anchor every tier clamp() is written against, not slide type */
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,8 +27,8 @@ body,
 }
 
 body {
-  background: #0a0e14;
-  color: #e2e8f0;
+  background: var(--terminal-bg);
+  color: var(--terminal-white);
   font-family: 'JetBrains Mono', monospace;
   line-height: 1.6;
 }
@@ -41,13 +42,13 @@ body {
 
 /* Custom selection colors */
 ::selection {
-  background: #f0883e;
-  color: #0a0e14;
+  background: var(--terminal-orange);
+  color: var(--terminal-bg);
 }
 
 ::-moz-selection {
-  background: #f0883e;
-  color: #0a0e14;
+  background: var(--terminal-orange);
+  color: var(--terminal-bg);
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -57,21 +58,21 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d1219;
+  background: var(--terminal-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: var(--terminal-border-bright);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--terminal-border-hover);
 }
 
 /* Focus visible for accessibility */
 :focus-visible {
-  outline: 2px solid #f0883e;
+  outline: 2px solid var(--terminal-orange);
   outline-offset: 2px;
 }
 

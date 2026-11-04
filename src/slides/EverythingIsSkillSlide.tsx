@@ -91,14 +91,14 @@ function EverythingIsSkillContent({ revealStage }: { revealStage: number }) {
               flex: 1,
               alignSelf: 'center',
               maxHeight: '100%',
-              background: 'rgba(10, 14, 20, 0.6)',
-              border: '1px solid rgba(126, 231, 135, 0.35)',
+              background: 'color-mix(in srgb, var(--terminal-bg) 60%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
               borderRadius: '6px',
               padding: 'var(--space-md) var(--space-lg)',
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 'var(--font-size-small)',
+              fontSize: 'var(--font-size-code)',
               lineHeight: 1.5,
-              color: 'rgba(226, 232, 240, 0.92)',
+              color: 'color-mix(in srgb, var(--terminal-white) 92%, transparent)',
               textAlign: 'left',
               whiteSpace: 'pre-wrap',
               overflow: 'auto',
@@ -106,7 +106,7 @@ function EverythingIsSkillContent({ revealStage }: { revealStage: number }) {
               flexDirection: 'column',
               gap: 'var(--space-sm)',
               boxShadow:
-                '0 18px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                '0 18px 48px color-mix(in srgb, var(--terminal-black) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 5%, transparent)',
               animation: 'everythingPanelIn 0.5s ease-out both',
             }}
           >

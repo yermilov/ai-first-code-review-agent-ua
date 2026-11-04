@@ -15,8 +15,8 @@
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, var(--scanline-opacity)) 2px,
-    rgba(0, 0, 0, var(--scanline-opacity)) 4px
+    color-mix(in srgb, var(--terminal-black) calc(var(--scanline-opacity) * 100%), transparent) 2px,
+    color-mix(in srgb, var(--terminal-black) calc(var(--scanline-opacity) * 100%), transparent) 4px
   );
   pointer-events: none;
   z-index: 1000;
@@ -33,20 +33,20 @@
 }
 
 /* === COLOR + GLOW UTILITIES === */
-.text-orange { color: var(--terminal-orange); }
-.text-green { color: var(--terminal-green); }
-.text-blue { color: var(--terminal-blue); }
-.text-purple { color: var(--terminal-purple); }
-.text-cyan { color: var(--terminal-cyan); }
-.text-dim { color: var(--terminal-white-dim); }
-.text-muted { color: var(--terminal-white-muted); }
+.text-orange{ color: var(--terminal-orange); }
+.text-green{ color: var(--terminal-green); }
+.text-blue{ color: var(--terminal-blue); }
+.text-purple{ color: var(--terminal-purple); }
+.text-cyan{ color: var(--terminal-cyan); }
+.text-dim{ color: var(--terminal-white-dim); }
+.text-muted{ color: var(--terminal-white-muted); }
 
-.glow-orange { text-shadow: var(--glow-text-orange); }
-.glow-green { text-shadow: var(--glow-text-green); }
+.glow-orange{ text-shadow: var(--glow-text-orange); }
+.glow-green{ text-shadow: var(--glow-text-green); }
 
-.text-left { text-align: left; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
+.text-left{ text-align: left; }
+.text-center{ text-align: center; }
+.text-right{ text-align: right; }
 
 /* === SECTION HEADERS (uppercase orange labels) === */
 .section-header {
@@ -85,29 +85,39 @@
   text-shadow: 0 0 10px var(--terminal-blue-glow);
 }
 
+.section-header--orange {
+  color: var(--terminal-orange);
+  text-shadow: 0 0 10px var(--terminal-orange-glow);
+}
+
+.section-header--cyan {
+  color: var(--terminal-cyan);
+  text-shadow: 0 0 10px var(--terminal-cyan-glow);
+}
+
 /* === INLINE CODE VARIANTS (cyan default, orange, green) === */
 .code-inline {
-  background: rgba(118, 228, 247, 0.1);
+  background: color-mix(in srgb, var(--terminal-cyan) 10%, transparent);
   padding: var(--space-xs) var(--space-sm);
   border-radius: 4px;
   color: var(--terminal-cyan);
-  font-size: var(--slide-code-relative);
+  font-size: 0.88em; /* inline code reads as the same size as the prose around it */
   font-weight: 600;
-  border: 1px solid rgba(118, 228, 247, 0.3);
+  border: 1px solid color-mix(in srgb, var(--terminal-cyan) 30%, transparent);
   text-shadow: 0 0 8px var(--terminal-cyan-glow);
 }
 
 .code-inline--orange {
-  background: rgba(240, 136, 62, 0.1);
+  background: color-mix(in srgb, var(--terminal-orange) 10%, transparent);
   color: var(--terminal-orange);
-  border-color: rgba(240, 136, 62, 0.3);
+  border-color: color-mix(in srgb, var(--terminal-orange) 30%, transparent);
   text-shadow: 0 0 8px var(--terminal-orange-glow);
 }
 
 .code-inline--green {
-  background: rgba(126, 231, 135, 0.1);
+  background: color-mix(in srgb, var(--terminal-green) 10%, transparent);
   color: var(--terminal-green);
-  border-color: rgba(126, 231, 135, 0.3);
+  border-color: color-mix(in srgb, var(--terminal-green) 30%, transparent);
   text-shadow: 0 0 8px var(--terminal-green-glow);
 }
 
@@ -146,6 +156,90 @@
   text-shadow: 0 0 10px var(--terminal-orange-glow);
 }
 
+/* === LEVEL ITEM (<LevelItem>) ===
+ * Weighted bullet: >> high (orange, glowing label), > medium (blue),
+ * -- low (dim). Same body tier for all three — weight is carried by the
+ * marker and colour, never by size. */
+.level-item {
+  display: grid;
+  grid-template-columns: 2.5ch 1fr;
+  align-items: baseline;
+  gap: var(--space-md);
+  font-size: var(--font-size-body);
+  line-height: 1.4;
+  margin-bottom: var(--space-sm);
+  color: var(--terminal-white);
+  text-align: left;
+}
+
+.level-item--with-aside {
+  grid-template-columns: 2.5ch 1fr auto;
+}
+
+.level-item__prefix {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.level-item--high .level-item__prefix {
+  color: var(--terminal-orange);
+  text-shadow: var(--glow-text-orange);
+}
+
+.level-item--high .level-item__label {
+  text-shadow: 0 0 20px color-mix(in srgb, var(--terminal-orange) 30%, transparent);
+}
+
+.level-item--medium .level-item__prefix{ color: var(--terminal-blue); }
+.level-item--low .level-item__prefix{ color: var(--terminal-white-dim); }
+.level-item--low{ opacity: 0.85; }
+
+.level-item__aside {
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.level-item--high .level-item__aside{ color: var(--terminal-green); }
+.level-item--medium .level-item__aside{ color: var(--terminal-green-dim); }
+.level-item--low .level-item__aside{ color: var(--terminal-white-dim); }
+
+/* === SPLIT: two-column text + visual (slide-layouts shape 5) ===
+ * Bullets on the left, one visual on the right. Used by several slides,
+ * hence here rather than in slide-layouts.css. The row takes the slide
+ * body's full height; the visual fits inside it (max-height: 100%), so no
+ * chrome height is ever subtracted by hand. Cap: 3 visible bullets beside
+ * the visual (use revealWindow). */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2xl);
+  width: 100%;
+  height: 100%;
+}
+
+.split__text {
+  text-align: left;
+  min-width: 0;
+}
+
+.split__media {
+  display: block;
+  max-width: min(42vw, 760px);
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--terminal-shadow) 40%, transparent);
+}
+
+/* narrow / short screens: the visual steps aside, the text stays */
+@media (max-width: 900px), (max-height: 500px) {
+  .split{ grid-template-columns: minmax(0, 1fr); }
+  .split__media{ display: none; }
+}
+
 /* === SLIDE LINK (styled <a> for in-slide URLs) === */
 .slide-link {
   color: var(--terminal-blue);
@@ -177,10 +271,50 @@
   text-shadow: 0 0 6px var(--terminal-green-glow);
 }
 
+.text-emphasis--cyan {
+  color: var(--terminal-cyan);
+  text-shadow: 0 0 6px var(--terminal-cyan-glow);
+}
+
+.text-emphasis--dim {
+  color: var(--terminal-white-dim);
+  font-weight: 400;
+}
+
 .text-quote {
   color: var(--terminal-orange);
   font-style: italic;
   text-shadow: 0 0 6px var(--terminal-orange-glow);
+}
+
+/* === REVEAL STATES ===
+ * Not-yet-revealed content keeps its slot (so nothing shifts when it
+ * appears) and has no animation, so the entrance plays on reveal, not on
+ * mount. Motion: ~300ms, the deck easing, ~12px in from the left; a delay
+ * (stagger) comes through --enter-delay. */
+.is-unrevealed {
+  visibility: hidden;
+  animation: none !important;
+}
+
+.slide-item--enter,
+.reveal-enter {
+  animation: slideItemFadeIn 300ms var(--ease) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+
+.slide-item--reveal {
+  animation: slideItemReveal 350ms var(--ease) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-item--enter,
+  .slide-item--reveal,
+  .reveal-enter,
+  .slide {
+    animation: none !important;
+  }
 }
 
 /* === REVEAL ANIMATIONS === */
@@ -199,17 +333,43 @@
  * Phones can't afford the noise + scan-line blend cost. Drop
  * intensity to reclaim frame budget. */
 @media (max-width: 768px) and (pointer: coarse) {
-  .presentation::before { opacity: 0.3; }
-  .presentation::after  { display: none; }
+  .presentation::before{ opacity: 0.3; }
+  .presentation::after{ display: none; }
 
   .vs-fighter--left .vs-fighter-image,
   .vs-fighter--right .vs-fighter-image {
     animation: none;
   }
 
-  .tool-takes-icon {
-    animation: none;
+  
+
+  .title-slide::before{ animation: none; }
+}
+
+/* === LANDSCAPE PHONES (max-height: 500px) ===
+ * Too short for a list: only the NEWEST revealed point of any revealed list
+ * stays on screen (the sliding window taken to its limit), not-yet-revealed
+ * slots stop reserving space, and decorative visuals step aside. */
+@media (max-height: 500px) {
+  .slide-item.is-unrevealed,
+  .level-item.is-unrevealed,
+  .directive.is-unrevealed,
+  .models-point.is-unrevealed,
+  .agenda-section.is-unrevealed,
+  .timeline-panel__list li.is-unrevealed {
+    display: none;
   }
 
-  .title-slide::before { animation: none; }
+  .slide-item:has(~ .slide-item:not(.is-unrevealed)),
+  .level-item:has(~ .level-item:not(.is-unrevealed)),
+  .directive:has(~ .directive:not(.is-unrevealed)),
+  .models-point:has(~ .models-point:not(.is-unrevealed)),
+  .agenda-section:has(~ .agenda-section:not(.is-unrevealed)),
+  .timeline-panel__list li:has(~ li:not(.is-unrevealed)) {
+    display: none;
+  }
+
+  .slide-container {
+    padding: var(--space-xs) var(--space-md);
+  }
 }

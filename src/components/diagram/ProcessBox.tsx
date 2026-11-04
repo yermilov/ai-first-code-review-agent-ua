@@ -43,7 +43,7 @@ export function ProcessBox({
         textAnchor="middle"
         dominantBaseline="middle"
         fill={color}
-        fontSize="13"
+        fontSize="13" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
         fontFamily="'JetBrains Mono', monospace"
         fontWeight="600"
         letterSpacing="0.04em"
@@ -57,7 +57,7 @@ export function ProcessBox({
           textAnchor="middle"
           dominantBaseline="middle"
           fill={color}
-          fontSize="10"
+          fontSize="10" /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
           fontFamily="'JetBrains Mono', monospace"
           opacity="0.6"
           letterSpacing="0.03em"

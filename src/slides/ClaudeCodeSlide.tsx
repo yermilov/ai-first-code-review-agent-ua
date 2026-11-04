@@ -150,15 +150,15 @@ function ClaudeCodeContent({ revealStage }: { revealStage: number }) {
               <QRCodeSVG
                 value={REPO_URL}
                 size={520}
-                bgColor="#0a0e14"
+                bgColor="var(--terminal-bg)"
                 fgColor="#7ee787"
                 level="M"
                 style={{
                   borderRadius: 'var(--input-border-radius)',
                   border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+                  boxShadow: '0 8px 32px color-mix(in srgb, var(--terminal-black) 60%, transparent)',
                   padding: '12px',
-                  background: '#0a0e14',
+                  background: 'var(--terminal-bg)',
                 }}
               />
             )}

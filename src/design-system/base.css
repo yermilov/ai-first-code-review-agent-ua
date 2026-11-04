@@ -25,11 +25,17 @@
   overflow: hidden;
 }
 
-/* Slide — the active card */
+/* Slide — the active card. It always has an explicit height (the whole
+ * container), so any child can size with max-height: 100%; untitled
+ * slides centre their content vertically inside it. */
 .slide {
   width: 100%;
   max-width: 1600px;
+  height: 100%;
   max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
   color: var(--terminal-white);
   font-family: var(--font-mono);
@@ -38,26 +44,22 @@
   position: relative;
 }
 
-/* Slides that opt in to the fixed top-left title get a reserved title
- * band (~130px) at the top so the body content doesn't collide with it.
- * Fill the container height so the absolute-positioned title stays
- * anchored to the top of the viewport, not the top of the content. */
+/* Titled slides: the title is an in-flow band at the top, sized by the
+ * heading itself (so a title that wraps to two lines pushes the body down
+ * instead of colliding with it), and `.slide-body` gets exactly the height
+ * that is left. Children size against `.slide-body` with `max-height: 100%`
+ * — never `calc(var(--vh-full) - <chrome px>)`. */
 .slide--titled {
-  padding-top: 180px;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* Fixed top-left title (dou-days pattern). Sits in the title band above
- * the body. Use the `//` dim leader convention in slide definitions.
- * Higher specificity than `.slide h2` so font-size override sticks. */
 .slide h2.slide-title {
-  position: absolute;
-  top: var(--space-lg);
-  left: 0;
-  margin: 0;
-  font-size: var(--font-size-h2);
+  position: relative;
+  flex: none;
+  margin: var(--space-md) 0 var(--space-lg);
+  font-size: var(--font-size-heading);
   font-weight: 600;
   text-align: left;
   color: var(--terminal-green);
@@ -66,6 +68,15 @@
   text-shadow: var(--glow-text-green);
   max-width: 100%;
   z-index: 3;
+}
+
+.slide-body {
+  flex: 1 1 0;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Second-line "code comment" descriptor inside a slide title.
@@ -186,7 +197,7 @@
   padding: var(--space-xs) var(--space-sm);
   border-radius: 4px;
   color: var(--terminal-cyan);
-  font-size: 0.9em;
+  font-size: 0.88em; /* mono runs optically larger; 0.88em reads as the same size */
   border: 1px solid var(--terminal-border);
 }
 
@@ -239,5 +250,30 @@
 
   .bio-slide-image {
     max-width: 280px;
+  }
+}
+
+/* === HEIGHT BREAKPOINTS ===
+ * A 1280×720 laptop and a landscape phone break a deck far more often than
+ * a narrow window. Type already scales with the viewport (tokens.css); what
+ * does NOT scale are the rem gaps and the chrome, so short screens tighten
+ * those — never the type. */
+@media (max-height: 880px) {
+  :root {
+    --input-height: 2.75rem;
+  }
+
+  .slide-container {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+  }
+
+  .slide h2.slide-title {
+    margin: var(--space-xs) 0 var(--space-md);
+  }
+
+  .input-bar {
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-sm);
   }
 }

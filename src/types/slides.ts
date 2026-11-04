@@ -3,20 +3,30 @@ import { ReactNode } from 'react';
 export interface SlideContentProps {
   revealStage: number;
   inputText: string;
-  activatedTools: Set<string>;
 }
 
 export interface SlideDefinition {
   id: string;
   content: ReactNode | ((props: SlideContentProps) => ReactNode);
-  /** Optional fixed top-left title rendered by Slide.tsx. Use `//` prefix
-   * convention for the dim leader (matches dou-days deck). Omit for hero
-   * / section-break slides that own their full composition. */
-  title?: ReactNode;
+  /** Optional fixed top-left title rendered by Slide.tsx, in the shell idiom
+   * (dim `>`, green command, orange flag). Omit for hero / section-break
+   * slides that own their full composition. A function derives the title
+   * from reveal state. */
+  title?: ReactNode | ((props: SlideContentProps) => ReactNode);
   notes?: string;
   background?: string;
+  /** Optional contextual tooltip shown next to the slide (ported from pragmatic-vibe-clauding-ua). */
+  tooltip?: ReactNode;
   maxRevealStages?: number;
   initialRevealStage?: number;
+  /**
+   * Optional non-linear detours. When the presenter advances past `atStage`
+   * on this slide, navigation jumps to the slide with id `toId` (at reveal 0);
+   * once that slide is fully revealed, it returns here at `returnStage`. Detour
+   * targets are skipped on the subsequent linear pass. Multiple detours from
+   * one slide should list their target slides consecutively right after it.
+   */
+  detours?: { atStage: number; toId: string; returnStage: number }[];
   /**
    * Opt out of the export-mode auto-settle in Slide.tsx. Set true on slides
    * that do their own async work (fetches, etc.) and call
@@ -58,7 +68,9 @@ export interface SlideProps {
 }
 
 export interface SlideProgressProps {
+  /** 1-based step on the talk path (utils/traversal.ts) */
   current: number;
+  /** total steps — every reveal of every slide, detours inlined */
   total: number;
 }
 

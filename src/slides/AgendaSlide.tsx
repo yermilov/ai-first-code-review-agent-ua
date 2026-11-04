@@ -106,7 +106,7 @@ function AgendaSlideContent() {
         .agenda-subcard:hover {
           border-color: var(--terminal-orange);
           border-left-color: var(--terminal-orange);
-          box-shadow: 0 0 18px rgba(240, 136, 62, 0.2);
+          box-shadow: 0 0 18px color-mix(in srgb, var(--terminal-orange) 20%, transparent);
         }
 
         .agenda-card-command {

@@ -132,9 +132,9 @@ const STYLES = `
 .pov-card {
   position: absolute;
   width: 26%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 15%, transparent);
   border-radius: 6px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--terminal-black) 35%, transparent);
   background: #fff;
   user-select: none;
   will-change: transform, opacity;
@@ -155,9 +155,9 @@ const STYLES = `
   width: 24%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid color-mix(in srgb, var(--terminal-pure-white) 15%, transparent);
   border-radius: 6px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--terminal-black) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--terminal-black) 35%, transparent);
   background: #fff;
   user-select: none;
   animation: pov-fade-in 0.55s ease-out both;
@@ -186,9 +186,9 @@ const STYLES = `
   font-size: 0.7rem;
   line-height: 1.2;
   white-space: nowrap;
-  border: 1px solid rgba(0, 0, 0, 0.18);
+  border: 1px solid color-mix(in srgb, var(--terminal-black) 18%, transparent);
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--terminal-black) 40%, transparent);
   user-select: none;
   pointer-events: none;
   opacity: 0;

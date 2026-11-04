@@ -1,32 +1,36 @@
-const TOTAL_TIME = 60 * 60;
+/** The talk part of the slot, in seconds. Rehearse against this, not the Q&A. */
+export const TALK_SECONDS = 60 * 60;
 
 interface TimerProps {
   elapsedSeconds: number;
-  currentSlide: number;
-  totalSlides: number;
+  /** 0-based step on the talk path (utils/traversal.ts) */
+  currentStep: number;
+  totalSteps: number;
 }
 
-function getPaceColor(elapsedSeconds: number, currentSlide: number, totalSlides: number): string {
-  const remaining = Math.max(0, TOTAL_TIME - elapsedSeconds);
+// Pace is measured in steps (reveals), not slides, so a slide with eight
+// reveals counts eight times — the same weighting as the progress bar.
+function getPaceColor(elapsedSeconds: number, currentStep: number, totalSteps: number): string {
+  const remaining = Math.max(0, TALK_SECONDS - elapsedSeconds);
 
-  if (remaining === 0 && currentSlide < totalSlides - 1) {
+  if (remaining === 0 && currentStep < totalSteps - 1) {
     return 'var(--terminal-red)';
   }
 
-  const expectedSlide = (elapsedSeconds / TOTAL_TIME) * (totalSlides - 1);
-  const slidesBehind = expectedSlide - currentSlide;
+  const expectedStep = (elapsedSeconds / TALK_SECONDS) * (totalSteps - 1);
+  const fractionBehind = (expectedStep - currentStep) / totalSteps;
 
-  if (slidesBehind < 1) return 'var(--terminal-green)';
-  if (slidesBehind < 2) return 'var(--terminal-yellow)';
+  if (fractionBehind < 0.03) return 'var(--terminal-green)';
+  if (fractionBehind < 0.06) return 'var(--terminal-yellow)';
   return 'var(--terminal-red)';
 }
 
-export function Timer({ elapsedSeconds, currentSlide, totalSlides }: TimerProps) {
-  const remaining = Math.max(0, TOTAL_TIME - elapsedSeconds);
+export function Timer({ elapsedSeconds, currentStep, totalSteps }: TimerProps) {
+  const remaining = Math.max(0, TALK_SECONDS - elapsedSeconds);
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
   const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  const color = getPaceColor(elapsedSeconds, currentSlide, totalSlides);
+  const color = getPaceColor(elapsedSeconds, currentStep, totalSteps);
 
   return (
     <span className="timer-countdown" style={{ color }}>

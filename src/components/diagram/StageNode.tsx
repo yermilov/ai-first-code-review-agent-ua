@@ -22,7 +22,7 @@ export function StageNode({
   r = 55,
   color = '#e2e8f0',
   strokeWidth = 2,
-  fontSize = 11,
+  fontSize = 11, // deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture
   className,
   style,
 }: StageNodeProps) {
@@ -63,7 +63,7 @@ export function StageNode({
           textAnchor="middle"
           dominantBaseline="middle"
           fill={color}
-          fontSize={fontSize}
+          fontSize={fontSize} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
           fontFamily="'JetBrains Mono', 'Fira Code', monospace"
           fontWeight="700"
           letterSpacing="0.08em"

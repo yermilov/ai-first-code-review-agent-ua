@@ -63,12 +63,12 @@ export const SkillMarketplaceSlide: SlideDefinition = {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(10, 14, 20, 0.55)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            background: 'color-mix(in srgb, var(--terminal-bg) 55%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--terminal-pure-white) 12%, transparent)',
             borderRadius: '14px',
             padding: '20px',
             boxShadow:
-              '0 18px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
+              '0 18px 48px color-mix(in srgb, var(--terminal-black) 60%, transparent), inset 0 1px 0 color-mix(in srgb, var(--terminal-pure-white) 6%, transparent)',
             overflow: 'hidden',
           }}
         >

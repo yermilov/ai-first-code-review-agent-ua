@@ -23,9 +23,15 @@ export function Slide({
 }: SlideProps) {
   // Auto-settle on mount for slides that don't do their own async work.
   // Slides with `asyncSettle: true` opt out and call markSlideSettled themselves.
+  //
+  // The retain/release pair tells the registry this slide is on screen and
+  // settles by merely being mounted, so a `reset()` mid-export can put the
+  // mark back instead of waiting for an effect that will never re-run.
   useEffect(() => {
     if (!isActive || asyncSettle || !slideId) return;
     exportRegistry.markSlideSettled(slideId);
+    exportRegistry.retainMounted(slideId);
+    return () => exportRegistry.releaseMounted(slideId);
   }, [isActive, asyncSettle, slideId]);
 
   if (!isActive) return null;
@@ -34,9 +40,19 @@ export function Slide({
     <div
       className={title ? 'slide slide--titled' : 'slide'}
       style={background ? { background } : undefined}
+      data-slide-id={slideId}
     >
-      {title && <h2 className="slide-title">{title}</h2>}
-      {children}
+      {title ? (
+        <>
+          <h2 className="slide-title">{title}</h2>
+          {/* The body takes exactly the height the title leaves, so media
+              inside can size with max-height: 100% instead of subtracting a
+              chrome height from the viewport. */}
+          <div className="slide-body">{children}</div>
+        </>
+      ) : (
+        children
+      )}
     </div>
   );
 }

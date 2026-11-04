@@ -47,7 +47,7 @@ export function AgentActor({
           y={y + half + 10}
           textAnchor="middle"
           fill={color}
-          fontSize={size * 0.22}
+          fontSize={size * 0.22} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */
           fontFamily="'JetBrains Mono', monospace"
           fontWeight="500"
           opacity="0.7"

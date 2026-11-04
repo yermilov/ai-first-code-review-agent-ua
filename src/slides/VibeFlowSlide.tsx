@@ -36,7 +36,7 @@ export const VibeFlowSlide: SlideDefinition = {
         )}
 
         {revealStage >= 2 && (
-          <SlideItem delay={0}>описуємо фічу / баг, <span className="text-orange" style={{ textShadow: '0 0 8px rgba(240, 136, 62, 0.9), 0 0 20px rgba(240, 136, 62, 0.6), 0 0 40px rgba(240, 136, 62, 0.3)' }}>формуємо контекст</span></SlideItem>
+          <SlideItem delay={0}>описуємо фічу / баг, <span className="text-orange" style={{ textShadow: '0 0 8px color-mix(in srgb, var(--terminal-orange) 90%, transparent), 0 0 20px color-mix(in srgb, var(--terminal-orange) 60%, transparent), 0 0 40px color-mix(in srgb, var(--terminal-orange) 30%, transparent)' }}>формуємо контекст</span></SlideItem>
         )}
 
         {revealStage >= 3 && (

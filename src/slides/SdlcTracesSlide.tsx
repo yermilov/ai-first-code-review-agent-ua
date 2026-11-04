@@ -7,7 +7,7 @@ import {
   FlowArrow,
 } from '../components/diagram';
 
-const ORANGE = '#f0883e';
+const ORANGE = 'var(--terminal-orange)';
 const GREEN  = '#7ee787';
 const BLUE   = '#79c0ff';
 const YELLOW = '#ffd166';
@@ -170,16 +170,16 @@ function SdlcDiagram() {
         d="M 952 342 C 960 302, 968 268, 968 268" markerId="arrow-cyan" />
 
       {/* ═══ LAYER 2: Stage nodes (on top of arrows) ═══ */}
-      <StageNode {...S.IDEA}    label="IDEA"             color="#f0ece8" strokeWidth={2.5} fontSize={13} />
-      <StageNode {...S.DESIGN}  label="DESIGN"           color="#f0ece8" strokeWidth={2.2} fontSize={12} />
-      <StageNode {...S.DEV}     label={"DEV ENV\nSETUP"} color="#f0ece8" strokeWidth={2.2} fontSize={11} />
-      <StageNode {...S.CODING}  label="CODING"           color="#f0ece8" strokeWidth={2.2} fontSize={12} />
-      <StageNode {...S.LOCAL}   label={"LOCAL\nDEV"}     color="#f0ece8" strokeWidth={2.2} fontSize={11} />
-      <StageNode {...S.QA}      label="QA"               color="#f0ece8" strokeWidth={2.2} fontSize={13} />
-      <StageNode {...S.REVIEW}  label={"CODE\nREVIEW"}   color="#f0ece8" strokeWidth={2.2} fontSize={11} />
-      <StageNode {...S.COMMIT}  label="COMMIT"           color="#f0ece8" strokeWidth={2.2} fontSize={11} />
-      <StageNode {...S.DEPLOY}  label="DEPLOY"           color="#f0ece8" strokeWidth={2.2} fontSize={11} />
-      <StageNode {...S.MONITOR} label="MONITOR"          color="#f0ece8" strokeWidth={2.2} fontSize={11} />
+      <StageNode {...S.IDEA}    label="IDEA"             color="#f0ece8" strokeWidth={2.5} fontSize={13} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.DESIGN}  label="DESIGN"           color="#f0ece8" strokeWidth={2.2} fontSize={12} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.DEV}     label={"DEV ENV\nSETUP"} color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.CODING}  label="CODING"           color="#f0ece8" strokeWidth={2.2} fontSize={12} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.LOCAL}   label={"LOCAL\nDEV"}     color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.QA}      label="QA"               color="#f0ece8" strokeWidth={2.2} fontSize={13} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.REVIEW}  label={"CODE\nREVIEW"}   color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.COMMIT}  label="COMMIT"           color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.DEPLOY}  label="DEPLOY"           color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
+      <StageNode {...S.MONITOR} label="MONITOR"          color="#f0ece8" strokeWidth={2.2} fontSize={11} /* deck-lint-allow jsx-font-size: SVG label in a viewBox drawing, scales with the picture */ />
 
       {/* ═══ LAYER 3: Actors ═══ */}
       <HumanActor {...ACTORS.ORANGE} size={ICON_SIZE} color={ORANGE} label="eng" />
