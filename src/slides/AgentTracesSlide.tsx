@@ -89,7 +89,7 @@ function AgentTracesContent({ revealStage, lang }: { revealStage: number; lang: 
       style={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: 'calc(var(--vh-full) - 220px)',
+        minHeight: '100%',
       }}
     >
       <h2 style={{ textAlign: 'left', margin: 0 }}>

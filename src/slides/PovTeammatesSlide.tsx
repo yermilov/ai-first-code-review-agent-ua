@@ -131,7 +131,7 @@ function PovTeammatesContent({ revealStage }: { revealStage: number }) {
         style={{
           position: 'relative',
           width: '100%',
-          height: 'calc(var(--vh-full) - 220px)',
+          height: '100%',
           overflow: 'hidden',
         }}
       >

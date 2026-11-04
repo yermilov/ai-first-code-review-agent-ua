@@ -56,7 +56,7 @@ function ReviewConsolidatorContent({ revealStage, lang }: { revealStage: number;
         gap: 'var(--space-sm)',
         textAlign: 'left',
         minHeight: 0,
-        height: 'calc(var(--vh-full) - 220px)',
+        height: '100%',
       }}
     >
       {BULLETS.slice(0, visibleCount).map((bullet, i) => (

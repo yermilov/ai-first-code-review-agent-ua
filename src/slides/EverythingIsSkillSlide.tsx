@@ -71,7 +71,7 @@ function EverythingIsSkillContent({ revealStage, lang }: { revealStage: number; 
           alignItems: 'stretch',
           gap: 'var(--space-lg)',
           minHeight: 0,
-          height: 'calc(var(--vh-full) - 220px)',
+          height: '100%',
         }}
       >
         {/* Bullets — half-width left column */}

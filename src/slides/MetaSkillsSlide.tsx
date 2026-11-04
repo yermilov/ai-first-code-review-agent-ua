@@ -103,7 +103,7 @@ function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: L
           alignItems: 'stretch',
           gap: setIndex === 0 ? 0 : 'var(--space-lg)',
           minHeight: 0,
-          height: 'calc(var(--vh-full) - 220px)',
+          height: '100%',
         }}
       >
         {/* Bullets — full-width on the thesis half, ~46% column once the

@@ -75,7 +75,7 @@ export const WhatIsSkillSlide: SlideDefinition = {
             display: 'grid',
             gridTemplateColumns: '22% 1fr 22%',
             alignItems: 'center',
-            height: 'calc(var(--vh-full) - 220px)',
+            height: '100%',
             width: '100%',
             gap: 'var(--space-md)',
           }}

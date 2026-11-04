@@ -47,7 +47,7 @@ export const SkillMarketplaceSlide: SlideDefinition = {
           alignItems: 'center',
           gap: '2rem',
           minHeight: 0,
-          height: 'calc(var(--vh-full) - 220px)',
+          height: '100%',
         }}
       >
         {/* Bullets — half-width column on the left */}
