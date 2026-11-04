@@ -1,3 +1,5 @@
+import { T } from '../context/LanguageContext';
+
 /**
  * Portrait-orientation hint shown only on small screens.
  * The deck is calibrated for landscape; in portrait on a phone the long
@@ -9,7 +11,7 @@ export function RotateHint() {
   return (
     <div className="rotate-hint" aria-hidden="true">
       <div className="rotate-hint__icon">⤺</div>
-      <div className="rotate-hint__text">Rotate your phone for the full view</div>
+      <div className="rotate-hint__text"><T uk="Поверніть телефон горизонтально" en="Rotate your phone for the full view" /></div>
     </div>
   );
 }

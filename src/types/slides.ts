@@ -1,8 +1,11 @@
 import { ReactNode } from 'react';
+import type { Lang } from '../context/LanguageContext';
 
 export interface SlideContentProps {
   revealStage: number;
   inputText: string;
+  /** Active deck language — `english` / `ukrainian` commands, `?lang=en`. */
+  lang: Lang;
 }
 
 export interface SlideDefinition {
@@ -14,7 +17,8 @@ export interface SlideDefinition {
    * from reveal state. */
   title?: ReactNode | ((props: SlideContentProps) => ReactNode);
   notes?: string;
-  background?: string;
+  /** Full-bleed CSS background on `.slide`; a function picks it per language (localised art). */
+  background?: string | ((props: { lang: Lang }) => string);
   /** Optional contextual tooltip shown next to the slide (ported from pragmatic-vibe-clauding-ua). */
   tooltip?: ReactNode;
   maxRevealStages?: number;

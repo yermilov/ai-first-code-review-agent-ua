@@ -3,11 +3,16 @@
 #
 # Adapted from `zarazhangrui/frontend-slides` (MIT).
 #
-# Usage: bun run pdf
+# Usage: bun run pdf              → Ukrainian (the deck's home language)
+#        LANG_DECK=en bun run pdf → English, written to …-en.pdf
 
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
+
+DECK_LANG="${LANG_DECK:-uk}"
+OUT="dist/ai-first-code-review-agent-ua.pdf"
+[ "$DECK_LANG" = "uk" ] || OUT="dist/ai-first-code-review-agent-ua-$DECK_LANG.pdf"
 
 # 1. Build the deck (also runs check:async-slides).
 echo "==> Building deck..."
@@ -40,6 +45,6 @@ done
 
 # 5. Run the Playwright capture script.
 echo "==> Capturing slides..."
-bun run scripts/export-pdf.mjs "http://localhost:$PREVIEW_PORT/ai-first-code-review-agent-ua/" "dist/ai-first-code-review-agent-ua.pdf"
+bun run scripts/export-pdf.mjs "http://localhost:$PREVIEW_PORT/ai-first-code-review-agent-ua/" "$OUT" "$DECK_LANG"
 
-echo "==> Done: dist/ai-first-code-review-agent-ua.pdf"
+echo "==> Done: $OUT"

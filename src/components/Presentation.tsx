@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { LanguageContext, LANG_STORAGE_KEY, LANG_URL_PARAM, getInitialLang, parseLang, type Lang } from '../context/LanguageContext';
 import { PresentationProps } from '../types/slides';
 import { useSlideNavigation } from '../hooks/useSlideNavigation';
 import { NavigationContext } from '../context/NavigationContext';
@@ -160,8 +161,31 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
     }
   }, [currentSlide]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Language — `english` / `ukrainian` commands; persisted and mirrored in
+  // ?lang= so a link opens in the language it was shared in.
+  const [lang, setLang] = useState<Lang>(getInitialLang);
+  const changeLang = useCallback((next: Lang) => {
+    setLang(next);
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, next);
+    } catch {
+      // storage unavailable (private mode): the switch still applies for this session
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set(LANG_URL_PARAM, next);
+    window.history.replaceState(null, '', url);
+  }, []);
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const handleCommand = useCallback((command: string) => {
     const trimmed = command.trim().toLowerCase();
+
+    if (trimmed === 'english' || trimmed === 'ukrainian') {
+      changeLang(parseLang(trimmed)!);
+      return;
+    }
 
     if (trimmed === 'dark' || trimmed === 'light') {
       setTheme(trimmed);
@@ -169,7 +193,7 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
     }
 
     handleNavCommand(command);
-  }, [handleNavCommand]);
+  }, [handleNavCommand, changeLang]);
 
   const activeSlide = slides[currentSlide];
 
@@ -177,7 +201,7 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
     return null;
   }
 
-  const contentProps = { revealStage, inputText };
+  const contentProps = { revealStage, inputText, lang };
   const slideContent =
     typeof activeSlide.content === 'function'
       ? activeSlide.content(contentProps)
@@ -192,6 +216,7 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
   const progressCurrent = step + 1;
 
   return (
+    <LanguageContext.Provider value={lang}>
     <NavigationContext.Provider value={{ goToSlideById }}>
     <div className="presentation">
       {!isExportMode && <RotateHint />}
@@ -199,7 +224,7 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
         <Slide
           isActive
           notes={activeSlide.notes}
-          background={activeSlide.background}
+          background={typeof activeSlide.background === 'function' ? activeSlide.background({ lang }) : activeSlide.background}
           slideId={activeSlide.id}
           asyncSettle={activeSlide.asyncSettle}
           title={slideTitle}
@@ -231,5 +256,6 @@ export function Presentation({ slides, initialSlide = 0 }: PresentationProps) {
       )}
     </div>
     </NavigationContext.Provider>
+    </LanguageContext.Provider>
   );
 }

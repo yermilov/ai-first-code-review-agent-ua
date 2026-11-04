@@ -15,6 +15,7 @@ import { join } from 'node:path';
 
 const baseUrl = process.argv[2];
 const outputPath = process.argv[3];
+const deckLang = process.argv[4] ?? 'uk';
 if (!baseUrl || !outputPath) {
   console.error('Usage: export-pdf.mjs <base-url> <output-pdf>');
   process.exit(1);
@@ -40,8 +41,8 @@ page.on('console', msg => {
   if (msg.type() === 'error') console.error('[page console error]', msg.text());
 });
 
-console.log('==> Loading deck in export mode:', `${baseUrl}?export=1`);
-await page.goto(`${baseUrl}?export=1`, { waitUntil: 'load' });
+console.log('==> Loading deck in export mode:', `${baseUrl}?export=1&lang=${deckLang}`);
+await page.goto(`${baseUrl}?export=1&lang=${deckLang}`, { waitUntil: 'load' });
 
 await page.waitForFunction(() => Boolean(window.__deckExport), null, { timeout: 10000 });
 await page.evaluate(() => window.__deckExport.reset());
