@@ -49,7 +49,7 @@ src/
 ├── slides/
 │   ├── index.ts             # THE RUNNING ORDER — the `slides` array
 │   ├── exportContract.ts    # async-slide classification for the PDF exporter
-│   └── *Slide.tsx           # one SlideDefinition per file (36 in the talk)
+│   └── *Slide.tsx           # one SlideDefinition per file (36, all in the talk)
 ├── components/
 │   ├── Presentation.tsx     # timer, theme, language, progress, export API
 │   ├── Slide.tsx            # .slide wrapper; titled slides get .slide-title + .slide-body
@@ -104,15 +104,14 @@ Rules that matter (details in the skills):
 
 - **Four font sizes**: 96 hero / 80 heading / 32 body / 24 code — tokens only. `bun run lint:deck`
   fails on anything else. Never shrink type to fit: split the slide or use a sliding window
-  (`revealWindow(items, shown, size)`). deck-lint does not see CSS inside a slide's `<style>`
-  template string — check those slides by computed size.
+  (`revealWindow(items, shown, size)`).
 - **A reveal never moves what is on screen**: lay everything out from stage 0, hide what is not
   yet revealed (`hidden` / `<Reveal show>`), don't unmount it.
 - **Titled slides**: content lives in `.slide-body`, which has an explicit height. Size media with
-  `max-height: 100%` — never `calc(var(--vh-full) - <px>)` in new code.
+  `max-height: 100%` — never `calc(var(--vh-full) - <px>)`.
 - **Colours are tokens**; tints are `color-mix()` over a token. No raw hex outside `tokens.css`
   (SVG/JS picture constants excepted).
-- **Per-slide CSS** goes in `src/styles/slide-layouts.css`; don't add new `<style>` tags. Shared
+- **Per-slide CSS** goes in `src/styles/slide-layouts.css`; no `<style>` tags in slides. Shared
   patterns (`.split`, `LevelItem`, …) live in `src/design-system/`.
 - **Async slides** (fetch etc.) set `asyncSettle: true`, call `exportRegistry.markSlideSettled`,
   and are listed in `src/slides/exportContract.ts` — the build fails otherwise.
@@ -170,8 +169,8 @@ render-function slides read `lang` from their props; `background` may be a funct
 - Stays as-is in both: what is typed to or shown by a tool (prompts, commands, code), product
   names, the terminal chrome (placeholder, `context left until auto-compact`), speaker notes
   (Ukrainian) and `index.html` meta (Ukrainian).
-- Generated images with Ukrainian labels have no English variant yet — see the follow-ups in the
-  alignment report; an English variant is `<name>-en.png` + its own `src/prompts/*.json`.
+- Every generated image in the deck is labelled in English already. If one ever needs Ukrainian
+  labels, the other-language variant is `<name>-en.png` + its own `src/prompts/*.json`.
 - `?lang=en` makes a shareable English link; `LANG_DECK=en bun run pdf` exports
   `dist/ai-first-code-review-agent-ua-en.pdf`.
 - Verify a changed slide in BOTH languages — Ukrainian runs longer; fix overflow by rephrasing

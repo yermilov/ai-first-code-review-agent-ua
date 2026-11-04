@@ -45,10 +45,11 @@ plus neutrals. `--terminal-purple` / `--terminal-red` are for syntax highlightin
 Tints are `color-mix(in srgb, var(--token) N%, transparent)`, never `rgba()`. Drop shadows mix
 from `--terminal-shadow` (black on the CRT, warm umber on paper). Colours that belong to a
 *picture of something else* are tokens with a comment saying so: the macOS traffic lights
-(`--chrome-dot-*`); SVG diagram constants (the DOU palette on the AI-innovator curve, the
-status-page colours on industry-patterns, the mock GitHub/raw-HTML pages inside slide `<style>`
-tags) keep their own picture colours. Any new `:root` colour needs its `[data-theme="light"]`
-mirror unless it is such a fixed picture colour.
+(`--chrome-dot-*`). Picture colours elsewhere — the DOU palette on the AI-innovator curve, the
+status-page colours on industry-patterns, the mock GitHub and raw-HTML pages — stay literal with
+a `deck-lint-allow colour` reason. Code-block syntax colours are `--syntax-*` tokens
+(GitHub-dark / GitHub-light). Any new `:root` colour needs its `[data-theme="light"]` mirror
+unless it is such a fixed picture colour.
 
 ## Primitives (`src/components/SlideElements.tsx`)
 
@@ -68,14 +69,12 @@ is a sliding window, whose survivors move up a slot by design.
 
 - A titled slide renders `h2.slide-title` as an in-flow band and its content inside
   `.slide-body`, which gets exactly the height the title leaves. Size media with
-  `max-height: 100%` / `height: 100%` against it — **never** `calc(var(--vh-full) - <chrome px>)`
-  in new code (some older layouts still use it; replace when you touch them).
+  `max-height: 100%` / `height: 100%` against it — **never** `calc(var(--vh-full) - <chrome px>)`.
 - `.split` (in `patterns.css`) is the shared two-column text + visual layout; three visible
   bullets beside the visual. Visuals step aside below 900px wide or 500px tall.
-- One-slide layouts go in `src/styles/slide-layouts.css`, scoped to that slide's class. Several
-  older slides still carry a `<style>` tag (AI-innovator curve, agenda, conclusions, PoV
-  teammates, …) — deck-lint does NOT see CSS inside template strings, so check those by computed
-  size. Don't add new ones; move a slide's block into `slide-layouts.css` when you next touch it.
+- One-slide layouts go in `src/styles/slide-layouts.css`, scoped to that slide's class (blocks
+  moved out of former `<style>` tags are headed `moved from <File>.tsx`). No `<style>` tags in
+  slides; inline `style={{}}` only for a per-item dynamic value.
 - SVG charts (conclusions, AI-innovator curve) draw labels
   at the picture's own scale; each such `fontSize` carries a `deck-lint-allow` comment.
 - Keyframes that move something centred use the `translate` / `scale` properties, not
