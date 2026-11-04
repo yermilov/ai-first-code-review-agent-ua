@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { CodeBlockProps } from '../types/slides';
 
-// Custom terminal theme matching our design tokens
+// Custom terminal theme on design tokens, so the light theme repaints it
 const terminalTheme: { [key: string]: React.CSSProperties } = {
   'code[class*="language-"]': {
-    color: '#e2e8f0',
+    color: 'var(--terminal-white)',
     fontFamily: 'var(--font-mono)',
     fontSize: 'var(--font-size-code)',
     textAlign: 'left',
@@ -18,7 +18,7 @@ const terminalTheme: { [key: string]: React.CSSProperties } = {
     hyphens: 'none',
   },
   'pre[class*="language-"]': {
-    color: '#e2e8f0',
+    color: 'var(--terminal-white)',
     fontFamily: 'var(--font-mono)',
     fontSize: 'var(--font-size-code)',
     textAlign: 'left',
@@ -35,50 +35,50 @@ const terminalTheme: { [key: string]: React.CSSProperties } = {
     background: 'transparent',
   },
   // Comments
-  comment: { color: '#6e7681', fontStyle: 'italic' },
-  prolog: { color: '#6e7681' },
-  doctype: { color: '#6e7681' },
-  cdata: { color: '#6e7681' },
+  comment: { color: 'var(--syntax-comment)', fontStyle: 'italic' },
+  prolog: { color: 'var(--syntax-comment)' },
+  doctype: { color: 'var(--syntax-comment)' },
+  cdata: { color: 'var(--syntax-comment)' },
   // Punctuation
-  punctuation: { color: '#8b949e' },
+  punctuation: { color: 'var(--syntax-punctuation)' },
   // Namespace
   namespace: { opacity: 0.7 },
   // Properties, tags, booleans, numbers, constants, symbols
-  property: { color: '#7ee787' },
-  tag: { color: '#7ee787' },
-  boolean: { color: '#f0883e' },
-  number: { color: '#f0883e' },
-  constant: { color: '#f0883e' },
-  symbol: { color: '#f0883e' },
-  deleted: { color: '#ff7b72' },
+  property: { color: 'var(--terminal-green)' },
+  tag: { color: 'var(--terminal-green)' },
+  boolean: { color: 'var(--terminal-orange)' },
+  number: { color: 'var(--terminal-orange)' },
+  constant: { color: 'var(--terminal-orange)' },
+  symbol: { color: 'var(--terminal-orange)' },
+  deleted: { color: 'var(--terminal-red)' },
   // Selectors, strings, chars, builtins, inserted, regex, attr-value
-  selector: { color: '#a5d6ff' },
-  string: { color: '#a5d6ff' },
-  char: { color: '#a5d6ff' },
-  builtin: { color: '#79c0ff' },
-  inserted: { color: '#7ee787' },
-  regex: { color: '#a5d6ff' },
-  'attr-value': { color: '#a5d6ff' },
+  selector: { color: 'var(--syntax-string)' },
+  string: { color: 'var(--syntax-string)' },
+  char: { color: 'var(--syntax-string)' },
+  builtin: { color: 'var(--terminal-blue)' },
+  inserted: { color: 'var(--terminal-green)' },
+  regex: { color: 'var(--syntax-string)' },
+  'attr-value': { color: 'var(--syntax-string)' },
   // Operators, entities, URLs, CSS strings, style strings
-  operator: { color: '#79c0ff' },
-  entity: { color: '#f0883e', cursor: 'help' },
-  url: { color: '#a5d6ff' },
-  '.language-css .token.string': { color: '#a5d6ff' },
-  '.style .token.string': { color: '#a5d6ff' },
+  operator: { color: 'var(--terminal-blue)' },
+  entity: { color: 'var(--terminal-orange)', cursor: 'help' },
+  url: { color: 'var(--syntax-string)' },
+  '.language-css .token.string': { color: 'var(--syntax-string)' },
+  '.style .token.string': { color: 'var(--syntax-string)' },
   // At-rules, attributes, functions
-  'atrule': { color: '#d2a8ff' },
-  'attr-name': { color: '#79c0ff' },
-  function: { color: '#d2a8ff' },
-  'class-name': { color: '#ffa657' },
+  'atrule': { color: 'var(--terminal-purple)' },
+  'attr-name': { color: 'var(--terminal-blue)' },
+  function: { color: 'var(--terminal-purple)' },
+  'class-name': { color: 'var(--syntax-attr)' },
   // Keywords
-  keyword: { color: '#ff7b72' },
+  keyword: { color: 'var(--terminal-red)' },
   // Important, bold
-  important: { color: '#ff7b72', fontWeight: 'bold' },
+  important: { color: 'var(--terminal-red)', fontWeight: 'bold' },
   bold: { fontWeight: 'bold' },
   // Italic
   italic: { fontStyle: 'italic' },
   // Variable
-  variable: { color: '#ffa657' },
+  variable: { color: 'var(--syntax-attr)' },
 };
 
 export function CodeBlock({

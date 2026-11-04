@@ -53,6 +53,13 @@
   --chrome-dot-yellow: #ffbd2e;
   --chrome-dot-green: #27c93f;
 
+  /* Syntax highlighting (CodeBlock) beyond the accent tokens — GitHub-dark
+   * values here, GitHub-light ones under [data-theme="light"]. */
+  --syntax-comment: #6e7681;
+  --syntax-punctuation: #8b949e;
+  --syntax-string: #a5d6ff;
+  --syntax-attr: #ffa657;
+
   /* Border colors */
   --terminal-border: #1e293b;
   --terminal-border-bright: #334155;
@@ -207,6 +214,12 @@
   --terminal-border: rgba(0, 0, 0, 0.12);
   --terminal-border-bright: rgba(0, 0, 0, 0.24);
   --terminal-border-hover: rgba(0, 0, 0, 0.36);
+
+  /* Syntax highlighting on paper (GitHub-light) */
+  --syntax-comment: #6a737d;
+  --syntax-punctuation: #57606a;
+  --syntax-string: #0a3069;
+  --syntax-attr: #953800;
 
   /* Warm umber shadows read as paper, black ones as dirt */
   --terminal-shadow: #784614;

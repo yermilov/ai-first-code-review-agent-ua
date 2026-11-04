@@ -129,7 +129,7 @@ function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: L
           <div
             style={{
               flex: 1,
-              background: 'color-mix(in srgb, var(--terminal-black) 60%, transparent)',
+              background: 'color-mix(in srgb, var(--terminal-bg) 60%, transparent)',
               border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
               borderRadius: '6px',
               position: 'relative',
@@ -166,7 +166,7 @@ function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: L
                 zIndex: 4,
                 pointerEvents: 'none',
                 background:
-                  'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
+                  'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-bg) 85%, transparent) 0%, transparent 100%)',
               }}
             />
 
@@ -181,7 +181,7 @@ function MetaSkillsContent({ revealStage, lang }: { revealStage: number; lang: L
                 zIndex: 4,
                 pointerEvents: 'none',
                 background:
-                  'linear-gradient(to top, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
+                  'linear-gradient(to top, color-mix(in srgb, var(--terminal-bg) 85%, transparent) 0%, transparent 100%)',
               }}
             />
 

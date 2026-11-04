@@ -103,7 +103,7 @@ function StartHereContent({ revealStage, lang }: { revealStage: number; lang: La
           style={{
             flex: 1,
             height: '100%',
-            background: 'color-mix(in srgb, var(--terminal-black) 60%, transparent)',
+            background: 'color-mix(in srgb, var(--terminal-bg) 60%, transparent)',
             border: '1px solid color-mix(in srgb, var(--terminal-green) 35%, transparent)',
             borderRadius: '4px',
             position: 'relative',
@@ -125,13 +125,13 @@ function StartHereContent({ revealStage, lang }: { revealStage: number; lang: La
           {/* Top fade */}
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '60px', zIndex: 4, pointerEvents: 'none',
-            background: 'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
+            background: 'linear-gradient(to bottom, color-mix(in srgb, var(--terminal-bg) 85%, transparent) 0%, transparent 100%)',
           }} />
 
           {/* Bottom fade */}
           <div style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', zIndex: 4, pointerEvents: 'none',
-            background: 'linear-gradient(to top, color-mix(in srgb, var(--terminal-black) 85%, transparent) 0%, transparent 100%)',
+            background: 'linear-gradient(to top, color-mix(in srgb, var(--terminal-bg) 85%, transparent) 0%, transparent 100%)',
           }} />
 
           {/* Corner decorations */}
