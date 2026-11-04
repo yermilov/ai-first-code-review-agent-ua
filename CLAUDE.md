@@ -55,7 +55,6 @@ src/
 │   ├── Slide.tsx            # .slide wrapper; titled slides get .slide-title + .slide-body
 │   ├── SlideElements.tsx    # SlideItem, LevelItem, Reveal, revealWindow, Code, Quote, Emphasis, SlideLink, SectionHeader
 │   ├── AgendaPreviews.tsx   # live mini-slides on the agenda cards
-│   ├── diagram/             # SVG diagram kit (DiagramCanvas, StageNode, FlowArrow, …)
 │   ├── TerminalInput.tsx · Timer.tsx · SlideProgress.tsx · CodeBlock.tsx · exportRegistry.ts
 │   └── pacman/              # the Pac-Man easter egg engine
 ├── data/sections.tsx        # the three talk sections (engineer / team / org) shared by agenda + section slides

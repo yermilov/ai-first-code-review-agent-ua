@@ -76,7 +76,7 @@ is a sliding window, whose survivors move up a slot by design.
   older slides still carry a `<style>` tag (AI-innovator curve, agenda, conclusions, PoV
   teammates, …) — deck-lint does NOT see CSS inside template strings, so check those by computed
   size. Don't add new ones; move a slide's block into `slide-layouts.css` when you next touch it.
-- SVG diagrams (`src/components/diagram/`, conclusions charts, SDLC/aspire diagrams) draw labels
+- SVG charts (conclusions, AI-innovator curve) draw labels
   at the picture's own scale; each such `fontSize` carries a `deck-lint-allow` comment.
 - Keyframes that move something centred use the `translate` / `scale` properties, not
   `transform`, so they don't clobber the centring.
